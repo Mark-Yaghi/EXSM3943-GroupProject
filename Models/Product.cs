@@ -25,7 +25,7 @@ namespace ClassroomStart.Models
         public int ProductID { get; set; }
 
 
-        [Column("productName", TypeName = "varchar(500)")]
+        [Column("productName", TypeName = "varchar(50)")]
         [StringLength(50)]
         [Required]
         public string ProductName { get; set; }
