@@ -27,7 +27,7 @@ namespace ClassroomStart.Models
         public int CustomerID { get; set; }
 
 
-        [Column("TotalAmount", TypeName = "decima(10,2)")]
+        [Column("TotalAmount", TypeName = "decimal(10,2)")]
 
         public decimal TotalAmount { get; set; }
 
@@ -37,8 +37,11 @@ namespace ClassroomStart.Models
 
         [ForeignKey(nameof(CustomerID))]
 
-        [InverseProperty(nameof(Models.Customer.Orders))]
+
+        [InverseProperty(nameof(Models.OrderDetail.OrderDetailID))]
         public virtual Customer Customer { get; set; }
+
+        public virtual OrderDetail OrderDetail { get; set; }
 
     }
 }

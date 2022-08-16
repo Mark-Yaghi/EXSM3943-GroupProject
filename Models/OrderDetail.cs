@@ -46,9 +46,9 @@ namespace ClassroomStart.Models
 
         [ForeignKey(nameof(OrderID))]
 
-        [InverseProperty(nameof(Models.OrderDetail.Order))]
+        [InverseProperty(nameof(Models.Order.OrderID))]
 
         public virtual Order Order { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

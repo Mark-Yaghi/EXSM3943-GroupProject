@@ -45,6 +45,7 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityInStock { get; set; }
 
+
         [Column("Discontinued", TypeName = "bool")]
         [Required]
         public bool Discontinued { get; set; }
