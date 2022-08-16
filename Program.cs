@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 
+
+const string passCode = "password";
+string admin = "";
 string userChoice = "";
-
-
-
 string userName = "";
 string phoneNumber;
 do
@@ -20,7 +20,37 @@ do
             phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
             break;
         case "2":
-            Console.WriteLine("Admin Section.");
+
+            Console.WriteLine("Please Enter Admin Password: ");
+            admin = Console.ReadLine().Trim();
+            if (admin == passCode)
+            {
+
+                do
+                {
+                    Console.WriteLine("1) Add product \"A\" 2) Add Inventory\"B\" 3) Discontinue the Product \"C\" 4) Admin Logout\"Q\" ");
+                    userChoice = Console.ReadLine().Trim();
+                    switch (userChoice)
+                    {
+                        case "A":
+                            Console.WriteLine("Add Product");
+                            break;
+                        case "B":
+                            Console.WriteLine("Add Inven.");
+                            break;
+                        case "C":
+                            Console.WriteLine("Disc Prod.");
+                            break;
+                        case "Q":
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option. Please try again !!!");
+                            break;
+                    }
+
+                } while (userChoice != "Q");
+
+            }
             break;
         case "0":
             break;
