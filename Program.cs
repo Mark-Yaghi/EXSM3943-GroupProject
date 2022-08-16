@@ -100,10 +100,6 @@ string getValidation(string prompt, string regEx)
     return output;
 }
 
-
-
-
-
 //public class User
 //{
 //    public User(string userName, int phoneNumber)

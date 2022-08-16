@@ -8,32 +8,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassroomStart.Models
 {
-    [Table("orderDetail")]
+    [Table("OrderDetail")]
     public class OrderDetail
     {
 
-        public OrderDetail(int quantityOrdered)
+        public OrderDetail(int orderID, int productID, int quantityOrdered)
         {
+            OrderID = orderID;
+            ProductID = productID;          
             QuantityOrdered = quantityOrdered;
         }
 
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("orderDetailId", TypeName = "int(10)")]
+        [Column("OrderDetailID", TypeName = "int(10)")]
         public int OrderDetailID { get; set; }
 
-        [Column("orderID", TypeName = "int(10)")]
+        [Column("OrderID", TypeName = "int(10)")]
         [Required]
         public int OrderID { get; set; }
 
 
 
-        [Column("productID", TypeName = "int(10)")]
+        [Column("ProductID", TypeName = "int(10)")]
         [Required]
         public int ProductID { get; set; }
 
-        [Column("quantityOrdered", TypeName = "int(10)")]
+        [Column("QuantityOrdered", TypeName = "int(10)")]
         [Required]
         public int QuantityOrdered { get; set; }
 
@@ -43,15 +45,11 @@ namespace ClassroomStart.Models
             get { return QuantityOrdered < Product.QuantityInStoke; }
         }
 
-
         [ForeignKey(nameof(ProductID))]
         [InverseProperty(nameof(Models.Product.OrderDetails))]
         public virtual Product Product { get; set; }
 
 
-
-        [ForeignKey(nameof(OrderID))]
-        [InverseProperty(nameof(Models.Order.OrderDetails))]
 
         public virtual Order Order { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

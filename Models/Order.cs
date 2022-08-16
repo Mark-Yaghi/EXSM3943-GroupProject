@@ -8,13 +8,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassroomStart.Models
 {
-    [Table("order")]
+    [Table("Order")]
     public class Order
     {
 
         public Order(int customerID, DateTime date, decimal totalAmount)
         {
             CustomerID=customerID;
+            CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
         }
@@ -22,16 +23,16 @@ namespace ClassroomStart.Models
         [Column("OrderId", TypeName = "int(10)")]
         public int OrderID { get; set; }
 
-        [Column("customerID", TypeName = "int(10)")]
+        [Column("CustomerID", TypeName = "int(10)")]
         [Required]
         public int CustomerID { get; set; }
 
 
-        [Column("totalAmount", TypeName = "decima(10,2)")]
+        [Column("TotalAmount", TypeName = "decima(10,2)")]
 
         public decimal TotalAmount { get; set; }
 
-        [Column("date", TypeName = "DateTime")]
+        [Column("Date", TypeName = "DateTime")]
 
         public DateTime Date { get; set; }
 
