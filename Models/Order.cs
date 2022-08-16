@@ -36,6 +36,12 @@ namespace ClassroomStart.Models
         public DateTime Date { get; set; }
 
 
+
+
+
+
+
+
         [ForeignKey(nameof(CustomerID))]
         public virtual Customer Customer { get; set; }
 

@@ -40,22 +40,18 @@ namespace ClassroomStart.Models
         {
             modelBuilder.Entity<Customer>(entity =>                                //declare the "Customer" table and its columns/attributes
             {
-                entity.Property(e => e.CustomerID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("CustomerID");
+               
 
                 entity.Property(e => e.FirstName)
                       .HasCharSet("utf8mb4")
                       .UseCollation("utf8mb4_general_ci")
-                      .HasColumnType("varchar(50)")
-                      .HasColumnName("FirstName")
+                     
                       .HasMaxLength(50);
 
                 entity.Property(e => e.LastName)
                       .HasCharSet("utf8mb4")
                       .UseCollation("utf8mb4_general_ci")
-                      .HasColumnType("varchar(50)")
-                      .HasColumnName("LastName")
+                
                       .HasMaxLength(50);
 
                 entity.Property(e => e.Address)
@@ -82,16 +78,9 @@ namespace ClassroomStart.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.Property(e => e.OrderID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("CustomerID");
-
-                entity.HasIndex(e => e.CustomerID)
-                      .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
-
-                entity.Property(e => e.CustomerID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("CustomerID");
+             
+             
+                
 
                 entity.Property(e => e.Date)
                       .HasColumnType("DateTime")
@@ -100,6 +89,10 @@ namespace ClassroomStart.Models
                 entity.Property(e => e.TotalAmount)
                       .HasColumnType("decimal(10,2)")
                       .HasColumnName("TotalAmount");
+
+                entity.HasIndex(e => e.CustomerID)
+                   .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
+
 
                 entity.HasOne(x => x.Customer)
                       .WithMany(y => y.Orders)
@@ -124,23 +117,27 @@ namespace ClassroomStart.Models
             modelBuilder.Entity<OrderDetail>(entity =>
             {
 
-                entity.Property(e => e.OrderDetailID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("OrderDetailID");
 
                 entity.HasIndex(e => e.OrderID)
-                      .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
+                .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
+                
+                entity.HasOne(x =>x.Order)
+                .WithMany(x => x.OrderDetails)
+                .HasForeignKey(x => x.OrderID)
+                .HasConstraintName("FK_"+nameof(OrderDetail) + "_" + nameof(Order))
+                 .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(e => e.OrderID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("OrderID");
+
+
 
                 entity.HasIndex(e => e.ProductID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Product));
+                entity.HasOne(x => x.Product)
+                .WithMany(x => x.OrderDetails)
+                .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
+                .OnDelete(DeleteBehavior.Restrict);
 
-                entity.Property(e => e.ProductID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("ProductID");
+     
 
                 entity.Property(e => e.QuantityOrdered)
                       .HasColumnType("int(10)")

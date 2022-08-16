@@ -57,14 +57,15 @@ namespace ClassroomStart.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    CustomerID = table.Column<int>(type: "int(10)", nullable: false)
+                    OrderId = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CustomerID = table.Column<int>(type: "int(10)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "DateTime", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.CustomerID);
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
                         name: "FK_Order_Customer",
                         column: x => x.CustomerID,
@@ -82,29 +83,23 @@ namespace ClassroomStart.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OrderID = table.Column<int>(type: "int(10)", nullable: false),
                     ProductID = table.Column<int>(type: "int(10)", nullable: false),
-                    QuantityOrdered = table.Column<int>(type: "int(10)", nullable: false),
-                    OrderDetailID1 = table.Column<int>(type: "int(10)", nullable: true)
+                    QuantityOrdered = table.Column<int>(type: "int(10)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderDetail", x => x.OrderDetailID);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Order_OrderID",
+                        name: "FK_OrderDetail_Order",
                         column: x => x.OrderID,
                         principalTable: "Order",
-                        principalColumn: "CustomerID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_OrderDetail_OrderDetailID1",
-                        column: x => x.OrderDetailID1,
-                        principalTable: "OrderDetail",
-                        principalColumn: "OrderDetailID");
-                    table.ForeignKey(
-                        name: "FK_OrderDetail_Products_ProductID",
+                        name: "FK_OrderDetail_Product",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -138,7 +133,7 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "Order",
-                columns: new[] { "CustomerID", "CustomerID", "DateTime", "TotalAmount" },
+                columns: new[] { "OrderId", "CustomerID", "DateTime", "TotalAmount" },
                 values: new object[,]
                 {
                     { -5, -3, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 75.42m },
@@ -150,14 +145,14 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "OrderDetail",
-                columns: new[] { "OrderDetailID", "OrderDetailID1", "OrderID", "ProductID", "QuantityOrdered" },
+                columns: new[] { "OrderDetailID", "OrderID", "ProductID", "QuantityOrdered" },
                 values: new object[,]
                 {
-                    { -5, null, -3, -1, 17 },
-                    { -4, null, -2, -4, 30 },
-                    { -3, null, -1, -3, 8 },
-                    { -2, null, -1, -2, 15 },
-                    { -1, null, -1, -4, 10 }
+                    { -5, -3, -1, 17 },
+                    { -4, -2, -4, 30 },
+                    { -3, -1, -3, 8 },
+                    { -2, -1, -2, 15 },
+                    { -1, -1, -4, 10 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -174,11 +169,6 @@ namespace ClassroomStart.Migrations
                 name: "FK_OrderDetail_Product",
                 table: "OrderDetail",
                 column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_OrderDetailID1",
-                table: "OrderDetail",
-                column: "OrderDetailID1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

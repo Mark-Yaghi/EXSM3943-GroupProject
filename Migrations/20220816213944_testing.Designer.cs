@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassroomStart.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220816205313_testing")]
+    [Migration("20220816213944_testing")]
     partial class testing
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,7 +117,7 @@ namespace ClassroomStart.Migrations
                     b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int(10)")
-                        .HasColumnName("CustomerID");
+                        .HasColumnName("OrderId");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int(10)")
@@ -183,9 +183,6 @@ namespace ClassroomStart.Migrations
                         .HasColumnType("int(10)")
                         .HasColumnName("OrderDetailID");
 
-                    b.Property<int?>("OrderDetailID1")
-                        .HasColumnType("int(10)");
-
                     b.Property<int>("OrderID")
                         .HasColumnType("int(10)")
                         .HasColumnName("OrderID");
@@ -199,8 +196,6 @@ namespace ClassroomStart.Migrations
                         .HasColumnName("QuantityOrdered");
 
                     b.HasKey("OrderDetailID");
-
-                    b.HasIndex("OrderDetailID1");
 
                     b.HasIndex("OrderID")
                         .HasDatabaseName("FK_OrderDetail_Order");
@@ -378,21 +373,19 @@ namespace ClassroomStart.Migrations
 
             modelBuilder.Entity("ClassroomStart.Models.OrderDetail", b =>
                 {
-                    b.HasOne("ClassroomStart.Models.OrderDetail", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderDetailID1");
-
                     b.HasOne("ClassroomStart.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderDetail_Order");
 
                     b.HasOne("ClassroomStart.Models.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderDetail_Product");
 
                     b.Navigation("Order");
 
@@ -405,11 +398,6 @@ namespace ClassroomStart.Migrations
                 });
 
             modelBuilder.Entity("ClassroomStart.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("ClassroomStart.Models.OrderDetail", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

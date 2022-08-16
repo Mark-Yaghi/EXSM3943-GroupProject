@@ -61,6 +61,26 @@ namespace ClassroomStart.Models
 
 
 
+
+        public bool IsEmptyStoke
+        {
+            get { return QuantityInStock == 0; }
+        }
+
+        public int AddToStoke(int amount)
+        {
+            QuantityInStock += amount;
+
+            return QuantityInStock;
+        }
+        public int SellProduct(int amount)
+        {
+
+            QuantityInStock -= amount;
+            return QuantityInStock;
+        }
+
+
         [InverseProperty(nameof(Models.OrderDetail.Product))]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 

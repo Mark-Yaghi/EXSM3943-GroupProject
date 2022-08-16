@@ -53,6 +53,9 @@ namespace ClassroomStart.Models
 
 
 
+
+
+
         [InverseProperty(nameof(Models.Order.Customer))]
 
         public virtual ICollection<Order> Orders { get; set; }

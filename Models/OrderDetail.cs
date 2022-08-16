@@ -39,6 +39,12 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityOrdered { get; set; }
 
+        [NotMapped]
+        public bool InsufficientStoke
+        {
+            get { return QuantityOrdered < Product.QuantityInStock; }
+        }
+
 
         [ForeignKey(nameof(ProductID))]
         [InverseProperty(nameof(Models.Product.OrderDetails))]
@@ -50,6 +56,6 @@ namespace ClassroomStart.Models
         [InverseProperty(nameof(Models.Order.OrderDetails))]
 
         public virtual Order Order { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+     
     }
 }
