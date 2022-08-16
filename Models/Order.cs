@@ -12,8 +12,9 @@ namespace ClassroomStart.Models
     public class Order
     {
 
-        public Order(DateTime date, decimal totalAmount)
+        public Order(int customerID, DateTime date, decimal totalAmount)
         {
+            CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
         }

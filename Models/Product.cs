@@ -38,15 +38,15 @@ namespace ClassroomStart.Models
 
 
 
-        [Column("quantityInStoke", TypeName = "int(4)")]
+        [Column("QuantityInStock", TypeName = "int(4)")]
         [Required]
-        public int QuantityInStoke { get; set; }
+        public int QuantityInStock { get; set; }
 
 
 
-        [Column("price", TypeName = "decimal(5,2)")]
+        [Column("SalePrice", TypeName = "decimal(5,2)")]
         [Required]
-        public decimal Price { get; set; }
+        public decimal SalePrice { get; set; }
 
 
         [InverseProperty(nameof(Models.OrderDetail.Product))]

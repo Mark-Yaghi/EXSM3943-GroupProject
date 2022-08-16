@@ -14,7 +14,7 @@ namespace ClassroomStart.Models
     public class Customer
     {
 
-        public Customer(string firstName, string lastName, string address, int phoneNumber)
+        public Customer(string firstName, string lastName, string address, long phoneNumber)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -45,9 +45,9 @@ namespace ClassroomStart.Models
         public string Address { get; set; }
 
 
-        [Column("phoneNumber", TypeName = "int(10)")]
+        [Column("phoneNumber", TypeName = "long(10)")]
         [Required]
-        public int PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
 
         [InverseProperty(nameof(Models.Order.Customer))]
 
