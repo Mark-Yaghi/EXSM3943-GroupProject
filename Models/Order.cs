@@ -37,12 +37,11 @@ namespace ClassroomStart.Models
 
 
 
-
-
         [ForeignKey(nameof(CustomerID))]
-
-        [InverseProperty(nameof(Models.Customer.Orders))]
         public virtual Customer Customer { get; set; }
 
+
+        [InverseProperty(nameof(Models.OrderDetail.Order))]
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -66,12 +66,10 @@ namespace ClassroomStart.Models
             QuantityInStoke -= amount;
             return QuantityInStoke;
         }
-      
 
 
         [InverseProperty(nameof(Models.OrderDetail.Product))]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
 
 
     }
