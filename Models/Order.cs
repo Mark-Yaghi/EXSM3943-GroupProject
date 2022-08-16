@@ -12,7 +12,7 @@ namespace ClassroomStart.Models
     public class Order
     {
 
-        public Order(DateTime date,decimal totalAmount)
+        public Order(DateTime date, decimal totalAmount)
         {
             Date = date;
             TotalAmount = totalAmount;

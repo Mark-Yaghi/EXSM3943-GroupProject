@@ -18,9 +18,9 @@ namespace ClassroomStart.Models
         }
 
 
-        [Key] 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-        [Column("orderDetailId", TypeName = "int(10)")] 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("orderDetailId", TypeName = "int(10)")]
         public int OrderDetailID { get; set; }
 
         [Column("orderID", TypeName = "int(10)")]
@@ -47,7 +47,7 @@ namespace ClassroomStart.Models
 
         [InverseProperty(nameof(Models.OrderDetail.Order))]
 
-       
+
         public virtual Order Order { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
