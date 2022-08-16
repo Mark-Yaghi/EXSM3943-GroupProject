@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace ClassroomStart.Models
 {
 
-
     public partial class DatabaseContext : DbContext
     {
 
