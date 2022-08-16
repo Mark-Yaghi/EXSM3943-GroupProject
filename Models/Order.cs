@@ -14,7 +14,6 @@ namespace ClassroomStart.Models
 
         public Order(int customerID, DateTime date, decimal totalAmount)
         {
-            CustomerID=customerID;
             CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
@@ -28,14 +27,13 @@ namespace ClassroomStart.Models
         public int CustomerID { get; set; }
 
 
-        [Column("TotalAmount", TypeName = "decima(10,2)")]
+        [Column("TotalAmount", TypeName = "decimal(10,2)")]
 
         public decimal TotalAmount { get; set; }
 
         [Column("Date", TypeName = "DateTime")]
 
         public DateTime Date { get; set; }
-
 
 
         [ForeignKey(nameof(CustomerID))]

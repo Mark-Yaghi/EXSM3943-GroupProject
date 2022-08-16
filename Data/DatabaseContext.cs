@@ -23,17 +23,17 @@ namespace ClassroomStart.Models
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
 
-        }   
-            
-            public virtual DbSet<Customer> Customers { get; set; }
-            public virtual DbSet<Order> Orders { get; set; }
-            public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-            public virtual DbSet<Product> Products { get; set; }
+        }
+
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder.IsConfigured) optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=CSharp3_Assignment_Peasants", new MySqlServerVersion(new Version(10, 4, 24)));
+            if (!optionsBuilder.IsConfigured) optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=CSharp3_Assignment_Peasants", new MySqlServerVersion(new Version(10, 4, 24)));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,14 +46,14 @@ namespace ClassroomStart.Models
 
                 entity.Property(e => e.FirstName)
                       .HasCharSet("utf8mb4")
-                      .UseCollation("ut8fmb4_general_ci")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasColumnType("varchar(50)")
                       .HasColumnName("FirstName")
                       .HasMaxLength(50);
 
                 entity.Property(e => e.LastName)
                       .HasCharSet("utf8mb4")
-                      .UseCollation("ut8fmb4_general_ci")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasColumnType("varchar(50)")
                       .HasColumnName("LastName")
                       .HasMaxLength(50);
@@ -167,14 +167,14 @@ namespace ClassroomStart.Models
 
                 entity.Property(e => e.ProductName)
                     .HasCharSet("utf8mb4")
-                    .UseCollation("ut8fmb4_general_ci")
+                    .UseCollation("utf8mb4_general_ci")
                     .HasColumnType("varchar(50)")
                     .HasColumnName("ProductName")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Description)
                     .HasCharSet("utf8mb4")
-                    .UseCollation("ut8fmb4_general_ci")
+                    .UseCollation("utf8mb4_general_ci")
                     .HasColumnType("varchar(100)")
                     .HasColumnName("Description")
                     .HasMaxLength(50);
@@ -212,5 +212,5 @@ namespace ClassroomStart.Models
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-       
+
 }

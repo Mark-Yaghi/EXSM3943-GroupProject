@@ -51,9 +51,13 @@ namespace ClassroomStart.Models
         [Required]
         public long PhoneNumber { get; set; }
 
+
+
         [InverseProperty(nameof(Models.Order.Customer))]
 
         public virtual ICollection<Order> Orders { get; set; }
+
+
 
 
     }
