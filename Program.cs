@@ -3,6 +3,7 @@
 
 const string passCode = "password";
 string admin = "";
+const string USER_DATA = "userData.txt";
 string userChoice = "";
 string userName = "";
 string phoneNumber;
@@ -14,10 +15,36 @@ do
     switch (userChoice)
     {
         case "1":
+
             Console.WriteLine("Enter your Name: ");
             userName = Console.ReadLine().Trim();
-            Console.WriteLine("Enter your Phone Number (should be 10 digit long): ");
-            phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
+            bool success = false;
+            try
+            {
+                using (StreamReader reader = File.OpenText(USER_DATA))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null && (success = success || line.Split("|")[0] == userName)) ;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Sorry, couldn't find you. {ex.Message}");
+            }
+
+            Console.WriteLine(success ? "Successfull foud you in database" : "We need further details");
+
+            if (!success)
+            {
+                phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
+                using (StreamWriter writer = File.AppendText(USER_DATA))
+                {
+                    writer.WriteLine($"{userName}|{phoneNumber}");
+                }
+            }
+
+
+
             break;
         case "2":
 
