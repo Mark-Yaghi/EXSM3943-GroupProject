@@ -48,6 +48,7 @@ namespace ClassroomStart.Models
         [Required]
         public decimal Price { get; set; }
 
+        [NotMapped]
         public bool IsEmptyStoke
         {
             get { return QuantityInStoke == 0; }
