@@ -34,9 +34,9 @@ namespace ClassroomStart.Models
                 {
                     modelBuilder.Entity<Customer>(entity =>                                //declare the "Customer" table and its columns/attributes
                     {
-                      //  entity.Property(e => e.CustomerID)
-                      //  .HasColumnType("int(10)")
-                      //  .HasColumnName("CustomerID");
+                        entity.Property(e => e.CustomerID)
+                        .HasColumnType("int(10)")
+                        .HasColumnName("CustomerID");
 
                         entity.Property(e => e.FirstName)
                         .HasCharSet("utf8mb4")
@@ -74,9 +74,9 @@ namespace ClassroomStart.Models
 
                     modelBuilder.Entity<Order>(entity =>
                     {
-                      //  entity.Property(e => e.OrderID)
-                      // .HasColumnType("int(10)")
-                      // .HasColumnName("CustomerID");
+                        entity.Property(e => e.OrderID)
+                       .HasColumnType("int(10)")
+                       .HasColumnName("CustomerID");
 
                         entity.HasIndex(e => e.CustomerID)
                         .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
@@ -115,9 +115,9 @@ namespace ClassroomStart.Models
                     modelBuilder.Entity<OrderDetail>(entity =>
                     {
 
-                     //  entity.Property(e => e.OrderDetailID)
-                     // .HasColumnType("int(10)")
-                     // .HasColumnName("OrderDetailID");
+                       entity.Property(e => e.OrderDetailID)
+                      .HasColumnType("int(10)")
+                      .HasColumnName("OrderDetailID");
 
                        entity.HasIndex(e => e.OrderID)
                        .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
