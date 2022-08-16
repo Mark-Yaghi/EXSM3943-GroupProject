@@ -17,7 +17,9 @@ namespace ClassroomStart.Models
         }
 
         public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
-        {
+        { 
+
+        }
              public virtual DbSet<Customer>Customers { get; set; }
              public virtual DbSet<Order> Orders { get; set; }
              public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -55,7 +57,7 @@ namespace ClassroomStart.Models
                         .HasMaxLength(50);
                 
                         entity.Property(e => e.PhoneNumber)
-                        .HasColumnType("int(10)")
+                        .HasColumnType("long(10)")
                         .HasColumnName("PhoneNumber")
                         .HasMaxLength(10);
 
@@ -63,11 +65,11 @@ namespace ClassroomStart.Models
                             new Customer[]
                             {
                                 new Customer ("John", "Bonjovi","12345-123st North, Cincinatti, OH, 87542", 7804564561){CustomerID=-1},
-                                new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754", 8007635541){ClientID=-2},
-                                new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742",4035571234){ClientID=-3},
+                                new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754", 8007635541){CustomerID=-2},
+                                new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742",4035571234){CustomerID=-3},
                                 new Customer ("Tony", "Montana","16345-191st East, Chicago, IL, 77752", 7808456455){CustomerID=-4},
-                                new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754", 8005552248){ClientID=-5},
-                                new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", 5874892330){ClientID=-6},
+                                new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754", 8005552248){CustomerID=-5},
+                                new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", 5874892330){CustomerID=-6},
                             });
                     });
 

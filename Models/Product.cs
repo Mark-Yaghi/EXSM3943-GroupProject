@@ -48,10 +48,29 @@ namespace ClassroomStart.Models
         [Required]
         public decimal Price { get; set; }
 
+        public bool IsEmptyStoke
+        {
+            get { return QuantityInStoke == 0; }
+        }
+
+        public int AddToStoke(int amount)
+        {
+            QuantityInStoke += amount;
+
+            return QuantityInStoke;
+        }
+        public int SoldProduct(int amount)
+        {
+
+            QuantityInStoke -= amount;
+            return QuantityInStoke;
+        }
+      
+
 
         [InverseProperty(nameof(Models.OrderDetail.Product))]
-
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
 
 
     }

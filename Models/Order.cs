@@ -12,8 +12,9 @@ namespace ClassroomStart.Models
     public class Order
     {
 
-        public Order(DateTime date, decimal totalAmount)
+        public Order(int customerID, DateTime date, decimal totalAmount)
         {
+            CustomerID=customerID;
             Date = date;
             TotalAmount = totalAmount;
         }
@@ -33,6 +34,10 @@ namespace ClassroomStart.Models
         [Column("date", TypeName = "DateTime")]
 
         public DateTime Date { get; set; }
+
+
+
+
 
         [ForeignKey(nameof(CustomerID))]
 

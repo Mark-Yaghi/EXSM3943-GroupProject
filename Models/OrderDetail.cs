@@ -37,6 +37,11 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityOrdered { get; set; }
 
+        [NotMapped]
+        public bool InsufficientStoke
+        {
+            get { return QuantityOrdered < Product.QuantityInStoke; }
+        }
 
 
         [ForeignKey(nameof(ProductID))]

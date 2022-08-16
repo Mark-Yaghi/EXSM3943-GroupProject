@@ -33,7 +33,7 @@ do
                 Console.WriteLine($"Sorry, couldn't find you. {ex.Message}");
             }
 
-            Console.WriteLine(success ? "Successfull foud you in database" : "We need further details");
+            Console.WriteLine(success ? "Successful found you in database" : "We need further details");
 
             if (!success)
             {
@@ -99,6 +99,7 @@ string getValidation(string prompt, string regEx)
     } while (!new Regex(regEx).IsMatch(output));
     return output;
 }
+
 
 
 
