@@ -193,7 +193,7 @@ namespace ClassroomStart.Models
 
                 entity.HasData(
                     new Product[]
-                    {             //prod name, prod description,      quantity on hand, price
+                    {             //prod name, prod description,   quantity on hand,discontinued, price
                       new Product("milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175, false, 4.50m){ProductID=-1},
                       new Product("milk, skim", "4 L jugs of Skim Milk from Beatrice", 94, true, 4.65M){ProductID=-2},
                       new Product("milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90, false, 4.70m){ProductID=-3},
