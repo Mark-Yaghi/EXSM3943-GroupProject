@@ -1,11 +1,16 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Security.Principal;
+using ClassroomStart.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 
 const string passCode = "password";
 string admin = "";
-const string USER_DATA = "userData.txt";
+//const string USER_DATA = "userData.txt";
 string userChoice = "";
-string userName = "";
+string userFirstName = "";
+string userLastName = "";
 string phoneNumber;
 string address;
 do
@@ -16,34 +21,33 @@ do
     switch (userChoice)
     {
         case "1":
-
-            Console.WriteLine("Enter your Name: ");
-            userName = Console.ReadLine().Trim();
-            bool success = false;
+            Console.WriteLine("Enter your First Name: ");
+            userFirstName = Console.ReadLine().Trim();
+            Console.WriteLine("Enter your Last Name: ");
+            userLastName = Console.ReadLine().Trim();
+            //string userID = "";
             try
             {
-                using (StreamReader reader = File.OpenText(USER_DATA))
+                using (DatabaseContext context = new DatabaseContext())
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null && (success = success || line.Split("|")[0] == userName)) ;
+                    //userID = context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).Single().CustomerID;
+
+                    if ((context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).Single().CustomerID) == null)
+                    {
+                        phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
+                        address = getValidation("Enter your Address (should be maximum 50 characters long): ", @"^[A-Za-z\d][\w\s.]{1,50}$");
+
+                        context.Customers.Add(new Customer(userFirstName, userLastName, address, getIntValue(phoneNumber)) { });
+                    }
                 }
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Sorry, couldn't find you. {ex.Message}");
             }
 
-            Console.WriteLine(success ? "Successfull found you in database" : "We need further details");
 
-            if (!success)
-            {
-                phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
-                address = getValidation("Enter your Address (should be maximum 50 characters long): ", @"^[A-Za-z\d][\w\s.]{1,50}$");
-                using (StreamWriter writer = File.AppendText(USER_DATA))
-                {
-                    writer.WriteLine($"{userName}|{phoneNumber}|{address}");
-                }
-            }
 
 
             break;
@@ -101,6 +105,28 @@ string getValidation(string prompt, string regEx)
 }
 
 
+int getIntValue(string inputValue)
+{
+    bool isValid = false;
+    int intValue;
+    int output = 0;
+    do
+    {
+        if ((int.TryParse(inputValue, out intValue) && intValue > 0))
+        {
+            output = intValue;
+            isValid = true;
+        }
+        else
+        {
+            Console.WriteLine($"You have entered invalid number.");
+        };
+    } while (!isValid);
+
+    return output;
+}
+
+
 
 
 //public class User
@@ -113,4 +139,27 @@ string getValidation(string prompt, string regEx)
 
 //    public string UserName { get; set; }
 //    public int PhoneNumber { get; set; }
+//}
+
+
+//bool success = false;
+
+//using (StreamReader reader = File.OpenText(USER_DATA))
+//{
+//    string line;
+//    while ((line = reader.ReadLine()) != null && (success = success || line.Split("|")[0] == userName)) ;
+//}
+
+//Console.WriteLine(success ? $"Successfully found you in database, {userName}." : $"We need further details, {userName}");
+
+
+
+//if (!success)
+//{
+//    phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
+//    address = getValidation("Enter your Address (should be maximum 50 characters long): ", @"^[A-Za-z\d][\w\s.]{1,50}$");
+//    using (StreamWriter writer = File.AppendText(USER_DATA))
+//    {
+//        writer.WriteLine($"{userName}|{phoneNumber}|{address}");
+//    }
 //}
