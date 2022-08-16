@@ -10,28 +10,31 @@ namespace ClassroomStart.Models
 {
     public class Product
     {
-        public Product(string productName, string description, int quantityInStoke, decimal price)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public Product(string productName, string description, int quantityInStock, bool discontinued, decimal salePrice)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             ProductName = productName;
             Description = description;
-            QuantityInStoke = quantityInStoke;
-            Price = price;
+            QuantityInStock = quantityInStock;
+            Discontinued = discontinued;
+            SalePrice = salePrice;
         }
 
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("productId", TypeName = "int(10)")]
+        [Column("ProductID", TypeName = "int(10)")]
         public int ProductID { get; set; }
 
 
-        [Column("productName", TypeName = "varchar(50)")]
+        [Column("ProductName", TypeName = "varchar(50)")]
         [StringLength(50)]
         [Required]
         public string ProductName { get; set; }
 
 
-        [Column("description", TypeName = "varchar(100)")]
+        [Column("Description", TypeName = "varchar(100)")]
         [StringLength(50)]
         [Required]
         public string Description { get; set; }
@@ -41,6 +44,10 @@ namespace ClassroomStart.Models
         [Column("QuantityInStock", TypeName = "int(4)")]
         [Required]
         public int QuantityInStock { get; set; }
+
+        [Column("Discontinued", TypeName = "bool")]
+        [Required]
+        public bool Discontinued { get; set; }
 
 
 
