@@ -7,10 +7,11 @@ const string USER_DATA = "userData.txt";
 string userChoice = "";
 string userName = "";
 string phoneNumber;
+string address;
 do
 {
     Console.WriteLine("1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
-    Console.Write("Please Make A Selection: ");
+    Console.Write("Please select option: ");
     userChoice = Console.ReadLine().Trim();
     switch (userChoice)
     {
@@ -37,12 +38,12 @@ do
             if (!success)
             {
                 phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
+                //address = getValidation("Enter your Address (should be less than 50 characters long): ", @"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$");
                 using (StreamWriter writer = File.AppendText(USER_DATA))
                 {
                     writer.WriteLine($"{userName}|{phoneNumber}");
                 }
             }
-
 
 
             break;
