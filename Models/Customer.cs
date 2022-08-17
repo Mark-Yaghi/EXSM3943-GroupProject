@@ -11,15 +11,24 @@ namespace ClassroomStart.Models
 {
 
     [Table("Customer")]
+<<<<<<< HEAD
 
     public class Customer
 
     {
         public Customer(string firstName, string lastName, string address)
+=======
+  
+    public class Customer
+
+    {
+        public Customer(string firstName, string lastName, string address, string phoneNumber)
+>>>>>>> master
         {
             FirstName = firstName;
             LastName = lastName;
             Address = address;
+<<<<<<< HEAD
             // PhoneNumber = phoneNumber;
 
         }
@@ -29,6 +38,17 @@ namespace ClassroomStart.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("customerID", TypeName = "int(10)")]
 
+=======
+           PhoneNumber = phoneNumber;
+
+        }
+
+        
+        [Key] 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        [Column("customerID", TypeName = "int(10)")] 
+     
+>>>>>>> master
         public int CustomerID { get; set; }
 
         [Column("FirstName", TypeName = "varchar(50)")]
@@ -46,6 +66,7 @@ namespace ClassroomStart.Models
         [StringLength(50)]
         [Required]
         public string? Address { get; set; }
+<<<<<<< HEAD
         /**
           [Column("PhoneNumber", TypeName = "long(10)")]
         [Required]
@@ -54,8 +75,18 @@ namespace ClassroomStart.Models
 
 
 
-        [InverseProperty(nameof(Models.Order.Customer))]
+=======
+        
+          [Column("PhoneNumber", TypeName = "varchar(10)")]
+          [Required]
+          public string PhoneNumber { get; set; }
+       
 
+
+   
+>>>>>>> master
+        [InverseProperty(nameof(Models.Order.Customer))]
+   
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

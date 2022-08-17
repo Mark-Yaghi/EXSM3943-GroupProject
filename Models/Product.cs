@@ -14,13 +14,21 @@ namespace ClassroomStart.Models
     public class Product
     {
 
+<<<<<<< HEAD
         public Product(string productName, string description, int quantityInStock, decimal salePrice)
+=======
+        public Product(string productName, string description, int quantityInStock, bool discontinued,  decimal salePrice)
+>>>>>>> master
 
         {
             ProductName = productName;
             Description = description;
             QuantityInStock = quantityInStock;
+<<<<<<< HEAD
             // Discontinued = discontinued;
+=======
+            Discontinued = discontinued;
+>>>>>>> master
             SalePrice = salePrice;
         }
 
@@ -47,9 +55,15 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityInStock { get; set; }
 
+<<<<<<< HEAD
         //[Column("Discontinued", TypeName = "bool")]
         // [Required]
         // public bool Discontinued { get; set; }
+=======
+        [Column("Discontinued", TypeName = "tinyint(1)")]
+        [Required]
+       public bool Discontinued { get; set; }
+>>>>>>> master
 
 
         [Column("SalePrice", TypeName = "decimal(5,2)")]

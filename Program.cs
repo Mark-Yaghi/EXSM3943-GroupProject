@@ -1,8 +1,14 @@
-﻿using System;
+
+using System;
 using System.Security.Principal;
 using ClassroomStart.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+
+using System.Text.RegularExpressions;
+using ClassroomStart.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 
 const string passCode = "password";
@@ -13,8 +19,49 @@ string userFirstName = "";
 string userLastName = "";
 string phoneNumber;
 string address;
+
 var items = new List<string>();
 do
+
+
+
+
+    using (DatabaseContext context = new DatabaseContext())
+    {
+
+        var check = context.Customers.Where(x => x.FirstName == "Tony").Single();
+        context.Entry(check).Collection(x => x.Orders).Load();
+        int checkingID = check.CustomerID;
+        Console.WriteLine(checkingID);
+
+
+        /**
+          Customer findme = context.Customers.Where(x => x.FirstName == "Tony").Single();
+        context.Entry(findme).Reference(x => x.FirstName).Load();
+        if (findme.ToString() = "Tony")
+        {
+            Console.WriteLine("COOL");
+        }
+       
+        context.Entry(findme).Reference(x => x.FirstName).Load();
+        Console.WriteLine(findme);
+         */
+        foreach (Customer customer in context.Customers.ToList())
+
+        {
+
+
+        }
+        foreach (Order order in context.Orders.ToList())
+        {
+            context.Entry(order).Reference(x => x.Customer).Load();
+
+            // Console.WriteLine(order.Customer.FirstName);
+        }
+    }
+
+    do
+
 {
     Console.WriteLine("1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
     Console.Write("Please select option: ");
@@ -77,6 +124,7 @@ do
                     switch (userChoice)
                     {
                         case "A":
+
                             string prodName, description;
                             int qis;
                             decimal productPrice;
@@ -94,6 +142,15 @@ do
                             //{
                             //    context.Products.Add(new Product())
                             //};
+
+
+                            Console.WriteLine("Add Product");
+
+
+
+
+
+
                             break;
                         case "B":
                             Console.WriteLine("Add Inven.");
@@ -111,6 +168,7 @@ do
                 } while (userChoice != "Q");
 
             }
+
             break;
         case "0":
             break;
@@ -178,6 +236,15 @@ public class ItemCart
 {
     public string ItemName { get; set; }
     public int ItemNum { get; set; }
+
+    //public class User
+    //{
+    //    public User(string userName, int phoneNumber)
+    //    {
+    //        UserName = userName;
+    //        phoneNumber = phoneNumber;
+    //    }
+
 
     public ItemCart(string itemName, int itemNum)
     {
