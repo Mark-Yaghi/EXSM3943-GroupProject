@@ -13,14 +13,14 @@ namespace ClassroomStart.Models
 {
     public class Product
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Product(string productName, string description, int quantityInStock, bool discontinued, decimal salePrice)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+        public Product(string productName, string description, int quantityInStock,  decimal salePrice)
+
         {
             ProductName = productName;
             Description = description;
             QuantityInStock = quantityInStock;
-            Discontinued = discontinued;
+           // Discontinued = discontinued;
             SalePrice = salePrice;
         }
 
@@ -43,16 +43,13 @@ namespace ClassroomStart.Models
         public string Description { get; set; }
 
 
-
         [Column("QuantityInStock", TypeName = "int(4)")]
         [Required]
         public int QuantityInStock { get; set; }
 
-
-        [Column("Discontinued", TypeName = "bool")]
-        [Required]
-        public bool Discontinued { get; set; }
-
+        //[Column("Discontinued", TypeName = "bool")]
+       // [Required]
+       // public bool Discontinued { get; set; }
 
 
         [Column("SalePrice", TypeName = "decimal(5,2)")]
@@ -62,7 +59,7 @@ namespace ClassroomStart.Models
 
 
 
-        public bool IsEmptyStoke
+        public bool IsEmptyStock
         {
             get { return QuantityInStock == 0; }
         }
@@ -73,12 +70,14 @@ namespace ClassroomStart.Models
 
             return QuantityInStock;
         }
+
         public int SellProduct(int amount)
         {
 
             QuantityInStock -= amount;
             return QuantityInStock;
         }
+
 
 
         [InverseProperty(nameof(Models.OrderDetail.Product))]

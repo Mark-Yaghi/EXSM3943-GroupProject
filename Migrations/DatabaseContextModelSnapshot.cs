@@ -24,7 +24,7 @@ namespace ClassroomStart.Migrations
                     b.Property<int>("CustomerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int(10)")
-                        .HasColumnName("CustomerID");
+                        .HasColumnName("customerID");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -50,11 +50,6 @@ namespace ClassroomStart.Migrations
 
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("LastName"), "utf8mb4");
 
-                    b.Property<long>("PhoneNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("long(10)")
-                        .HasColumnName("PhoneNumber");
-
                     b.HasKey("CustomerID");
 
                     b.ToTable("Customer");
@@ -62,51 +57,45 @@ namespace ClassroomStart.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerID = -1,
+                            CustomerID = 1,
                             Address = "12345-123st North, Cincinatti, OH, 87542",
                             FirstName = "John",
-                            LastName = "Bonjovi",
-                            PhoneNumber = 7804564561L
+                            LastName = "Bonjovi"
                         },
                         new
                         {
-                            CustomerID = -2,
+                            CustomerID = 2,
                             Address = "Apt.3478, 57 West Park Avenue, New York, NY, 87754",
                             FirstName = "Sarah",
-                            LastName = "Rafferty",
-                            PhoneNumber = 8007635541L
+                            LastName = "Rafferty"
                         },
                         new
                         {
-                            CustomerID = -3,
+                            CustomerID = 3,
                             Address = "457 Wolverine Creek, Penascola, FL, 58742",
                             FirstName = "Harvey",
-                            LastName = "Spector",
-                            PhoneNumber = 4035571234L
+                            LastName = "Spector"
                         },
                         new
                         {
-                            CustomerID = -4,
+                            CustomerID = 4,
                             Address = "16345-191st East, Chicago, IL, 77752",
                             FirstName = "Tony",
-                            LastName = "Montana",
-                            PhoneNumber = 7808456455L
+                            LastName = "Montana"
                         },
                         new
                         {
-                            CustomerID = -5,
+                            CustomerID = 5,
                             Address = "Apt.7578, 88 West Park Avenue, New York, NY, 85754",
                             FirstName = "Harrison",
-                            LastName = "Ford",
-                            PhoneNumber = 8005552248L
+                            LastName = "Ford"
                         },
                         new
                         {
-                            CustomerID = -6,
+                            CustomerID = 6,
                             Address = "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542",
                             FirstName = "Jorge",
-                            LastName = "DeSilva",
-                            PhoneNumber = 5874892330L
+                            LastName = "DeSilva"
                         });
                 });
 
@@ -115,15 +104,18 @@ namespace ClassroomStart.Migrations
                     b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int(10)")
-                        .HasColumnName("OrderId");
+                        .HasColumnName("orderID");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int(10)")
-                        .HasColumnName("CustomerID");
+                        .HasColumnName("customerID");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("DateTime")
-                        .HasColumnName("DateTime");
+                        .HasColumnName("Date");
+
+                    b.Property<decimal>("SalePrice")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10,2)")
@@ -139,37 +131,42 @@ namespace ClassroomStart.Migrations
                     b.HasData(
                         new
                         {
-                            OrderID = -1,
-                            CustomerID = -1,
+                            OrderID = 1,
+                            CustomerID = 1,
                             Date = new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         },
                         new
                         {
-                            OrderID = -2,
-                            CustomerID = -1,
+                            OrderID = 2,
+                            CustomerID = 4,
                             Date = new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         },
                         new
                         {
-                            OrderID = -3,
-                            CustomerID = -2,
+                            OrderID = 3,
+                            CustomerID = 1,
                             Date = new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         },
                         new
                         {
-                            OrderID = -4,
-                            CustomerID = -3,
+                            OrderID = 4,
+                            CustomerID = 6,
                             Date = new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         },
                         new
                         {
-                            OrderID = -5,
-                            CustomerID = -3,
+                            OrderID = 5,
+                            CustomerID = 2,
                             Date = new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         });
                 });
@@ -206,37 +203,37 @@ namespace ClassroomStart.Migrations
                     b.HasData(
                         new
                         {
-                            OrderDetailID = -1,
-                            OrderID = -1,
-                            ProductID = -4,
+                            OrderDetailID = 1,
+                            OrderID = 1,
+                            ProductID = 4,
                             QuantityOrdered = 10
                         },
                         new
                         {
-                            OrderDetailID = -2,
-                            OrderID = -1,
-                            ProductID = -2,
+                            OrderDetailID = 2,
+                            OrderID = 1,
+                            ProductID = 2,
                             QuantityOrdered = 15
                         },
                         new
                         {
-                            OrderDetailID = -3,
-                            OrderID = -1,
-                            ProductID = -3,
+                            OrderDetailID = 3,
+                            OrderID = 1,
+                            ProductID = 3,
                             QuantityOrdered = 8
                         },
                         new
                         {
-                            OrderDetailID = -4,
-                            OrderID = -2,
-                            ProductID = -4,
+                            OrderDetailID = 4,
+                            OrderID = 2,
+                            ProductID = 4,
                             QuantityOrdered = 30
                         },
                         new
                         {
-                            OrderDetailID = -5,
-                            OrderID = -3,
-                            ProductID = -1,
+                            OrderDetailID = 5,
+                            OrderID = 3,
+                            ProductID = 1,
                             QuantityOrdered = 17
                         });
                 });
@@ -256,10 +253,6 @@ namespace ClassroomStart.Migrations
                         .UseCollation("utf8mb4_general_ci");
 
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("Description"), "utf8mb4");
-
-                    b.Property<bool>("Discontinued")
-                        .HasColumnType("bool(1)")
-                        .HasColumnName("Discontinued");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -285,72 +278,64 @@ namespace ClassroomStart.Migrations
                     b.HasData(
                         new
                         {
-                            ProductID = -1,
+                            ProductID = 1,
                             Description = "4 L jugs of 2% Milk from Beatrice",
-                            Discontinued = false,
                             ProductName = "milk, 2%",
                             QuantityInStock = 175,
                             SalePrice = 4.50m
                         },
                         new
                         {
-                            ProductID = -2,
+                            ProductID = 2,
                             Description = "4 L jugs of Skim Milk from Beatrice",
-                            Discontinued = true,
                             ProductName = "milk, skim",
                             QuantityInStock = 94,
                             SalePrice = 4.65m
                         },
                         new
                         {
-                            ProductID = -3,
+                            ProductID = 3,
                             Description = "4 L jugs of Chocolate Milk from Beatrice",
-                            Discontinued = false,
                             ProductName = "milk, chocolate",
                             QuantityInStock = 90,
                             SalePrice = 4.70m
                         },
                         new
                         {
-                            ProductID = -4,
+                            ProductID = 4,
                             Description = "Loaf of white bread from Weston Bakeries",
-                            Discontinued = false,
                             ProductName = "White Bread",
                             QuantityInStock = 40,
                             SalePrice = 2.85m
                         },
                         new
                         {
-                            ProductID = -5,
+                            ProductID = 5,
                             Description = "Loaf of whole wheat bread from Weston Bakeries",
-                            Discontinued = false,
                             ProductName = "Whole wheat bread",
                             QuantityInStock = 75,
                             SalePrice = 3.25m
                         },
                         new
                         {
-                            ProductID = -6,
+                            ProductID = 6,
                             Description = "3 lb bag of fresh Mandarin Oranges",
-                            Discontinued = false,
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
                             SalePrice = 8.65m
                         },
                         new
                         {
-                            ProductID = -7,
+                            ProductID = 7,
                             Description = "3lb bag of Gala Apples",
-                            Discontinued = true,
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
                             SalePrice = 6.50m
                         },
                         new
                         {
-                            ProductID = -8,
+                            ProductID = 8,
                             Description = "3 lb bag of carrots from Redcliff, AB",
-                            Discontinued = true,
                             ProductName = "Carrots",
                             QuantityInStock = 15,
                             SalePrice = 3.65m
