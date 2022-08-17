@@ -72,15 +72,15 @@ using (DatabaseContext context = new DatabaseContext())
                 Console.WriteLine($"Sorry, couldn't find you. {ex.Message}");
             }
 
-            Console.WriteLine(success ? "Successful found you in database" : "We need further details");
+            Console.WriteLine(success ? "Successfull found you in database" : "We need further details");
 
             if (!success)
             {
                 phoneNumber = getValidation("Enter your Phone Number (should be 10 digit long): ", @"^[2-9][\d]{9}$");
-                //address = getValidation("Enter your Address (should be less than 50 characters long): ", @"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$");
+                address = getValidation("Enter your Address (should be maximum 50 characters long): ", @"^[A-Za-z\d][\w\s.]{1,50}$");
                 using (StreamWriter writer = File.AppendText(USER_DATA))
                 {
-                    writer.WriteLine($"{userName}|{phoneNumber}");
+                    writer.WriteLine($"{userName}|{phoneNumber}|{address}");
                 }
             }
 
