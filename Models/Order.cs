@@ -17,10 +17,10 @@ namespace ClassroomStart.Models
 
         public Order(int customerID, DateTime date, decimal totalAmount)
         {
-
+            CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
-            CustomerID = customerID;
+            
         }
 
         [Key]
@@ -50,9 +50,11 @@ namespace ClassroomStart.Models
 
         [ForeignKey(nameof(CustomerID))]
 
+        [InverseProperty(nameof(Models.Customer.Orders))]
 
-        [InverseProperty(nameof(Models.OrderDetail.OrderDetailID))]
+        //[InverseProperty(nameof(Models.OrderDetail.OrderDetailID))]
         public virtual Customer Customer { get; set; }
+
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

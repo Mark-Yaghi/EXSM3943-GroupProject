@@ -34,7 +34,6 @@ using (DatabaseContext context = new DatabaseContext())
     Console.WriteLine(findme);
      */
     foreach (Customer customer in context.Customers.ToList())
-
     {
        
       
@@ -110,12 +109,25 @@ using (DatabaseContext context = new DatabaseContext())
                             break;
                         case "B":
                             Console.WriteLine("Add Inven.");
+
+
+
+
+
                             break;
                         case "C":
                             Console.WriteLine("Disc Prod.");
+
+
+
+
                             break;
+                       
+                        
                         case "Q":
                             break;
+                       
+                        
                         default:
                             Console.WriteLine("Invalid option. Please try again !!!");
                             break;

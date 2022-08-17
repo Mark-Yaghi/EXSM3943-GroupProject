@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClassroomStart.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,7 +25,7 @@ namespace ClassroomStart.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(10)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -35,22 +35,21 @@ namespace ClassroomStart.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Supplier",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(type: "int(10)", nullable: false)
+                    SupplierID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProductName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                    FirstName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    QuantityInStock = table.Column<int>(type: "int(4)", nullable: false),
-                    Discontinued = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                    table.PrimaryKey("PK_Supplier", x => x.SupplierID);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -73,6 +72,33 @@ namespace ClassroomStart.Migrations
                         column: x => x.customerID,
                         principalTable: "Customer",
                         principalColumn: "customerID",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int(10)", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SupplierID = table.Column<int>(type: "int(10)", nullable: false),
+                    ProductName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QuantityInStock = table.Column<int>(type: "int(4)", nullable: false),
+                    Discontinued = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    SalePrice = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Product_Supplier",
+                        column: x => x.SupplierID,
+                        principalTable: "Supplier",
+                        principalColumn: "SupplierID",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -120,17 +146,21 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice" },
+                columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
                 values: new object[,]
                 {
-                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m },
-                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m },
-                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m },
-                    { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m },
-                    { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m },
-                    { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m },
-                    { -2, "4 L jugs of Skim Milk from Beatrice", true, "milk, skim", 94, 4.65m },
-                    { -1, "4 L jugs of 2% Milk from Beatrice", false, "milk, 2%", 175, 4.50m }
+                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -3 },
+                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -3 },
+                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Supplier",
+                columns: new[] { "SupplierID", "Address", "FirstName", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { -2, "12275-155 street", "Weston Bakeries", "7804338877" },
+                    { -1, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" }
                 });
 
             migrationBuilder.InsertData(
@@ -143,6 +173,18 @@ namespace ClassroomStart.Migrations
                     { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
                     { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
                     { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
+                values: new object[,]
+                {
+                    { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m, -2 },
+                    { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m, -2 },
+                    { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m, -1 },
+                    { -2, "4 L jugs of Skim Milk from Beatrice", true, "milk, skim", 94, 4.65m, -1 },
+                    { -1, "4 L jugs of 2% Milk from Beatrice", false, "milk, 2%", 175, 4.50m, -1 }
                 });
 
             migrationBuilder.InsertData(
@@ -171,6 +213,11 @@ namespace ClassroomStart.Migrations
                 name: "FK_OrderDetail_Product",
                 table: "OrderDetail",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "FK_Product_Supplier",
+                table: "Products",
+                column: "SupplierID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -186,6 +233,9 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Supplier");
         }
     }
 }

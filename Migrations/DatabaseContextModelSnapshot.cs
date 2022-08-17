@@ -52,6 +52,7 @@ namespace ClassroomStart.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
+                        .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
                         .HasColumnName("PhoneNumber");
 
@@ -287,7 +288,14 @@ namespace ClassroomStart.Migrations
                         .HasColumnType("decimal(5,2)")
                         .HasColumnName("SalePrice");
 
+                    b.Property<int>("SupplierID")
+                        .HasColumnType("int(10)")
+                        .HasColumnName("SupplierID");
+
                     b.HasKey("ProductID");
+
+                    b.HasIndex("SupplierID")
+                        .HasDatabaseName("FK_Product_Supplier");
 
                     b.ToTable("Products");
 
@@ -299,7 +307,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = false,
                             ProductName = "milk, 2%",
                             QuantityInStock = 175,
-                            SalePrice = 4.50m
+                            SalePrice = 4.50m,
+                            SupplierID = -1
                         },
                         new
                         {
@@ -308,7 +317,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = true,
                             ProductName = "milk, skim",
                             QuantityInStock = 94,
-                            SalePrice = 4.65m
+                            SalePrice = 4.65m,
+                            SupplierID = -1
                         },
                         new
                         {
@@ -317,7 +327,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = false,
                             ProductName = "milk, chocolate",
                             QuantityInStock = 90,
-                            SalePrice = 4.70m
+                            SalePrice = 4.70m,
+                            SupplierID = -1
                         },
                         new
                         {
@@ -326,7 +337,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = false,
                             ProductName = "White Bread",
                             QuantityInStock = 40,
-                            SalePrice = 2.85m
+                            SalePrice = 2.85m,
+                            SupplierID = -2
                         },
                         new
                         {
@@ -335,7 +347,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = false,
                             ProductName = "Whole wheat bread",
                             QuantityInStock = 75,
-                            SalePrice = 3.25m
+                            SalePrice = 3.25m,
+                            SupplierID = -2
                         },
                         new
                         {
@@ -344,7 +357,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = false,
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
-                            SalePrice = 8.65m
+                            SalePrice = 8.65m,
+                            SupplierID = -3
                         },
                         new
                         {
@@ -353,7 +367,8 @@ namespace ClassroomStart.Migrations
                             Discontinued = true,
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
-                            SalePrice = 6.50m
+                            SalePrice = 6.50m,
+                            SupplierID = -3
                         },
                         new
                         {
@@ -362,7 +377,57 @@ namespace ClassroomStart.Migrations
                             Discontinued = true,
                             ProductName = "Carrots",
                             QuantityInStock = 15,
-                            SalePrice = 3.65m
+                            SalePrice = 3.65m,
+                            SupplierID = -3
+                        });
+                });
+
+            modelBuilder.Entity("ClassroomStart.Models.Supplier", b =>
+                {
+                    b.Property<int>("SupplierID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(10)")
+                        .HasColumnName("SupplierID");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("Address");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("FirstName")
+                        .UseCollation("utf8mb4_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("CompanyName"), "utf8mb4");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("PhoneNumber");
+
+                    b.HasKey("SupplierID");
+
+                    b.ToTable("Supplier");
+
+                    b.HasData(
+                        new
+                        {
+                            SupplierID = -1,
+                            Address = "12345-Yellowhead Trail",
+                            CompanyName = "Gordon Food Services",
+                            PhoneNumber = "7804552213"
+                        },
+                        new
+                        {
+                            SupplierID = -2,
+                            Address = "12275-155 street",
+                            CompanyName = "Weston Bakeries",
+                            PhoneNumber = "7804338877"
                         });
                 });
 
@@ -399,6 +464,18 @@ namespace ClassroomStart.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ClassroomStart.Models.Product", b =>
+                {
+                    b.HasOne("ClassroomStart.Models.Supplier", "Supplier")
+                        .WithMany("Products")
+                        .HasForeignKey("SupplierID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Product_Supplier");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("ClassroomStart.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
@@ -412,6 +489,11 @@ namespace ClassroomStart.Migrations
             modelBuilder.Entity("ClassroomStart.Models.Product", b =>
                 {
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("ClassroomStart.Models.Supplier", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
