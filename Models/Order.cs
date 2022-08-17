@@ -41,6 +41,8 @@ namespace ClassroomStart.Models
 
         public DateTime Date { get; set; }
         [Required]
+
+        [Column("SalePrice", TypeName = "decimal(10,2)")]
         public decimal SalePrice { get; set; }
         [Required]
 

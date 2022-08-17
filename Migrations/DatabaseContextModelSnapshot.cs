@@ -50,6 +50,11 @@ namespace ClassroomStart.Migrations
 
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("LastName"), "utf8mb4");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("PhoneNumber");
+
                     b.HasKey("CustomerID");
 
                     b.ToTable("Customer");
@@ -58,44 +63,50 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             CustomerID = 1,
-                            Address = "12345-123st North, Cincinatti, OH, 87542",
+                            Address = "12345-123st North, Cincinatti, OH, 87542, ",
                             FirstName = "John",
-                            LastName = "Bonjovi"
+                            LastName = "Bonjovi",
+                            PhoneNumber = "7804564561"
                         },
                         new
                         {
                             CustomerID = 2,
                             Address = "Apt.3478, 57 West Park Avenue, New York, NY, 87754",
                             FirstName = "Sarah",
-                            LastName = "Rafferty"
+                            LastName = "Rafferty",
+                            PhoneNumber = "7804564561"
                         },
                         new
                         {
                             CustomerID = 3,
                             Address = "457 Wolverine Creek, Penascola, FL, 58742",
                             FirstName = "Harvey",
-                            LastName = "Spector"
+                            LastName = "Spector",
+                            PhoneNumber = "7804564561"
                         },
                         new
                         {
                             CustomerID = 4,
                             Address = "16345-191st East, Chicago, IL, 77752",
                             FirstName = "Tony",
-                            LastName = "Montana"
+                            LastName = "Montana",
+                            PhoneNumber = "7804564561"
                         },
                         new
                         {
                             CustomerID = 5,
                             Address = "Apt.7578, 88 West Park Avenue, New York, NY, 85754",
                             FirstName = "Harrison",
-                            LastName = "Ford"
+                            LastName = "Ford",
+                            PhoneNumber = "7804564561"
                         },
                         new
                         {
                             CustomerID = 6,
                             Address = "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542",
                             FirstName = "Jorge",
-                            LastName = "DeSilva"
+                            LastName = "DeSilva",
+                            PhoneNumber = "7804564561"
                         });
                 });
 
@@ -115,7 +126,8 @@ namespace ClassroomStart.Migrations
                         .HasColumnName("Date");
 
                     b.Property<decimal>("SalePrice")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("SalePrice");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10,2)")

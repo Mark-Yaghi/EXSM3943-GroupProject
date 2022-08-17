@@ -24,6 +24,8 @@ namespace ClassroomStart.Migrations
                     LastName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -60,7 +62,7 @@ namespace ClassroomStart.Migrations
                     customerID = table.Column<int>(type: "int(10)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "DateTime", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    SalePrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,15 +106,15 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "Customer",
-                columns: new[] { "customerID", "Address", "FirstName", "LastName" },
+                columns: new[] { "customerID", "Address", "FirstName", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { 1, "12345-123st North, Cincinatti, OH, 87542", "John", "Bonjovi" },
-                    { 2, "Apt.3478, 57 West Park Avenue, New York, NY, 87754", "Sarah", "Rafferty" },
-                    { 3, "457 Wolverine Creek, Penascola, FL, 58742", "Harvey", "Spector" },
-                    { 4, "16345-191st East, Chicago, IL, 77752", "Tony", "Montana" },
-                    { 5, "Apt.7578, 88 West Park Avenue, New York, NY, 85754", "Harrison", "Ford" },
-                    { 6, "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", "Jorge", "DeSilva" }
+                    { 1, "12345-123st North, Cincinatti, OH, 87542, ", "John", "Bonjovi", "7804564561" },
+                    { 2, "Apt.3478, 57 West Park Avenue, New York, NY, 87754", "Sarah", "Rafferty", "7804564561" },
+                    { 3, "457 Wolverine Creek, Penascola, FL, 58742", "Harvey", "Spector", "7804564561" },
+                    { 4, "16345-191st East, Chicago, IL, 77752", "Tony", "Montana", "7804564561" },
+                    { 5, "Apt.7578, 88 West Park Avenue, New York, NY, 85754", "Harrison", "Ford", "7804564561" },
+                    { 6, "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", "Jorge", "DeSilva", "7804564561" }
                 });
 
             migrationBuilder.InsertData(

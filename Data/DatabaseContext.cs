@@ -18,7 +18,6 @@ namespace ClassroomStart.Models
 
         }
 
-
         public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
 
         {
@@ -64,12 +63,12 @@ namespace ClassroomStart.Models
                 entity.HasData(
                 new Customer[]
                 {
-                  new Customer ("John", "Bonjovi","12345-123st North, Cincinatti, OH, 87542"){CustomerID=1},
-                  new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754"){CustomerID=2},
-                  new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742"){CustomerID=3},
-                  new Customer ("Tony", "Montana","16345-191st East, Chicago, IL, 77752"){CustomerID=4},
-                  new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754"){CustomerID=5},
-                  new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542"){CustomerID=6},
+                  new Customer ("John", "Bonjovi","12345-123st North, Cincinatti, OH, 87542, ","7804564561"){CustomerID=1},
+                  new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754","8007635541"){CustomerID=2},
+                  new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742","4035571234"){CustomerID=3},
+                  new Customer ("Tony", "Montana","16345-191st East, Chicago, IL, 77752","7808456455"){CustomerID=4},
+                  new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754","8005552248"){CustomerID=5},
+                  new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542","5874892330"){CustomerID=6},
                });
             });
 
@@ -130,9 +129,9 @@ namespace ClassroomStart.Models
                     {         //orderID,ProdID, quantity
                        new OrderDetail (1, 4, 10){OrderDetailID=1, OrderID=1,ProductID=4},
                        new OrderDetail (1, 2, 15){OrderDetailID=2, OrderID=1,ProductID=2},
-                       new OrderDetail (1, 3, 8) {OrderDetailID=3,OrderID=1,ProductID=3},
-                       new OrderDetail (2, 4, 30){OrderDetailID=4,OrderID=2,ProductID=4},
-                       new OrderDetail (3, 1, 17){OrderDetailID=5,OrderID=3,ProductID=1},
+                       new OrderDetail (1, 3, 8) {OrderDetailID=3, OrderID=1,ProductID=3},
+                       new OrderDetail (2, 4, 30){OrderDetailID=4, OrderID=2,ProductID=4},
+                       new OrderDetail (3, 1, 17){OrderDetailID=5, OrderID=3,ProductID=1},
 
                     });
             });

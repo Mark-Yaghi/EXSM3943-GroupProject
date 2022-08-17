@@ -15,12 +15,12 @@ namespace ClassroomStart.Models
     public class Customer
 
     {
-        public Customer(string firstName, string lastName, string address)
+        public Customer(string firstName, string lastName, string address, string phoneNumber)
         {
             FirstName = firstName;
             LastName = lastName;
             Address = address;
-           // PhoneNumber = phoneNumber;
+           PhoneNumber = phoneNumber;
 
         }
 
@@ -46,11 +46,11 @@ namespace ClassroomStart.Models
         [StringLength(50)]
         [Required]
         public string? Address { get; set; }
-        /**
-          [Column("PhoneNumber", TypeName = "long(10)")]
-        [Required]
-        public long PhoneNumber { get; set; }
-        */
+        
+          [Column("PhoneNumber", TypeName = "varchar(10)")]
+          [Required]
+          public string PhoneNumber { get; set; }
+       
 
 
    
