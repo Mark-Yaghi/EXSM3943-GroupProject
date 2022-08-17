@@ -145,20 +145,11 @@ namespace ClassroomStart.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
-                values: new object[,]
-                {
-                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -3 },
-                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -3 },
-                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -3 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Supplier",
                 columns: new[] { "SupplierID", "Address", "FirstName", "PhoneNumber" },
                 values: new object[,]
                 {
+                    { -3, "12355-154 street", "Eberhardt Foods", "7804555230" },
                     { -2, "12275-155 street", "Weston Bakeries", "7804338877" },
                     { -1, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" }
                 });
@@ -180,6 +171,9 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
                 values: new object[,]
                 {
+                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -3 },
+                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -3 },
+                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -3 },
                     { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m, -2 },
                     { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m, -2 },
                     { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m, -1 },

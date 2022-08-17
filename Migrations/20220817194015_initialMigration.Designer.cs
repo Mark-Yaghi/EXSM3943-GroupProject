@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassroomStart.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220817191915_initialMigration")]
+    [Migration("20220817194015_initialMigration")]
     partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -430,6 +430,13 @@ namespace ClassroomStart.Migrations
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
                             PhoneNumber = "7804338877"
+                        },
+                        new
+                        {
+                            SupplierID = -3,
+                            Address = "12355-154 street",
+                            CompanyName = "Eberhardt Foods",
+                            PhoneNumber = "7804555230"
                         });
                 });
 

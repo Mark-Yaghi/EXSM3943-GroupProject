@@ -428,6 +428,13 @@ namespace ClassroomStart.Migrations
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
                             PhoneNumber = "7804338877"
+                        },
+                        new
+                        {
+                            SupplierID = -3,
+                            Address = "12355-154 street",
+                            CompanyName = "Eberhardt Foods",
+                            PhoneNumber = "7804555230"
                         });
                 });
 

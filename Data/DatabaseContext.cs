@@ -78,6 +78,40 @@ namespace ClassroomStart.Models
                });
             });
 
+
+            //Supplier table goes here. company name, address, phone number 
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+
+                entity.Property(e => e.CompanyName)
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("FirstName")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.Address)
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("Address")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.PhoneNumber)
+                      .HasColumnType("varchar(10)")
+                      .HasColumnName("PhoneNumber")
+                      .HasMaxLength(10);
+
+                entity.HasData(
+                    new Supplier[]
+                    {             //company name,          address,                 phone number
+                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-1},
+                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-2},
+                      new Supplier("Eberhardt Foods", "12355-154 street", "7804555230"){SupplierID=-3},
+
+                    });
+
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
 
@@ -106,42 +140,13 @@ namespace ClassroomStart.Models
 
             });
 
-            //Supplier table goes here. company name, address, phone number 
-
-            modelBuilder.Entity<Supplier>(entity =>
-            {
-
-                entity.Property(e => e.CompanyName)
-                      .HasCharSet("utf8mb4")
-                      .UseCollation("utf8mb4_general_ci")
-                      .HasColumnType("varchar(50)")
-                      .HasColumnName("FirstName")
-                      .HasMaxLength(50);
-
-                 entity.Property(e => e.Address)
-                       .HasColumnType("varchar(50)")
-                       .HasColumnName("Address")
-                       .HasMaxLength(50);
-
-                entity.Property(e => e.PhoneNumber)
-                      .HasColumnType("varchar(10)")
-                      .HasColumnName("PhoneNumber")
-                      .HasMaxLength(10);
-
-                entity.HasData(
-                    new Supplier[]
-                    {             //company name,          address,                 phone number
-                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-1},
-                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-2},                     
-
-                    });
-
-            });
-
-
             modelBuilder.Entity<Product>(entity =>
             {
 
+                entity.Property(e => e.SupplierID)
+                      .HasColumnType("int(10)")
+                      .HasColumnName("SupplierID");
+                
                 entity.HasIndex(e => e.SupplierID)
                       .HasDatabaseName("FK_" + nameof(Product) + "_" + nameof(Supplier));
 
@@ -166,12 +171,9 @@ namespace ClassroomStart.Models
                       .HasColumnName("Description")
                       .HasMaxLength(50);
 
-
-
-
                 entity.HasData(
                     new Product[]
-                    {             //prod name, prod description,   quantity on hand,discontinued, price
+                    {      //supplier ID,prod name, prod description,   quantity on hand,discontinued, price
                       new Product(-1,"milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175, false, 4.50m){ProductID=-1},
                       new Product(-1, "milk, skim", "4 L jugs of Skim Milk from Beatrice", 94, true, 4.65m){ProductID=-2},
                       new Product(-1, "milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90, false, 4.70m){ProductID=-3},
