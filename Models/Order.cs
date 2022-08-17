@@ -15,9 +15,10 @@ namespace ClassroomStart.Models
     public class Order
     {
 
-        public Order(DateTime date, decimal totalAmount)
+        public Order(int customerID, DateTime date, decimal totalAmount)
         {
 
+            CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
         }
@@ -41,11 +42,8 @@ namespace ClassroomStart.Models
 
         public DateTime Date { get; set; }
         [Required]
-<<<<<<< HEAD
-=======
 
         [Column("SalePrice", TypeName = "decimal(10,2)")]
->>>>>>> master
         public decimal SalePrice { get; set; }
         [Required]
 

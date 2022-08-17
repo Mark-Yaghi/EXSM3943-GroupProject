@@ -18,26 +18,17 @@ namespace ClassroomStart.Models
 
         }
 
-<<<<<<< HEAD
-
         public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
 
         {
 
         }
 
-=======
-        public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
-
-        {
-
-        }
-
->>>>>>> master
         public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Supplier> Supplier { get; set; } = null!;
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -47,7 +38,7 @@ namespace ClassroomStart.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>(entity =>                                //declare the "Customer" table and its columns/attributes
+            modelBuilder.Entity<Customer>(entity =>                   //declare the "Customer" table and its columns/attributes
             {
 
                 entity.Property(e => e.FirstName)
@@ -69,26 +60,56 @@ namespace ClassroomStart.Models
                       .HasColumnName("Address")
                       .HasMaxLength(50);
 
+                entity.Property(e => e.PhoneNumber)
+                      .HasColumnType("varchar(10)")
+                      .HasColumnName("PhoneNumber")
+                      .HasMaxLength(10);
+
 
                 entity.HasData(
                 new Customer[]
                 {
-<<<<<<< HEAD
-                  new Customer ("John", "Bonjovi","12345-123st North, Cincinatti, OH, 87542"){CustomerID=1},
-                  new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754"){CustomerID=2},
-                  new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742"){CustomerID=3},
-                  new Customer ("Tony", "Montana","16345-191st East, Chicago, IL, 77752"){CustomerID=4},
-                  new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754"){CustomerID=5},
-                  new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542"){CustomerID=6},
-=======
                   new Customer ("John", "Bonjovi","12345-123st North, Cincinatti, OH, 87542, ","7804564561"){CustomerID=-1},
                   new Customer ("Sarah","Rafferty","Apt.3478, 57 West Park Avenue, New York, NY, 87754","8007635541"){CustomerID=-2},
                   new Customer ("Harvey", "Spector", "457 Wolverine Creek, Penascola, FL, 58742","4035571234"){CustomerID=-3},
                   new Customer ("Tony", "Montana","16345-191st East, Chicago, IL, 77752","7808456455"){CustomerID=-4},
                   new Customer ("Harrison","Ford","Apt.7578, 88 West Park Avenue, New York, NY, 85754","8005552248"){CustomerID=-5},
                   new Customer ("Jorge", "DeSilva", "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542","5874892330"){CustomerID=-6},
->>>>>>> master
                });
+            });
+
+
+            //Supplier table goes here. company name, address, phone number 
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+
+                entity.Property(e => e.CompanyName)
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("FirstName")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.Address)
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("Address")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.PhoneNumber)
+                      .HasColumnType("varchar(10)")
+                      .HasColumnName("PhoneNumber")
+                      .HasMaxLength(10);
+
+                entity.HasData(
+                    new Supplier[]
+                    {             //company name,          address,                 phone number
+                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-1},
+                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-2},
+                      new Supplier("Eberhardt Foods", "12355-154 street", "7804555230"){SupplierID=-3},
+
+                    });
+
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -96,7 +117,7 @@ namespace ClassroomStart.Models
 
 
                 entity.HasIndex(e => e.CustomerID)
-                   .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
+                      .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
 
 
                 entity.HasOne(x => x.Customer)
@@ -109,154 +130,88 @@ namespace ClassroomStart.Models
                     new Order[]
                     {
                                 //custID,       date/time,          amount
-<<<<<<< HEAD
-                        new Order ( DateTime.Parse("07-24-2021"), 75.42m){OrderID=1, CustomerID=1},
-                        new Order ( DateTime.Parse("08-12-2022"), 75.42m){OrderID=2, CustomerID=4},
-                        new Order ( DateTime.Parse("06-14-2021"), 75.42m){OrderID=3, CustomerID=1},
-                        new Order ( DateTime.Parse("12-04-2022"), 75.42m){OrderID=4, CustomerID = 6},
-                        new Order ( DateTime.Parse("07-11-2022"), 75.42m){OrderID=5, CustomerID = 2},
-=======
-                        new Order ( DateTime.Parse("07-24-2021"), 75.42m){OrderID=-1, CustomerID=-1},
-                        new Order ( DateTime.Parse("08-12-2022"), 75.42m){OrderID=-2, CustomerID=-4},
-                        new Order ( DateTime.Parse("06-14-2021"), 75.42m){OrderID=-3, CustomerID=-1},
-                        new Order ( DateTime.Parse("12-04-2022"), 75.42m){OrderID=-4, CustomerID = -6},
-                        new Order ( DateTime.Parse("07-11-2022"), 75.42m){OrderID=-5, CustomerID = -2},
->>>>>>> master
+                        new Order ( -1, DateTime.Parse("07-24-2021"), 75.42m){OrderID=-1},
+                        new Order ( -4, DateTime.Parse("08-12-2022"), 75.42m){OrderID=-2},
+                        new Order ( -1, DateTime.Parse("06-14-2021"), 75.42m){OrderID=-3},
+                        new Order ( -6, DateTime.Parse("12-04-2022"), 75.42m){OrderID=-4},
+                        new Order ( -2, DateTime.Parse("07-11-2022"), 75.42m){OrderID=-5},
 
                     });
 
             });
+
             modelBuilder.Entity<Product>(entity =>
             {
 
+                entity.Property(e => e.SupplierID)
+                      .HasColumnType("int(10)")
+                      .HasColumnName("SupplierID");
 
-<<<<<<< HEAD
-                entity.HasIndex(e => e.OrderID)
-                .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
-
-                entity.HasOne(x => x.Order)
-                .WithMany(x => x.OrderDetails)
-                .HasForeignKey(x => x.OrderID)
-                .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Order))
-                 .OnDelete(DeleteBehavior.Restrict);
+                entity.HasIndex(e => e.SupplierID)
+                      .HasDatabaseName("FK_" + nameof(Product) + "_" + nameof(Supplier));
 
 
+                entity.HasOne(x => x.Supplier)
+                     .WithMany(y => y.Products)
+                     .HasForeignKey(x => x.SupplierID)
+                     .HasConstraintName("FK_" + nameof(Product) + "_" + nameof(Supplier))
+                     .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasIndex(e => e.ProductID)
-                      .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Product));
-                entity.HasOne(x => x.Product)
-                .WithMany(x => x.OrderDetails)
-                .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
-                .OnDelete(DeleteBehavior.Restrict);
-=======
                 entity.Property(e => e.ProductName)
-                   .HasCharSet("utf8mb4")
-                   .UseCollation("utf8mb4_general_ci")
-                   .HasColumnType("varchar(50)")
-                   .HasColumnName("ProductName")
-                   .HasMaxLength(50);
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("ProductName")
+                      .HasMaxLength(50);
 
                 entity.Property(e => e.Description)
-                    .HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci")
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("Description")
-                    .HasMaxLength(50);
->>>>>>> master
-
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(100)")
+                      .HasColumnName("Description")
+                      .HasMaxLength(50);
 
                 entity.HasData(
                     new Product[]
-                    {             //prod name, prod description,   quantity on hand,discontinued, price
-                new Product("milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175, false, 4.50m){ProductID=-1},
-                      new Product("milk, skim", "4 L jugs of Skim Milk from Beatrice", 94, true, 4.65m){ProductID=-2},
-                      new Product("milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90, false, 4.70m){ProductID=-3},
-                      new Product("White Bread", "Loaf of white bread from Weston Bakeries", 40, false, 2.85m){ProductID=-4},
-                      new Product("Whole wheat bread", "Loaf of whole wheat bread from Weston Bakeries", 75, false, 3.25m){ProductID=-5},
-                      new Product("Mandarin Oranges 3 lb bag", "3 lb bag of fresh Mandarin Oranges", 30, false, 8.65m){ProductID=-6},
-                      new Product("Gala Apples", "3lb bag of Gala Apples", 25, true, 6.50m){ProductID=-7},
-                      new Product("Carrots", "3 lb bag of carrots from Redcliff, AB", 15, true, 3.65m){ProductID=-8},
+                    {      //supplier ID,prod name, prod description,   quantity on hand,discontinued, price
+                      new Product(-1,"milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175, false, 4.50m){ProductID=-1},
+                      new Product(-1, "milk, skim", "4 L jugs of Skim Milk from Beatrice", 94, true, 4.65m){ProductID=-2},
+                      new Product(-1, "milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90, false, 4.70m){ProductID=-3},
+                      new Product(-2, "White Bread", "Loaf of white bread from Weston Bakeries", 40, false, 2.85m){ProductID=-4},
+                      new Product(-2, "Whole wheat bread", "Loaf of whole wheat bread from Weston Bakeries", 75, false, 3.25m){ProductID=-5},
+                      new Product(-3, "Mandarin Oranges 3 lb bag", "3 lb bag of fresh Mandarin Oranges", 30, false, 8.65m){ProductID=-6},
+                      new Product(-3, "Gala Apples", "3lb bag of Gala Apples", 25, true, 6.50m){ProductID=-7},
+                      new Product(-3, "Carrots", "3 lb bag of carrots from Redcliff, AB", 15, true, 3.65m){ProductID=-8},
 
                     });
 
-                entity.HasData(
-                    new OrderDetail[]
-                    {         //orderID,ProdID, quantity
-                       new OrderDetail (1, 4, 10){OrderDetailID=1, OrderID=1,ProductID=4},
-                       new OrderDetail (1, 2, 15){OrderDetailID=2, OrderID=1,ProductID=2},
-                       new OrderDetail (1, 3, 8) {OrderDetailID=3,OrderID=1,ProductID=3},
-                       new OrderDetail (2, 4, 30){OrderDetailID=4,OrderID=2,ProductID=4},
-                       new OrderDetail (3, 1, 17){OrderDetailID=5,OrderID=3,ProductID=1},
-
-                    });
             });
 
-<<<<<<< HEAD
-            modelBuilder.Entity<Product>(entity =>
-            {
-
-=======
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
->>>>>>> master
 
-                entity.Property(e => e.ProductName)
-                   .HasCharSet("utf8mb4")
-                   .UseCollation("utf8mb4_general_ci")
-                   .HasColumnType("varchar(50)")
-                   .HasColumnName("ProductName")
-                   .HasMaxLength(50);
 
-<<<<<<< HEAD
-                entity.Property(e => e.Description)
-                    .HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci")
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("Description")
-                    .HasMaxLength(50);
-=======
                 entity.HasIndex(e => e.OrderID)
-                .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
+                      .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
 
                 entity.HasOne(x => x.Order)
-                .WithMany(x => x.OrderDetails)
-                .HasForeignKey(x => x.OrderID)
-                .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Order))
-                 .OnDelete(DeleteBehavior.Restrict);
->>>>>>> master
+                      .WithMany(x => x.OrderDetails)
+                      .HasForeignKey(x => x.OrderID)
+                      .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Order))
+                      .OnDelete(DeleteBehavior.Restrict);
 
 
-                entity.HasData(
-                    new Product[]
-                    {             //prod name, prod description,   quantity on hand,discontinued, price
-                      new Product("milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175,  4.50m){ProductID=1},
-                      new Product("milk, skim", "4 L jugs of Skim Milk from Beatrice", 94,  4.65m){ProductID=2},
-                      new Product("milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90,  4.70m){ProductID=3},
-                      new Product("White Bread", "Loaf of white bread from Weston Bakeries", 40,  2.85m){ProductID=4},
-                      new Product("Whole wheat bread", "Loaf of whole wheat bread from Weston Bakeries", 75,  3.25m){ProductID=5},
-                      new Product("Mandarin Oranges 3 lb bag", "3 lb bag of fresh Mandarin Oranges", 30,  8.65m){ProductID=6},
-                      new Product("Gala Apples", "3lb bag of Gala Apples", 25,  6.50m){ProductID=7},
-                      new Product("Carrots", "3 lb bag of carrots from Redcliff, AB", 15,  3.65M){ProductID=8},
 
-                    });
-
-<<<<<<< HEAD
-            });
-=======
                 entity.HasIndex(e => e.ProductID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Product));
+
                 entity.HasOne(x => x.Product)
-                .WithMany(x => x.OrderDetails)
-                .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
-                .OnDelete(DeleteBehavior.Restrict);
->>>>>>> master
+                      .WithMany(x => x.OrderDetails)
+                      .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
+                      .OnDelete(DeleteBehavior.Restrict);
 
 
-            OnModelCreatingPartial(modelBuilder);
-        }
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-    }
 
                 entity.HasData(
                     new OrderDetail[]
@@ -269,8 +224,6 @@ namespace ClassroomStart.Models
 
                     });
             });
-
-         
 
             OnModelCreatingPartial(modelBuilder);
         }

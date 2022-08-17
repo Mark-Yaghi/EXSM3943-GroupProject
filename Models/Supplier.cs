@@ -10,11 +10,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ClassroomStart.Models
 {
 
-    [Table("supplier")]
+    [Table("Supplier")]
     public class Supplier
     {
 
-       public Supplier(string companyName, string address, int phoneNumber)
+        public Supplier(string companyName, string address, string phoneNumber)
         {
             CompanyName = companyName;
             Address = address;
@@ -24,28 +24,28 @@ namespace ClassroomStart.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        [Column("companyID", TypeName = "int(10)")]
-        public int CompanyID { get; set; }
+        [Column("SupplierID", TypeName = "int(10)")]
+        public int SupplierID { get; set; }
 
-        [Column("companyName", TypeName = "varchar(50)")]
+        [Column("CompanyName", TypeName = "varchar(50)")]
         [StringLength(50)]
         [Required]
         public string CompanyName { get; set; }
 
-        [Column("address", TypeName = "varchar(50)")]
+        [Column("Address", TypeName = "varchar(50)")]
         [StringLength(50)]
         [Required]
         public string Address { get; set; }
 
-        [Column("phoneNumber", TypeName = "int(10)")]
+        [Column("PhoneNumber", TypeName = "varchar(10)")]
         [Required]
-        public int PhoneNumber { get; set; }
-        
+        public string PhoneNumber { get; set; }
+
 
         // set foreign keys here if and when needed.
-        //[InverseProperty(nameof(Models.Order.Customer))]
+        [InverseProperty(nameof(Models.Product.Supplier))]
 
-        //public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
     }
 }

@@ -1,14 +1,8 @@
-
 using System;
 using System.Security.Principal;
 using ClassroomStart.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-
-using System.Text.RegularExpressions;
-using ClassroomStart.Models;
-using Microsoft.EntityFrameworkCore;
-
 
 
 const string passCode = "password";
@@ -19,51 +13,10 @@ string userFirstName = "";
 string userLastName = "";
 string phoneNumber;
 string address;
-
 var items = new List<string>();
 do
-
-
-
-
-    using (DatabaseContext context = new DatabaseContext())
-    {
-
-        var check = context.Customers.Where(x => x.FirstName == "Tony").Single();
-        context.Entry(check).Collection(x => x.Orders).Load();
-        int checkingID = check.CustomerID;
-        Console.WriteLine(checkingID);
-
-
-        /**
-          Customer findme = context.Customers.Where(x => x.FirstName == "Tony").Single();
-        context.Entry(findme).Reference(x => x.FirstName).Load();
-        if (findme.ToString() = "Tony")
-        {
-            Console.WriteLine("COOL");
-        }
-       
-        context.Entry(findme).Reference(x => x.FirstName).Load();
-        Console.WriteLine(findme);
-         */
-        foreach (Customer customer in context.Customers.ToList())
-
-        {
-
-
-        }
-        foreach (Order order in context.Orders.ToList())
-        {
-            context.Entry(order).Reference(x => x.Customer).Load();
-
-            // Console.WriteLine(order.Customer.FirstName);
-        }
-    }
-
-    do
-
 {
-    Console.WriteLine("1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
+    Console.WriteLine("1) Enter \"1\" to Make Purchase \n2) Enter \"2\" For Admin Login \n3) Enter \"0\" to Quit");
     Console.Write("Please select option: ");
     userChoice = Console.ReadLine().Trim();
     switch (userChoice)
@@ -86,7 +39,7 @@ do
                         {
                             foreach (Product product in context.Products.ToList())
                             {
-                                Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice}");
+                                Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice} {product.QuantityInStock}");
                             }
                             Console.Write("Add Item: ");
                             addItem = Console.ReadLine().Trim();
@@ -96,16 +49,34 @@ do
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName}. {ex.Message}");
-                    bool something = true;
-                    if (something)
+                    Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName} in the database. Would you like to be added in database? {ex.Message}");
+
+                    do
                     {
-                        phoneNumber = getValidation("Please enter your Phone Number: ", @"^[2-9][\d]{9}$");
-                        address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
-                        Console.WriteLine($"Customer First Name: {userFirstName} \nCustomer Last Name: {userLastName} \nCustomer Address: {address} \nCustomer phone: {phoneNumber}");
-                        context.Customers.Add(new Customer(userFirstName, userLastName, address) { });
-                        //context.SaveChanges();
-                    }
+                        Console.WriteLine("1) Yes \n2) No");
+                        Console.Write("Select Yes/No: ");
+                        userChoice = Console.ReadLine().Trim();
+                        switch (userChoice)
+                        {
+                            case "1":
+                                bool something = true;
+                                if (something)
+                                {
+                                    phoneNumber = getValidation("Please enter your Phone Number: ", @"^[2-9][\d]{9}$");
+                                    address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
+                                    //Console.WriteLine($"Customer First Name: {userFirstName} \nCustomer Last Name: {userLastName} \nCustomer Address: {address} \nCustomer phone: {phoneNumber}");
+                                    context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
+                                    //context.SaveChanges();
+                                }
+                                break;
+                            case "2":
+                                break;
+                            default:
+                                Console.WriteLine("Invalid selection");
+                                break;
+                        }
+                    } while (userChoice != "2");
+
                 }
             }
 
@@ -124,7 +95,6 @@ do
                     switch (userChoice)
                     {
                         case "A":
-
                             string prodName, description;
                             int qis;
                             decimal productPrice;
@@ -142,15 +112,6 @@ do
                             //{
                             //    context.Products.Add(new Product())
                             //};
-
-
-                            Console.WriteLine("Add Product");
-
-
-
-
-
-
                             break;
                         case "B":
                             Console.WriteLine("Add Inven.");
@@ -168,7 +129,6 @@ do
                 } while (userChoice != "Q");
 
             }
-
             break;
         case "0":
             break;
@@ -232,23 +192,15 @@ decimal getDecimalValue(string inputValue)
     return output;
 }
 
-public class ItemCart
-{
-    public string ItemName { get; set; }
-    public int ItemNum { get; set; }
+//public class ItemCart
+//{
+//    public string ItemName { get; set; }
+//    public int ItemNum { get; set; }
 
-    //public class User
-    //{
-    //    public User(string userName, int phoneNumber)
-    //    {
-    //        UserName = userName;
-    //        phoneNumber = phoneNumber;
-    //    }
+//    public ItemCart(string itemName, int itemNum)
+//    {
+//        ItemName = itemName;
+//        ItemNum = itemNum;
+//    }
+//}
 
-
-    public ItemCart(string itemName, int itemNum)
-    {
-        ItemName = itemName;
-        ItemNum = itemNum;
-    }
-}
