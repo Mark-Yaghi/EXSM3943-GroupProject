@@ -27,7 +27,6 @@ do
             Console.Write("Enter your Last Name: ");
             userLastName = Console.ReadLine().Trim();
             using (DatabaseContext context = new DatabaseContext())
-
             {
 
                 try
@@ -35,10 +34,16 @@ do
                     var userID = context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).SingleOrDefault().CustomerID;
                     if (userID != null)
                     {
-                        foreach (Product product in context.Products.ToList())
+                        string addItem = "EXIT";
+                        do
                         {
-                            Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice}");
-                        }
+                            foreach (Product product in context.Products.ToList())
+                            {
+                                Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice}");
+                            }
+                            Console.Write("Add Item: ");
+                            addItem = Console.ReadLine().Trim();
+                        } while (addItem != "EXIT");
                     }
 
                 }
@@ -52,14 +57,9 @@ do
                         address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
                         Console.WriteLine($"Customer First Name: {userFirstName} \nCustomer Last Name: {userLastName} \nCustomer Address: {address} \nCustomer phone: {phoneNumber}");
                         context.Customers.Add(new Customer(userFirstName, userLastName, address) { });
-                        context.SaveChanges();
+                        //context.SaveChanges();
                     }
                 }
-
-
-                //using (DatabaseContext context = new DatabaseContext())
-                //{
-                //}
             }
 
             break;
