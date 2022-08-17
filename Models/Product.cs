@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
@@ -10,9 +13,9 @@ namespace ClassroomStart.Models
 {
     public class Product
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Product(string productName, string description, int quantityInStock, bool discontinued, decimal salePrice)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+        public Product(string productName, string description, int quantityInStock, bool discontinued,  decimal salePrice)
+
         {
             ProductName = productName;
             Description = description;
@@ -40,16 +43,13 @@ namespace ClassroomStart.Models
         public string Description { get; set; }
 
 
-
         [Column("QuantityInStock", TypeName = "int(4)")]
         [Required]
         public int QuantityInStock { get; set; }
 
-
-        [Column("Discontinued", TypeName = "bool")]
+        [Column("Discontinued", TypeName = "tinyint(1)")]
         [Required]
-        public bool Discontinued { get; set; }
-
+       public bool Discontinued { get; set; }
 
 
         [Column("SalePrice", TypeName = "decimal(5,2)")]
@@ -57,8 +57,30 @@ namespace ClassroomStart.Models
         public decimal SalePrice { get; set; }
 
 
-        [InverseProperty(nameof(Models.OrderDetail.Product))]
 
+
+        public bool IsEmptyStock
+        {
+            get { return QuantityInStock == 0; }
+        }
+
+        public int AddToStoke(int amount)
+        {
+            QuantityInStock += amount;
+
+            return QuantityInStock;
+        }
+
+        public int SellProduct(int amount)
+        {
+
+            QuantityInStock -= amount;
+            return QuantityInStock;
+        }
+
+
+
+        [InverseProperty(nameof(Models.OrderDetail.Product))]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
 

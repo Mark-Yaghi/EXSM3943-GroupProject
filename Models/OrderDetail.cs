@@ -15,7 +15,7 @@ namespace ClassroomStart.Models
         public OrderDetail(int orderID, int productID, int quantityOrdered)
         {
             OrderID = orderID;
-            ProductID = productID;          
+            ProductID = productID;
             QuantityOrdered = quantityOrdered;
         }
 
@@ -30,7 +30,6 @@ namespace ClassroomStart.Models
         public int OrderID { get; set; }
 
 
-
         [Column("ProductID", TypeName = "int(10)")]
         [Required]
         public int ProductID { get; set; }
@@ -39,16 +38,25 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityOrdered { get; set; }
 
+        [NotMapped]
+        public bool InsufficientStock
+        {
+            get { return QuantityOrdered < Product.QuantityInStock; }
+        }
+
+
+
 
         [ForeignKey(nameof(ProductID))]
-        [InverseProperty(nameof(Models.OrderDetail.Product))]
+        [InverseProperty(nameof(Models.Product.OrderDetails))]
         public virtual Product Product { get; set; }
 
-        [ForeignKey(nameof(OrderID))]
 
-        [InverseProperty(nameof(Models.Order.OrderID))]
+        [ForeignKey(nameof(OrderID))]
+        [InverseProperty(nameof(Models.Order.OrderDetails))]
 
         public virtual Order Order { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+
+
     }
 }
