@@ -45,6 +45,7 @@ namespace ClassroomStart.Migrations
                     Description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     QuantityInStock = table.Column<int>(type: "int(4)", nullable: false),
+                    Discontinued = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     SalePrice = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
                 },
                 constraints: table =>
@@ -109,27 +110,27 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "customerID", "Address", "FirstName", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { 1, "12345-123st North, Cincinatti, OH, 87542, ", "John", "Bonjovi", "7804564561" },
-                    { 2, "Apt.3478, 57 West Park Avenue, New York, NY, 87754", "Sarah", "Rafferty", "7804564561" },
-                    { 3, "457 Wolverine Creek, Penascola, FL, 58742", "Harvey", "Spector", "7804564561" },
-                    { 4, "16345-191st East, Chicago, IL, 77752", "Tony", "Montana", "7804564561" },
-                    { 5, "Apt.7578, 88 West Park Avenue, New York, NY, 85754", "Harrison", "Ford", "7804564561" },
-                    { 6, "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", "Jorge", "DeSilva", "7804564561" }
+                    { -6, "Suite 2500, 275 Palm Beach Cove, Miami, FL, 59542", "Jorge", "DeSilva", "5874892330" },
+                    { -5, "Apt.7578, 88 West Park Avenue, New York, NY, 85754", "Harrison", "Ford", "8005552248" },
+                    { -4, "16345-191st East, Chicago, IL, 77752", "Tony", "Montana", "7808456455" },
+                    { -3, "457 Wolverine Creek, Penascola, FL, 58742", "Harvey", "Spector", "4035571234" },
+                    { -2, "Apt.3478, 57 West Park Avenue, New York, NY, 87754", "Sarah", "Rafferty", "8007635541" },
+                    { -1, "12345-123st North, Cincinatti, OH, 87542, ", "John", "Bonjovi", "7804564561" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductID", "Description", "ProductName", "QuantityInStock", "SalePrice" },
+                columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice" },
                 values: new object[,]
                 {
-                    { 1, "4 L jugs of 2% Milk from Beatrice", "milk, 2%", 175, 4.50m },
-                    { 2, "4 L jugs of Skim Milk from Beatrice", "milk, skim", 94, 4.65m },
-                    { 3, "4 L jugs of Chocolate Milk from Beatrice", "milk, chocolate", 90, 4.70m },
-                    { 4, "Loaf of white bread from Weston Bakeries", "White Bread", 40, 2.85m },
-                    { 5, "Loaf of whole wheat bread from Weston Bakeries", "Whole wheat bread", 75, 3.25m },
-                    { 6, "3 lb bag of fresh Mandarin Oranges", "Mandarin Oranges 3 lb bag", 30, 8.65m },
-                    { 7, "3lb bag of Gala Apples", "Gala Apples", 25, 6.50m },
-                    { 8, "3 lb bag of carrots from Redcliff, AB", "Carrots", 15, 3.65m }
+                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m },
+                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m },
+                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m },
+                    { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m },
+                    { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m },
+                    { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m },
+                    { -2, "4 L jugs of Skim Milk from Beatrice", true, "milk, skim", 94, 4.65m },
+                    { -1, "4 L jugs of 2% Milk from Beatrice", false, "milk, 2%", 175, 4.50m }
                 });
 
             migrationBuilder.InsertData(
@@ -137,11 +138,11 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "orderID", "customerID", "Date", "SalePrice", "TotalAmount" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { 2, 4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { 3, 1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { 4, 6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { 5, 2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m }
+                    { -5, -2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
+                    { -4, -6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
+                    { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
+                    { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
+                    { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m }
                 });
 
             migrationBuilder.InsertData(
@@ -149,11 +150,11 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "OrderDetailID", "OrderID", "ProductID", "QuantityOrdered" },
                 values: new object[,]
                 {
-                    { 1, 1, 4, 10 },
-                    { 2, 1, 2, 15 },
-                    { 3, 1, 3, 8 },
-                    { 4, 2, 4, 30 },
-                    { 5, 3, 1, 17 }
+                    { -5, -3, -1, 17 },
+                    { -4, -2, -4, 30 },
+                    { -3, -1, -3, 8 },
+                    { -2, -1, -2, 15 },
+                    { -1, -1, -4, 10 }
                 });
 
             migrationBuilder.CreateIndex(

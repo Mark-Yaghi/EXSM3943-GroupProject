@@ -14,13 +14,13 @@ namespace ClassroomStart.Models
     public class Product
     {
 
-        public Product(string productName, string description, int quantityInStock,  decimal salePrice)
+        public Product(string productName, string description, int quantityInStock, bool discontinued,  decimal salePrice)
 
         {
             ProductName = productName;
             Description = description;
             QuantityInStock = quantityInStock;
-           // Discontinued = discontinued;
+            Discontinued = discontinued;
             SalePrice = salePrice;
         }
 
@@ -47,9 +47,9 @@ namespace ClassroomStart.Models
         [Required]
         public int QuantityInStock { get; set; }
 
-        //[Column("Discontinued", TypeName = "bool")]
-       // [Required]
-       // public bool Discontinued { get; set; }
+        [Column("Discontinued", TypeName = "tinyint(1)")]
+        [Required]
+       public bool Discontinued { get; set; }
 
 
         [Column("SalePrice", TypeName = "decimal(5,2)")]
