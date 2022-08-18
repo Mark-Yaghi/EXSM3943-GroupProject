@@ -210,14 +210,16 @@ do
                             bool itemsToDiscontinue = true;
                             int itemToSelect = 0;
                             string name;
+                            string enterInput="";
                             using (DatabaseContext context = new DatabaseContext())
                             {
-                                foreach(Product product in context.Products.ToList())
+                                foreach(Product product in context.Products.ToList().Where(x => x.Discontinued == false))
                                 {
-                                    Console.WriteLine(product.ProductID+"ID "+" Product Name: "+product.ProductName+ " Quantity In Stock: " + product.QuantityInStock+ "Is discontinued? "+product.Discontinued);
+                                    Console.WriteLine(product.ProductID+"ID "+" Product Name: "+product.ProductName+ " Quantity In Stock: " + product.QuantityInStock+ "   Discontinued? "+product.Discontinued);
                                 }
                                 try
                                 {
+                                   
                                     itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
                                     context.Products.Where(x => x.ProductID == itemToSelect).Single().Discontinued = true;
                                   
