@@ -89,28 +89,27 @@ do
                         Console.WriteLine("Desciption of Product: ");
                         description =(Console.ReadLine().Trim());
                        // Console.WriteLine("Quantity: ");
-                        quantity = getIntValue("Quantity: ");
+                        quantity = InputNumberFn("Quantity: ");
                         
                        // String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
-                           productPrice = getDecimalValue("Price of Product: ");
+                           productPrice = DecimalInputNumberFn("Price of Product: ");
                             int sup = 0;
                             string suppliersName="";
                             using (DatabaseContext context = new DatabaseContext())
                             {
-                                Console.WriteLine("Suppliers: \n");
+                                Console.WriteLine("\nSuppliers: ");
                                 foreach (Supplier supplier in context.Supplier.ToList())
                                 {
                                     Console.WriteLine(supplier.CompanyName+" "+supplier.SupplierID+" ID");                                    
                                 }
                                // Console.WriteLine("Select the supplier ID:");
-                                suppliersID = getIntValue("Select the supplier ID: ");
+                                suppliersID = InputNumberFn("Select the supplier ID: ");
                                 suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
 
                                 try
                             {
                                     context.Products.Add(new Product(suppliersID, prodName, description, quantity, discontinued, productPrice)
                                     {
-                                 
                                         SupplierID = suppliersID,
                                         ProductName = prodName,
                                         Description = description,
@@ -127,8 +126,8 @@ do
                                 }
                                 Console.WriteLine("\n" + "Product: " + prodName + "\n" +"Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice+ "\n"+ "Supplier: " + suppliersName + "\n");
 
-                                 //context.SaveChanges();
-                                Console.WriteLine(prodName+ "Has been added to the Inventory");
+                                 context.SaveChanges();
+                                Console.WriteLine(prodName+ "Has been added to the Inventory\n");
 
                             };
                         break;
@@ -180,8 +179,8 @@ string getValidation(string prompt, string regEx)
     return output;
 }
 
-
-int getIntValue(string consoleMessage)
+/////
+int InputNumberFn(string consoleMessage)
 {
 
     bool validator = false;
@@ -200,7 +199,8 @@ int getIntValue(string consoleMessage)
     return NumberOuput;
 }
 
-decimal getDecimalValue(string consoleMessage)
+
+decimal DecimalInputNumberFn(string consoleMessage)
 {
 
     bool validator = false;
@@ -219,9 +219,30 @@ decimal getDecimalValue(string consoleMessage)
     return NumberOuput;
 }
 
+//////
+
+int getIntValue(string inputValue)
+{
+    bool isValid = false;
+    int intValue;
+    int output = 0;
+    do
+    {
+        if (int.TryParse(inputValue, out intValue))
+        {
+            output = intValue;
+            isValid = true;
+        }
+        else
+        {
+            Console.WriteLine($"You have entered invalid number.");
+        };
+    } while (!isValid);
+
+    return output;
+}
 
 
-/**
 decimal getDecimalValue(string inputValue)
 {
     bool isValid = false;
@@ -241,7 +262,7 @@ decimal getDecimalValue(string inputValue)
     } while (!isValid);
     return output;
 }
-*/
+
 public class ItemCart
 {
     public string ItemName { get; set; }
