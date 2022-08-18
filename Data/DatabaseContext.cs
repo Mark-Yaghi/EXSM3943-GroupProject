@@ -13,13 +13,11 @@ namespace ClassroomStart.Models
 
 
         public DatabaseContext()
-
         {
 
         }
 
         public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
-
         {
 
         }
@@ -58,11 +56,15 @@ namespace ClassroomStart.Models
                 entity.Property(e => e.Address)
                       .HasColumnType("varchar(50)")
                       .HasColumnName("Address")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasMaxLength(50);
 
                 entity.Property(e => e.PhoneNumber)
                       .HasColumnType("varchar(10)")
                       .HasColumnName("PhoneNumber")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasMaxLength(10);
 
 
@@ -94,11 +96,15 @@ namespace ClassroomStart.Models
                 entity.Property(e => e.Address)
                       .HasColumnType("varchar(50)")
                       .HasColumnName("Address")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasMaxLength(50);
 
                 entity.Property(e => e.PhoneNumber)
                       .HasColumnType("varchar(10)")
                       .HasColumnName("PhoneNumber")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasMaxLength(10);
 
                 entity.HasData(
@@ -114,8 +120,6 @@ namespace ClassroomStart.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
-
-
                 entity.HasIndex(e => e.CustomerID)
                       .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
 
@@ -126,15 +130,28 @@ namespace ClassroomStart.Models
                       .HasConstraintName("FK_" + nameof(Order) + "_" + nameof(Customer))
                       .OnDelete(DeleteBehavior.Restrict);
 
+                entity.Property(e => e.TotalAmount)
+                      .HasColumnType("decimal(10,2)")
+                      .HasColumnName("TotalAmount");
+
+                entity.Property(e => e.Date)
+                      .HasColumnType("DateTime")
+                      .HasColumnName("Date");
+
+                entity.Property(e => e.SalePrice)
+                      .HasColumnType("decimal(10,2)")
+                      .HasColumnName("SalePrice");
+
+
                 entity.HasData(
                     new Order[]
                     {
-                                //custID,       date/time,          amount
-                        new Order ( -1, DateTime.Parse("07-24-2021"), 75.42m){OrderID=-1},
-                        new Order ( -4, DateTime.Parse("08-12-2022"), 75.42m){OrderID=-2},
-                        new Order ( -1, DateTime.Parse("06-14-2021"), 75.42m){OrderID=-3},
-                        new Order ( -6, DateTime.Parse("12-04-2022"), 75.42m){OrderID=-4},
-                        new Order ( -2, DateTime.Parse("07-11-2022"), 75.42m){OrderID=-5},
+                            //custID, totalamount,  date/time,              SalePrice
+                        new Order ( -1, 75.42m,  DateTime.Parse("07-24-2021"), 14.99m){OrderID=-1},
+                        new Order ( -4, 185.92m, DateTime.Parse("08-12-2022"), 27.99m){OrderID=-2},
+                        new Order ( -1, 275.82m, DateTime.Parse("06-14-2021"), 38.95m){OrderID=-3},
+                        new Order ( -6, 975.58m, DateTime.Parse("12-04-2022"), 44.75m ){OrderID=-4},
+                        new Order ( -2, 14.39m,  DateTime.Parse("07-11-2022"), 58.25m){OrderID=-5},
 
                     });
 
@@ -211,6 +228,9 @@ namespace ClassroomStart.Models
                       .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
                       .OnDelete(DeleteBehavior.Restrict);
 
+                entity.Property(e => e.QuantityOrdered)
+                      .HasColumnType("int(10)")
+                      .HasColumnName("QuantityOrdered");
 
 
                 entity.HasData(

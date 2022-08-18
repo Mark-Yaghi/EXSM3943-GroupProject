@@ -23,9 +23,9 @@ namespace ClassroomStart.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -42,9 +42,9 @@ namespace ClassroomStart.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -57,19 +57,19 @@ namespace ClassroomStart.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    orderID = table.Column<int>(type: "int(10)", nullable: false)
+                    OrderID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    customerID = table.Column<int>(type: "int(10)", nullable: false),
+                    CustomerID = table.Column<int>(type: "int(10)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "DateTime", nullable: false),
                     SalePrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.orderID);
+                    table.PrimaryKey("PK_Order", x => x.OrderID);
                     table.ForeignKey(
                         name: "FK_Order_Customer",
-                        column: x => x.customerID,
+                        column: x => x.CustomerID,
                         principalTable: "Customer",
                         principalColumn: "customerID",
                         onDelete: ReferentialAction.Restrict);
@@ -120,7 +120,7 @@ namespace ClassroomStart.Migrations
                         name: "FK_OrderDetail_Order",
                         column: x => x.OrderID,
                         principalTable: "Order",
-                        principalColumn: "orderID",
+                        principalColumn: "OrderID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderDetail_Product",
@@ -156,14 +156,14 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "Order",
-                columns: new[] { "orderID", "customerID", "Date", "SalePrice", "TotalAmount" },
+                columns: new[] { "OrderID", "CustomerID", "Date", "SalePrice", "TotalAmount" },
                 values: new object[,]
                 {
-                    { -5, -2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -4, -6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m }
+                    { -5, -2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 58.25m, 14.39m },
+                    { -4, -6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 44.75m, 975.58m },
+                    { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 38.95m, 275.82m },
+                    { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 27.99m, 185.92m },
+                    { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 14.99m, 75.42m }
                 });
 
             migrationBuilder.InsertData(
@@ -196,7 +196,7 @@ namespace ClassroomStart.Migrations
             migrationBuilder.CreateIndex(
                 name: "FK_Order_Customer",
                 table: "Order",
-                column: "customerID");
+                column: "CustomerID");
 
             migrationBuilder.CreateIndex(
                 name: "FK_OrderDetail_Order",

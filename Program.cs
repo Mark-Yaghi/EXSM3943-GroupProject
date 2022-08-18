@@ -110,7 +110,9 @@ using (DatabaseContext context = new DatabaseContext())
                         case "B":
                             Console.WriteLine("Add Inven.");
 
-
+                            //Add product inventory by admin.
+                           //find the id of the product required, take in the number,
+                           //then aadd it to the product and saveChanges();
 
 
 

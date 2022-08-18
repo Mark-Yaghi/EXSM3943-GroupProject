@@ -20,14 +20,13 @@ namespace ClassroomStart.Models
             FirstName = firstName;
             LastName = lastName;
             Address = address;
-           PhoneNumber = phoneNumber;
-
+            PhoneNumber = phoneNumber;
         }
 
         
         [Key] 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-        [Column("customerID", TypeName = "int(10)")] 
+        [Column("CustomerID", TypeName = "int(10)")] 
      
         public int CustomerID { get; set; }
 
