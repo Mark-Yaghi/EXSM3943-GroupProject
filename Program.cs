@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using ClassroomStart.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security;
 
 
 const string passCode = "password";
@@ -13,13 +14,15 @@ string address;
 
 
 
+
+
 using (DatabaseContext context = new DatabaseContext())
 {
 
     var check = context.Customers.Where(x => x.FirstName == "Tony").Single();
     context.Entry(check).Collection(x => x.Orders).Load();
     int checkingID = check.CustomerID;
-    Console.WriteLine(checkingID);
+    //Console.WriteLine(checkingID);
 
 
     /**
@@ -41,7 +44,6 @@ using (DatabaseContext context = new DatabaseContext())
     foreach (Order order in context.Orders.ToList())
     {
         context.Entry(order).Reference(x => x.Customer).Load();
-
        // Console.WriteLine(order.Customer.FirstName);
     }
 }
@@ -88,10 +90,34 @@ using (DatabaseContext context = new DatabaseContext())
         case "2":
 
             Console.WriteLine("\nPlease Enter Admin Password: ");
-            admin = Console.ReadLine().Trim();
-            if (admin == passCode)
-            {
+            //admin = Console.ReadLine().Trim();
+            var pass = string.Empty;
+            ConsoleKey key;
 
+            do
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key; // Console.ReadKey(true);
+
+                if (key == ConsoleKey.Backspace && pass.Length > 0)
+                {
+                    // pass.AppendChar(keyInfo.KeyChar);
+                    Console.Write("\b\b");
+                    pass = pass[0..^1];
+
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    //pass.RemoveAt(pass.Length - 1);
+                    Console.Write("*");
+                    pass += keyInfo.KeyChar;
+                }
+
+            } while (key != ConsoleKey.Enter);
+
+           
+            if (pass == passCode)
+            {
                 do
                 {
                     Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory\"B\" \n 3) Discontinue the Product \"C\" \n 4) Admin Logout\"Q\" ");
@@ -124,7 +150,7 @@ using (DatabaseContext context = new DatabaseContext())
                                 foreach(Product product in context.Products.ToList())
                                 {
                                    Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Quantity Currently in Stock: "+ product.QuantityInStock);
-                                 //Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+                                // Console.WriteLine("\n{0, 3} {1, 30} {2, 60}", "Product ID: " +product.ProductID, "Product Name:" +product.ProductName, "Quantity Currently In /Stock: " + product.QuantityInStock);
 
                                 }
 
@@ -139,7 +165,7 @@ using (DatabaseContext context = new DatabaseContext())
                                
                                     Console.WriteLine("You entered "+ tempProductID);
 
-                                    Console.WriteLine("How many units would you like to add to the " +tempQuantityInStock + " of the " + tempProductName + " you currently have in stock?");
+                                    Console.WriteLine("How many units would you like to add to the " +tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
 
                                     updateQuantity = int.Parse(Console.ReadLine());
                                     
@@ -216,4 +242,20 @@ string getValidation(string prompt, string regEx)
 //    public int PhoneNumber { get; set; }
 //}
 
+
+
+   // static void Main(string[] args)
+    //{
+    //    SecureString pass = maskInputString();
+    //    string Password = new System.Net.NetworkCredential(string.Empty, pass).Password;
+    //    Console.WriteLine(Password);
+   // }
+
+
+    // static SecureString maskInputString()
+   // {
+    //Console.WriteLine("Please enter your password: ");
+    // SecureString pass = new SecureString();
+       
+     
 
