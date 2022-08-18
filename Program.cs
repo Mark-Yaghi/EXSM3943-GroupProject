@@ -48,7 +48,7 @@ using (DatabaseContext context = new DatabaseContext())
 
     do
 {
-    Console.WriteLine("1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
+    Console.WriteLine("\n1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
     Console.Write("Please select option: ");
     userChoice = Console.ReadLine().Trim();
     switch (userChoice)
@@ -94,9 +94,9 @@ using (DatabaseContext context = new DatabaseContext())
 
                 do
                 {
-                    Console.WriteLine("1) Add product \"A\" 2) Add Inventory\"B\" 3) Discontinue the Product \"C\" 4) Admin Logout\"Q\" ");
+                    Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory\"B\" \n 3) Discontinue the Product \"C\" \n 4) Admin Logout\"Q\" ");
                     userChoice = Console.ReadLine().Trim();
-                    switch (userChoice)
+                    switch (userChoice.ToUpper())
                     {
                         case "A":
                           
@@ -108,11 +108,61 @@ using (DatabaseContext context = new DatabaseContext())
 
                             break;
                         case "B":
-                            Console.WriteLine("Add Inven.");
+                            Console.WriteLine("\nYou are in the Add Inventory Section.");
 
                             //Add product inventory by admin.
                            //find the id of the product required, take in the number,
                            //then aadd it to the product and saveChanges();
+                           using (DatabaseContext context = new DatabaseContext())
+                           {
+
+                                int updateQuantity = 0;
+                                int tempProductID = 0;
+                                int tempQuantityInStock = 0;
+                                string tempProductName = "";
+                                int updatedQuantityOnHand = 0;
+
+                                Console.WriteLine("The following is a list of products in stock.");
+                                
+                                foreach(Product product in context.Products.ToList())
+                                {
+                                   Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Quantity Currently in Stock: "+ product.QuantityInStock);
+                                    //Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+
+                                }
+
+                                Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
+
+                                try 
+                                {          
+                                
+                                    tempProductID = int.Parse(Console.ReadLine().Trim());
+                                    tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+                                    tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
+                               
+                                    Console.WriteLine("You entered "+ tempProductID);
+
+                                    Console.WriteLine("How many units would you like to add to the " +tempQuantityInStock + " of the " + tempProductName + " you currently have in stock?");
+
+                                    updateQuantity = int.Parse(Console.ReadLine());
+                                    
+                                    updateQuantity += tempQuantityInStock;
+
+                                    context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
+                                    context.SaveChanges();
+
+                                     updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+
+                                    Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
+                                }
+
+                                catch( Exception ex)
+                                {
+                                    Console.WriteLine("Sorry, an error occurred updating the database. " + ex.Message);
+                                }
+
+                           }
+
 
 
 
@@ -131,11 +181,11 @@ using (DatabaseContext context = new DatabaseContext())
                        
                         
                         default:
-                            Console.WriteLine("Invalid option. Please try again !!!");
+                            Console.WriteLine("Invalid option. Please try again.");
                             break;
                     }
 
-                } while (userChoice != "Q");
+                } while (userChoice.ToUpper() != "Q");
 
             }
         
@@ -171,3 +221,5 @@ string getValidation(string prompt, string regEx)
 //    public string UserName { get; set; }
 //    public int PhoneNumber { get; set; }
 //}
+
+
