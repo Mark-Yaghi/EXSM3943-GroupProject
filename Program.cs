@@ -38,13 +38,7 @@ do
                         bool breakLoop = false;
                         do
                         {
-                            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
-                            foreach (Product product in context.Products.ToList())
-                            {
-                                productIDList.Add(product.ProductID.ToString());
-                                //Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice} {product.QuantityInStock}");
-                                Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
-                            }
+                            getProductListFromDatabase();
 
                             Console.Write("Select 'a' to add items to the cart. Select 'b' to Exit: ");
                             userChoice = Console.ReadLine().ToUpper().Trim();
@@ -62,28 +56,40 @@ do
                                             string quantity = getValidation("Quantity (min 0 and max 99 per item) : ", @"^[\d]{0,2}$");
                                             int itemIntValue = getIntValue(addItem);
                                             int quantityIntValue = getIntValue(quantity);
-                                            var itemName = context.Products.Where(x => x.ProductID == itemIntValue).Single().ProductName;
-                                            var productPrice = context.Products.Where(x => x.ProductID == itemIntValue).Single().SalePrice;
-                                            var newQIH = context.Products.Where(x => x.ProductID == itemIntValue).Single().SellProduct(quantityIntValue);
-                                            //context.SaveChanges();
-                                            cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
-                                            foreach (var prodList in cartList)
+                                            var selectedProd = context.Products.Where(x => x.ProductID == itemIntValue).Single();
+                                            if (quantityIntValue <= selectedProd.QuantityInStock)
                                             {
-                                                Console.WriteLine(prodList);
+                                                var itemName = selectedProd.ProductName;
+                                                var productPrice = selectedProd.SalePrice;
+                                                var newQIH = selectedProd.SellProduct(quantityIntValue);
+                                                context.SaveChanges();
+                                                getProductListFromDatabase();
+                                                cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
+                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
                                             }
-                                            Console.WriteLine("To Quit 'q': ");
+                                            else
+                                            {
+                                                Console.WriteLine("Sorry, insufficient Quantity.");
+                                            }
+
+
+                                            Console.WriteLine("Press 'Enter' to add another item or 'q' to Quit: ");
                                             if (Console.ReadLine().ToUpper().Trim() != "Q")
                                             {
                                                 breakLoop = false;
                                             }
                                             else
                                             {
+                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
+                                                Console.WriteLine("Thanks for shopping!!!");
+                                                cartList.Clear();
                                                 breakLoop = true;
+                                                userChoice = "0";
                                             }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Item is notin the list.");
+                                            Console.WriteLine("Item is not in the list.");
                                         }
                                     } while (!breakLoop);
                                     break;
@@ -104,7 +110,7 @@ do
 
                     do
                     {
-                        Console.WriteLine("1) Yes \n2) No");
+                        //Console.WriteLine("1) Yes \n2) No");
                         Console.Write("Select '1' for Yes / '2' for No: ");
                         userChoice = Console.ReadLine().Trim();
                         switch (userChoice)
@@ -115,9 +121,8 @@ do
                                 {
                                     phoneNumber = getValidation("Please enter your Phone Number: ", @"^[2-9][\d]{9}$");
                                     address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
-                                    //Console.WriteLine($"Customer First Name: {userFirstName} \nCustomer Last Name: {userLastName} \nCustomer Address: {address} \nCustomer phone: {phoneNumber}");
                                     context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
-                                    //context.SaveChanges();
+                                    context.SaveChanges();
                                 }
                                 break;
                             default:
@@ -241,15 +246,18 @@ decimal getDecimalValue(string inputValue)
     return output;
 }
 
-//public class ItemCart
-//{
-//    public string ItemName { get; set; }
-//    public int ItemNum { get; set; }
+void getProductListFromDatabase()
+{
+    using (DatabaseContext context = new DatabaseContext())
+    {
+        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
+        foreach (Product product in context.Products.ToList())
+        {
+            productIDList.Add(product.ProductID.ToString());
+            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+        }
 
-//    public ItemCart(string itemName, string itemNum)
-//    {
-//        ItemName = itemName;
-//        ItemNum = itemNum;
-//    }
-//}
+    }
+}
+
 

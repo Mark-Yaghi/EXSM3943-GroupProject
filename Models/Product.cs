@@ -78,7 +78,7 @@ namespace ClassroomStart.Models
         {
             try
             {
-                if (amount < QuantityInStock) QuantityInStock -= amount;
+                if (amount <= QuantityInStock) QuantityInStock -= amount;
             }
             catch (Exception ex)
             {
