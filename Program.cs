@@ -13,7 +13,7 @@ string userFirstName = "";
 string userLastName = "";
 string phoneNumber;
 string address;
-var items = new List<string>();
+var productIDList = new List<string>();
 do
 {
     Console.WriteLine("1) Enter \"1\" to Make Purchase \n2) Enter \"2\" For Admin Login \n3) Enter \"0\" to Quit");
@@ -34,16 +34,89 @@ do
                     var userID = context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).SingleOrDefault().CustomerID;
                     if (userID != null)
                     {
-                        string addItem = "EXIT";
+                        bool breakLoop = false;
                         do
                         {
+                            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
                             foreach (Product product in context.Products.ToList())
                             {
-                                Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice} {product.QuantityInStock}");
+                                productIDList.Add(product.ProductID.ToString());
+                                //Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice} {product.QuantityInStock}");
+                                Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
                             }
-                            Console.Write("Add Item: ");
-                            addItem = Console.ReadLine().Trim();
-                        } while (addItem != "EXIT");
+
+                            Console.Write("Select 'a' add items to the cart. Select 'b' to Exit: ");
+                            userChoice = Console.ReadLine().ToUpper().Trim();
+                            switch (userChoice)
+                            {
+                                case "A":
+                                    Console.WriteLine("Shopping cart");
+                                    Console.Write("Add Item: ");
+                                    string addItem = Console.ReadLine().ToUpper().Trim();
+
+                                    if (productIDList.Contains(addItem))
+                                    {
+                                        string quantity = getValidation("Quantity (min 1 max 99 per item) : ", @"^[\d]{1,2}$");
+                                        int itemIntValue = getIntValue(addItem);
+                                        int quantityIntValue = getIntValue(quantity);
+                                        var itemName = context.Products.Where(x => x.ProductID == itemIntValue).Single().ProductName;
+                                        var newQIH = context.Products.Where(x => x.ProductID == itemIntValue).Single().SellProduct(quantityIntValue);
+                                        Console.WriteLine($"{itemName} : {newQIH}");
+                                        //try
+                                        //{
+                                        //    foreach (Product product in context.Products.ToList())
+                                        //    {
+                                        //        Console.WriteLine(product);
+                                        //        //context.SaveChanges();
+                                        //    }
+                                        //    //var itemName = context.Products.Where(x => x.ProductID == itemIntValue).Single().ProductName;
+                                        //    //var newQIH = context.Products.Where(x => x.ProductID == itemIntValue).Single().SellProduct(quantityIntValue);
+                                        //    //Console.WriteLine(itemName + "; ");
+                                        //}
+                                        //catch (Exception ex)
+                                        //{
+                                        //    Console.WriteLine(ex.Message);
+                                        //}
+
+                                        //foreach (Product product in context.Products.ToList())
+                                        //{
+
+                                        //    context.SaveChanges();
+                                        //}
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Item is notin the list.");
+                                    }
+                                    break;
+                                case "B":
+                                    breakLoop = true;
+                                    break;
+                                default:
+                                    Console.WriteLine("Worng selection! Please choose 'a' for shopping cart, 'b' to exit.");
+                                    break;
+                            }
+
+
+                            ////int selectedProductID = getIntValue(addItem);
+                            ////Console.Write("Quantity: ");
+                            //if (productIDList.Contains(addItem)) // || addItem != "EXIT"
+                            //{
+                            //    Console.WriteLine("Yes!");
+                            //}
+                            //else
+                            //{
+                            //    Console.WriteLine("The product is not in the list");
+                            //}
+                            ////Console.WriteLine(selectedProductID);
+
+                            //string quantity = getValidation("Quantity: ", @"^[\d]{1,2}$");
+
+                            ////var item = context.Products.Where(x => x.ProductID == selectedProductID).Single().ProductName;
+
+                            ////new ItemCart()
+                        } while (!breakLoop);
                     }
 
                 }
@@ -54,7 +127,7 @@ do
                     do
                     {
                         Console.WriteLine("1) Yes \n2) No");
-                        Console.Write("Select Yes/No: ");
+                        Console.Write("Select '1' for Yes / '2' for No: ");
                         userChoice = Console.ReadLine().Trim();
                         switch (userChoice)
                         {
@@ -68,8 +141,6 @@ do
                                     context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
                                     //context.SaveChanges();
                                 }
-                                break;
-                            case "2":
                                 break;
                             default:
                                 Console.WriteLine("Invalid selection");
@@ -158,7 +229,7 @@ int getIntValue(string inputValue)
     int output = 0;
     do
     {
-        if ((int.TryParse(inputValue, out intValue) && intValue > 0))
+        if (int.TryParse(inputValue, out intValue))
         {
             output = intValue;
             isValid = true;
@@ -197,7 +268,7 @@ decimal getDecimalValue(string inputValue)
 //    public string ItemName { get; set; }
 //    public int ItemNum { get; set; }
 
-//    public ItemCart(string itemName, int itemNum)
+//    public ItemCart(string itemName, string itemNum)
 //    {
 //        ItemName = itemName;
 //        ItemNum = itemNum;

@@ -76,8 +76,14 @@ namespace ClassroomStart.Models
 
         public int SellProduct(int amount)
         {
-
-            QuantityInStock -= amount;
+            try
+            {
+                if (amount < QuantityInStock) QuantityInStock -= amount;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Insufficient Quantity in stock." + ex.Message);
+            }
             return QuantityInStock;
         }
 
