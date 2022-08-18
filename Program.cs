@@ -13,10 +13,11 @@ string userFirstName = "";
 string userLastName = "";
 string phoneNumber;
 string address;
-var items = new List<string>();
+var productIDList = new List<string>();
+var cartList = new List<string>();
 do
 {
-    Console.WriteLine("1) Enter \"1\" Make Purchase\n2) Enter \"2\" For Admin Login\n3) Enter \"0\" to Quit");
+    Console.WriteLine("1) Enter \"1\" to Make Purchase \n2) Enter \"2\" For Admin Login \n3) Enter \"0\" to Quit");
     Console.Write("Please select option: ");
     userChoice = Console.ReadLine().Trim();
     switch (userChoice)
@@ -27,7 +28,6 @@ do
             Console.Write("Enter your Last Name: ");
             userLastName = Console.ReadLine().Trim();
             using (DatabaseContext context = new DatabaseContext())
-
             {
 
                 try
@@ -35,38 +35,109 @@ do
                     var userID = context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).SingleOrDefault().CustomerID;
                     if (userID != null)
                     {
-                        foreach (Product product in context.Products.ToList())
+                        bool breakLoop = false;
+                        do
                         {
-                            Console.WriteLine($"{product.ProductID} {product.ProductName} {product.SalePrice}");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName}");
+                            getProductListFromDatabase();
+
+                            Console.Write("Select 'a' to add items to the cart. Select 'b' to Exit: ");
+                            userChoice = Console.ReadLine().ToUpper().Trim();
+                            switch (userChoice)
+                            {
+                                case "A":
+                                    Console.WriteLine("Shopping cart");
+                                    do
+                                    {
+                                        Console.Write("Add Item to Cart: ");
+                                        string addItem = Console.ReadLine().ToUpper().Trim();
+
+                                        if (productIDList.Contains(addItem))
+                                        {
+                                            string quantity = getValidation("Quantity (min 0 and max 99 per item) : ", @"^[\d]{0,2}$");
+                                            int itemIntValue = getIntValue(addItem);
+                                            int quantityIntValue = getIntValue(quantity);
+                                            var selectedProd = context.Products.Where(x => x.ProductID == itemIntValue).Single();
+                                            if (quantityIntValue <= selectedProd.QuantityInStock)
+                                            {
+                                                var itemName = selectedProd.ProductName;
+                                                var productPrice = selectedProd.SalePrice;
+                                                var newQIH = selectedProd.SellProduct(quantityIntValue);
+                                                context.SaveChanges();
+                                                getProductListFromDatabase();
+                                                cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
+                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Sorry, insufficient Quantity.");
+                                            }
+
+
+                                            Console.WriteLine("Press 'Enter' to add another item or 'q' to Quit: ");
+                                            if (Console.ReadLine().ToUpper().Trim() != "Q")
+                                            {
+                                                breakLoop = false;
+                                            }
+                                            else
+                                            {
+                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
+                                                Console.WriteLine("Thanks for shopping!!!");
+                                                cartList.Clear();
+                                                breakLoop = true;
+                                                userChoice = "0";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Item is not in the list.");
+                                        }
+                                    } while (!breakLoop);
+                                    break;
+                                case "B":
+                                    breakLoop = true;
+                                    break;
+                                default:
+                                    Console.WriteLine("Worng selection! Please choose 'a' for shopping cart, 'b' to exit.");
+                                    break;
+                            }
+                        } while (!breakLoop);
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Sorry, couldn't find. {ex.Message}");
-                    bool something = true;
-                    if (something)
-                    {
-                        phoneNumber = getValidation("Please enter your Phone Number: ", @"^[2-9][\d]{9}$");
-                        address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
-                        Console.WriteLine($"Customer First Name: {userFirstName} \nCustomer Last Name: {userLastName} \nCustomer Address: {address} \nCustomer phone: {phoneNumber}");
-                        context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
-                        //context.SaveChanges();
-                    }
-               
-                }
+                    Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName} in the database. Would you like to be added in database? {ex.Message}");
 
+                    do
+                    {
+                        //Console.WriteLine("1) Yes \n2) No");
+                        Console.Write("Select '1' for Yes / '2' for No: ");
+                        userChoice = Console.ReadLine().Trim();
+                        switch (userChoice)
+                        {
+                            case "1":
+                                bool something = true;
+                                if (something)
+                                {
+                                    phoneNumber = getValidation("Please enter your Phone Number: ", @"^[2-9][\d]{9}$");
+                                    address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
+                                    context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
+                                    context.SaveChanges();
+                                }
+                                break;
+                            default:
+                                Console.WriteLine("Invalid selection");
+                                break;
+                        }
+                    } while (userChoice != "2");
+
+                }
             }
 
             break;
-    case "2":
+        case "2":
 
-        Console.WriteLine("Please Enter Admin Password: ");
+            Console.WriteLine("Please Enter Admin Password: ");
         admin = Console.ReadLine().Trim();
         if (admin == passCode)
         {
@@ -135,8 +206,31 @@ do
                         Console.WriteLine("Add Inven.");
                         break;
                     case "C":
-                          
-                        Console.WriteLine("Disc Prod.");
+                            Console.WriteLine("Disc Prod.");
+                            bool itemsToDiscontinue = true;
+                            int itemToSelect = 0;
+                            string name;
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+                                foreach(Product product in context.Products.ToList())
+                                {
+                                    Console.WriteLine(product.ProductID+"ID "+" Product Name: "+product.ProductName+ " Quantity In Stock: " + product.QuantityInStock+ "Is discontinued? "+product.Discontinued);
+                                }
+                                try
+                                {
+                                    itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
+                                    context.Products.Where(x => x.ProductID == itemToSelect).Single().Discontinued = true;
+                                  
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("ERROR: " + ex.Message);
+                                }
+                               
+                                context.SaveChanges();
+
+                            }
 
                            
                         break;
@@ -192,7 +286,7 @@ int InputNumberFn(string consoleMessage)
 
         if (int.TryParse(Console.ReadLine().Trim(), out NumberOuput) ) validator = true;
 
-        else Console.WriteLine("Invalid entry!! Please enter a whole and positive number!");
+        else Console.WriteLine("Invalid entry!!");
 
     } while (!validator);
 
@@ -261,6 +355,19 @@ decimal getDecimalValue(string inputValue)
         }
     } while (!isValid);
     return output;
+}
+void getProductListFromDatabase()
+{
+    using (DatabaseContext context = new DatabaseContext())
+    {
+        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
+        foreach (Product product in context.Products.ToList())
+        {
+            productIDList.Add(product.ProductID.ToString());
+            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+        }
+
+    }
 }
 
 public class ItemCart
