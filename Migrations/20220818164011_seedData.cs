@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClassroomStart.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class seedData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -149,8 +149,11 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "SupplierID", "Address", "FirstName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { -2, "12275-155 street", "Weston Bakeries", "7804338877" },
-                    { -1, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" }
+                    { -5, "12275-155 street", "Weston Bakeries", "7804338877" },
+                    { -4, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" },
+                    { -3, "7331 104 Street Edmonton, AB T6E 4B9", "Sabroso Foods", "7804825026" },
+                    { -2, "14225 130 Ave NW, Edmonton, AB T5L 4K8", "Wholesale food store", "7804241234" },
+                    { -1, "Athabascan Ave, Edmonton, AB T8N7T7", "G&L Distributors", "7804643186" }
                 });
 
             migrationBuilder.InsertData(

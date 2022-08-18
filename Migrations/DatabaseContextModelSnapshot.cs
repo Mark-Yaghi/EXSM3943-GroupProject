@@ -418,13 +418,34 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -1,
+                            Address = "Athabascan Ave, Edmonton, AB T8N7T7",
+                            CompanyName = "G&L Distributors",
+                            PhoneNumber = "7804643186"
+                        },
+                        new
+                        {
+                            SupplierID = -2,
+                            Address = "14225 130 Ave NW, Edmonton, AB T5L 4K8",
+                            CompanyName = "Wholesale food store",
+                            PhoneNumber = "7804241234"
+                        },
+                        new
+                        {
+                            SupplierID = -3,
+                            Address = "7331 104 Street Edmonton, AB T6E 4B9",
+                            CompanyName = "Sabroso Foods",
+                            PhoneNumber = "7804825026"
+                        },
+                        new
+                        {
+                            SupplierID = -4,
                             Address = "12345-Yellowhead Trail",
                             CompanyName = "Gordon Food Services",
                             PhoneNumber = "7804552213"
                         },
                         new
                         {
-                            SupplierID = -2,
+                            SupplierID = -5,
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
                             PhoneNumber = "7804338877"

@@ -130,9 +130,14 @@ namespace ClassroomStart.Models
 
                 entity.HasData(
                     new Supplier[]
-                    {             //company name,          address,                 phone number
-                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-1},
-                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-2},
+                    {      
+                        
+                        //company name,          address,                 phone number
+                      new Supplier ("G&L Distributors","Athabascan Ave, Edmonton, AB T8N7T7","7804643186"){SupplierID=-1},
+                      new Supplier ("Wholesale food store","14225 130 Ave NW, Edmonton, AB T5L 4K8", "7804241234"){SupplierID=-2},
+                      new Supplier ("Sabroso Foods", "7331 104 Street Edmonton, AB T6E 4B9","7804825026"){SupplierID=-3},
+                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-4},
+                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-5},
 
                     });
 

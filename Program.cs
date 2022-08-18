@@ -78,9 +78,10 @@ do
                 {
                     case "A":
                         string prodName, description;
-                        int qis;
+                        int quantity;
                         decimal productPrice;
-                        bool dis = false;
+                        bool discontinued = false;
+                        int suppliersID=0;
 
                         Console.WriteLine("Add Product: ");
                         Console.WriteLine("Product Name: ");
@@ -88,33 +89,46 @@ do
                         Console.WriteLine("Desciption of Product: ");
                         description = Console.ReadLine().Trim();
                         Console.WriteLine("Quantity: ");
-                        qis = getIntValue(Console.ReadLine().Trim());
-                        Console.WriteLine("Price of Product: ");
-                        String prodPrice = getValidation("Price of Product: ", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$");
+                        quantity = getIntValue(Console.ReadLine().Trim());
+                        
+                        String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
                         productPrice = getDecimalValue(prodPrice);
                             int sup = 0;
-                        using (DatabaseContext context = new DatabaseContext())
-                        {
-                            try
+                            string suppliersName="";
+                            using (DatabaseContext context = new DatabaseContext())
                             {
-                                context.Products.Add(new Product(sup, prodName, description, qis, dis, productPrice)
+                                foreach (Supplier supplier in context.Supplier.ToList())
                                 {
-                                    // For now the SupplierID is added manually 
-                                    SupplierID = -2,
-                                    ProductName = prodName,
-                                    Description = description,
-                                    QuantityInStock = qis,
-                                    Discontinued = dis,
-                                    SalePrice = productPrice,
-                                
+                                    Console.WriteLine(supplier.CompanyName+" "+supplier.SupplierID+" ID");
+                                                                       
+                                }
+                                Console.WriteLine("Select the supplier ID:");
+                                suppliersID = getIntValue(Console.ReadLine().Trim());
+                                suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
+
+                                try
+                            {
+                                    context.Products.Add(new Product(suppliersID, prodName, description, quantity, discontinued, productPrice)
+                                    {
+                                 
+                                        SupplierID = suppliersID,
+                                        ProductName = prodName,
+                                        Description = description,
+                                        QuantityInStock = quantity,
+                                        Discontinued = discontinued,
+                                        SalePrice = productPrice,
+
                                 });
-                            }
+
+                                }
                                 catch (Exception ex)
                                 {
                                     Console.WriteLine("ERROR: " + ex.Message);
                                 }
+                                Console.WriteLine("\n" + "Product: " + prodName + "\n" +"Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice+ "\n"+ "Supplier: " + suppliersName + "\n");
 
-                                context.SaveChanges();
+                                 //context.SaveChanges();
+                                Console.WriteLine(prodName+ "Has been added to the Inventory");
 
                             };
                         break;
@@ -122,7 +136,7 @@ do
                         Console.WriteLine("Add Inven.");
                         break;
                     case "C":
-
+                          
                         Console.WriteLine("Disc Prod.");
 
                            
@@ -174,7 +188,7 @@ int getIntValue(string inputValue)
     int output = 0;
     do
     {
-        if ((int.TryParse(inputValue, out intValue) && intValue > 0))
+        if ((int.TryParse(inputValue, out intValue) ))
         {
             output = intValue;
             isValid = true;
