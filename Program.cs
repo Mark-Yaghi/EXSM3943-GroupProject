@@ -19,7 +19,7 @@ do
 {
     Console.WriteLine("1) Enter \"1\" to Make Purchase \n2) Enter \"2\" For Admin Login \n3) Enter \"0\" to Quit");
     Console.Write("Please select option: ");
-    userChoice = Console.ReadLine().Trim();
+    userChoice = Console.ReadLine().ToUpper().Trim();
     switch (userChoice)
     {
         case "1":
@@ -81,6 +81,11 @@ do
                                             else
                                             {
                                                 foreach (var prodList in cartList) Console.WriteLine(prodList);
+                                                //foreach (var prodList in cartList)
+                                                //{
+                                                //    string price = (prodList.Split("|")[2].Split(":")[1]);
+                                                //    Console.WriteLine("{ 0:C2}", price);
+                                                //}
                                                 Console.WriteLine("Thanks for shopping!!!");
                                                 cartList.Clear();
                                                 breakLoop = true;
@@ -110,7 +115,6 @@ do
 
                     do
                     {
-                        //Console.WriteLine("1) Yes \n2) No");
                         Console.Write("Select '1' for Yes / '2' for No: ");
                         userChoice = Console.ReadLine().Trim();
                         switch (userChoice)
@@ -233,12 +237,15 @@ decimal getDecimalValue(string inputValue)
     decimal output = 0m;
     do
     {
-        if (Decimal.TryParse(inputValue, out deciVal))
+        try
         {
-            output = deciVal;
-            isValid = true;
+            if (Decimal.TryParse(inputValue, out deciVal))
+            {
+                output = deciVal;
+                isValid = true;
+            }
         }
-        else
+        catch (Exception ex)
         {
             Console.WriteLine("You have entered invalid decimal value.");
         }
