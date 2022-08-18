@@ -87,7 +87,7 @@ using (DatabaseContext context = new DatabaseContext())
             break;
         case "2":
 
-            Console.WriteLine("Please Enter Admin Password: ");
+            Console.WriteLine("\nPlease Enter Admin Password: ");
             admin = Console.ReadLine().Trim();
             if (admin == passCode)
             {
@@ -110,9 +110,6 @@ using (DatabaseContext context = new DatabaseContext())
                         case "B":
                             Console.WriteLine("\nYou are in the Add Inventory Section.");
 
-                            //Add product inventory by admin.
-                           //find the id of the product required, take in the number,
-                           //then aadd it to the product and saveChanges();
                            using (DatabaseContext context = new DatabaseContext())
                            {
 
@@ -127,7 +124,7 @@ using (DatabaseContext context = new DatabaseContext())
                                 foreach(Product product in context.Products.ToList())
                                 {
                                    Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Quantity Currently in Stock: "+ product.QuantityInStock);
-                                    //Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+                                 //Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
 
                                 }
 
@@ -162,9 +159,6 @@ using (DatabaseContext context = new DatabaseContext())
                                 }
 
                            }
-
-
-
 
                             break;
                         case "C":
