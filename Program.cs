@@ -87,23 +87,23 @@ do
                         Console.WriteLine("Product Name: ");
                         prodName = Console.ReadLine().Trim();
                         Console.WriteLine("Desciption of Product: ");
-                        description = Console.ReadLine().Trim();
-                        Console.WriteLine("Quantity: ");
-                        quantity = getIntValue(Console.ReadLine().Trim());
+                        description =(Console.ReadLine().Trim());
+                       // Console.WriteLine("Quantity: ");
+                        quantity = getIntValue("Quantity: ");
                         
-                        String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
-                        productPrice = getDecimalValue(prodPrice);
+                       // String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
+                           productPrice = getDecimalValue("Price of Product: ");
                             int sup = 0;
                             string suppliersName="";
                             using (DatabaseContext context = new DatabaseContext())
                             {
+                                Console.WriteLine("Suppliers: \n");
                                 foreach (Supplier supplier in context.Supplier.ToList())
                                 {
-                                    Console.WriteLine(supplier.CompanyName+" "+supplier.SupplierID+" ID");
-                                                                       
+                                    Console.WriteLine(supplier.CompanyName+" "+supplier.SupplierID+" ID");                                    
                                 }
-                                Console.WriteLine("Select the supplier ID:");
-                                suppliersID = getIntValue(Console.ReadLine().Trim());
+                               // Console.WriteLine("Select the supplier ID:");
+                                suppliersID = getIntValue("Select the supplier ID: ");
                                 suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
 
                                 try
@@ -181,27 +181,47 @@ string getValidation(string prompt, string regEx)
 }
 
 
-int getIntValue(string inputValue)
+int getIntValue(string consoleMessage)
 {
-    bool isValid = false;
-    int intValue;
-    int output = 0;
+
+    bool validator = false;
+    int NumberOuput = 0;
+
     do
     {
-        if ((int.TryParse(inputValue, out intValue) ))
-        {
-            output = intValue;
-            isValid = true;
-        }
-        else
-        {
-            Console.WriteLine($"You have entered invalid number.");
-        };
-    } while (!isValid);
+        Console.Write(consoleMessage);
 
-    return output;
+        if (int.TryParse(Console.ReadLine().Trim(), out NumberOuput) ) validator = true;
+
+        else Console.WriteLine("Invalid entry!! Please enter a whole and positive number!");
+
+    } while (!validator);
+
+    return NumberOuput;
 }
 
+decimal getDecimalValue(string consoleMessage)
+{
+
+    bool validator = false;
+    decimal NumberOuput = 0;
+
+    do
+    {
+        Console.Write(consoleMessage);
+
+        if (decimal.TryParse(Console.ReadLine().Trim(), out NumberOuput) && NumberOuput > 0) validator = true;
+
+        else Console.WriteLine("Invalid entry!! Please enter a whole and positive number!");
+
+    } while (!validator);
+
+    return NumberOuput;
+}
+
+
+
+/**
 decimal getDecimalValue(string inputValue)
 {
     bool isValid = false;
@@ -221,7 +241,7 @@ decimal getDecimalValue(string inputValue)
     } while (!isValid);
     return output;
 }
-
+*/
 public class ItemCart
 {
     public string ItemName { get; set; }
