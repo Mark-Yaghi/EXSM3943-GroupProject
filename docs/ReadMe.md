@@ -1,4 +1,5 @@
-## EXSM 3943: C# II - Project thepeasants, https://ualberta-fullstack.slack.com/archives/C03TSQGTWTW https://meet.google.com/hrp-iorw-rxs
+# EXSM 3943: C# II - Project thepeasants
+ https://ualberta-fullstack.slack.com/archives/C03TSQGTWTW https://meet.google.com/hrp-iorw-rxs
 
 ******Passwrod to enter the admin section is : "password"*********************************
 
