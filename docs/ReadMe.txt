@@ -26,10 +26,10 @@ Add product: which allows a new product to be added. Add inventory: which allows
 
 Division of Labour:
 
-Mark Yaghi:
+Mark Yaghi: Wrote DatabaseContext.cs; converted password input to asterisks, wrote the "Add Inventory" section in the Program.cs.
 
 Arv Pandit:
 
-Nick Mbugua:
+Nick Mbugua: I wrote the Models for, Customer, Order, Order Detail and Product. Wrote the add a new product and the discontinued a product in the program.cs
 
 Kristian Denis: Wrote the model Supplier.cs, impimented and seeded this model in DatabaseContext.cs, and wrote README.md.
