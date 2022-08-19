@@ -30,7 +30,7 @@ Division of Labour:
 
 Mark Yaghi: Wrote DatabaseContext.cs; converted password input to asterisks, wrote the "Add Inventory" section in the Program.cs.
 
-Arv Pandit:
+Arv Pandit: Created the entire skeleton of the program.cs including user-facing menus, shopping cart, receipt, adding the user in database if doesn't exisits.  
 
 Nick Mbugua: I wrote the Models for, Customer, Order, Order Detail and Product. Wrote the add a new product and the discontinued a product in the program.cs
 
