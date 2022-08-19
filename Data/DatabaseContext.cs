@@ -141,12 +141,46 @@ namespace ClassroomStart.Models
 
             });
 
-            modelBuilder.Entity<Product>(entity =>
+            //Supplier table goes here. company name, address, phone number 
+
+            modelBuilder.Entity<Supplier>(entity =>
             {
 
-                entity.Property(e => e.SupplierID)
-                      .HasColumnType("int(10)")
-                      .HasColumnName("SupplierID");
+                entity.Property(e => e.CompanyName)
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("FirstName")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.Address)
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("Address")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.PhoneNumber)
+                      .HasColumnType("varchar(10)")
+                      .HasColumnName("PhoneNumber")
+                      .HasMaxLength(10);
+
+                entity.HasData(
+                    new Supplier[]
+                    {      
+                        
+                        //company name,          address,                 phone number
+                      new Supplier ("G&L Distributors","Athabascan Ave, Edmonton, AB T8N7T7","7804643186"){SupplierID=-1},
+                      new Supplier ("Wholesale food store","14225 130 Ave NW, Edmonton, AB T5L 4K8", "7804241234"){SupplierID=-2},
+                      new Supplier ("Sabroso Foods", "7331 104 Street Edmonton, AB T6E 4B9","7804825026"){SupplierID=-3},
+                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-4},
+                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-5},
+
+                    });
+
+            });
+
+
+            modelBuilder.Entity<Product>(entity =>
+            {
 
                 entity.HasIndex(e => e.SupplierID)
                       .HasDatabaseName("FK_" + nameof(Product) + "_" + nameof(Supplier));
@@ -172,17 +206,20 @@ namespace ClassroomStart.Models
                       .HasColumnName("Description")
                       .HasMaxLength(50);
 
+
+
+
                 entity.HasData(
                     new Product[]
-                    {      //supplier ID,prod name, prod description,   quantity on hand,discontinued, price
+                    {             //prod name, prod description,   quantity on hand,discontinued, price
                       new Product(-1,"milk, 2%", "4 L jugs of 2% Milk from Beatrice", 175, false, 4.50m){ProductID=-1},
                       new Product(-1, "milk, skim", "4 L jugs of Skim Milk from Beatrice", 94, true, 4.65m){ProductID=-2},
                       new Product(-1, "milk, chocolate", "4 L jugs of Chocolate Milk from Beatrice", 90, false, 4.70m){ProductID=-3},
                       new Product(-2, "White Bread", "Loaf of white bread from Weston Bakeries", 40, false, 2.85m){ProductID=-4},
                       new Product(-2, "Whole wheat bread", "Loaf of whole wheat bread from Weston Bakeries", 75, false, 3.25m){ProductID=-5},
-                      new Product(-3, "Mandarin Oranges 3 lb bag", "3 lb bag of fresh Mandarin Oranges", 30, false, 8.65m){ProductID=-6},
-                      new Product(-3, "Gala Apples", "3lb bag of Gala Apples", 25, true, 6.50m){ProductID=-7},
-                      new Product(-3, "Carrots", "3 lb bag of carrots from Redcliff, AB", 15, true, 3.65m){ProductID=-8},
+                      new Product(-2, "Mandarin Oranges 3 lb bag", "3 lb bag of fresh Mandarin Oranges", 30, false, 8.65m){ProductID=-6},
+                      new Product(-2, "Gala Apples", "3lb bag of Gala Apples", 25, true, 6.50m){ProductID=-7},
+                      new Product(-2, "Carrots", "3 lb bag of carrots from Redcliff, AB", 15, true, 3.65m){ProductID=-8},
 
                     });
 

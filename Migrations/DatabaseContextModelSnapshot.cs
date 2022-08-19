@@ -358,7 +358,11 @@ namespace ClassroomStart.Migrations
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
                             SalePrice = 8.65m,
+<<<<<<< HEAD
                             SupplierID = -3
+=======
+                            SupplierID = -2
+>>>>>>> Nick
                         },
                         new
                         {
@@ -368,7 +372,11 @@ namespace ClassroomStart.Migrations
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
                             SalePrice = 6.50m,
+<<<<<<< HEAD
                             SupplierID = -3
+=======
+                            SupplierID = -2
+>>>>>>> Nick
                         },
                         new
                         {
@@ -378,7 +386,11 @@ namespace ClassroomStart.Migrations
                             ProductName = "Carrots",
                             QuantityInStock = 15,
                             SalePrice = 3.65m,
+<<<<<<< HEAD
                             SupplierID = -3
+=======
+                            SupplierID = -2
+>>>>>>> Nick
                         });
                 });
 
@@ -418,12 +430,37 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -1,
+<<<<<<< HEAD
+=======
+                            Address = "Athabascan Ave, Edmonton, AB T8N7T7",
+                            CompanyName = "G&L Distributors",
+                            PhoneNumber = "7804643186"
+                        },
+                        new
+                        {
+                            SupplierID = -2,
+                            Address = "14225 130 Ave NW, Edmonton, AB T5L 4K8",
+                            CompanyName = "Wholesale food store",
+                            PhoneNumber = "7804241234"
+                        },
+                        new
+                        {
+                            SupplierID = -3,
+                            Address = "7331 104 Street Edmonton, AB T6E 4B9",
+                            CompanyName = "Sabroso Foods",
+                            PhoneNumber = "7804825026"
+                        },
+                        new
+                        {
+                            SupplierID = -4,
+>>>>>>> Nick
                             Address = "12345-Yellowhead Trail",
                             CompanyName = "Gordon Food Services",
                             PhoneNumber = "7804552213"
                         },
                         new
                         {
+<<<<<<< HEAD
                             SupplierID = -2,
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
@@ -435,6 +472,12 @@ namespace ClassroomStart.Migrations
                             Address = "12355-154 street",
                             CompanyName = "Eberhardt Foods",
                             PhoneNumber = "7804555230"
+=======
+                            SupplierID = -5,
+                            Address = "12275-155 street",
+                            CompanyName = "Weston Bakeries",
+                            PhoneNumber = "7804338877"
+>>>>>>> Nick
                         });
                 });
 

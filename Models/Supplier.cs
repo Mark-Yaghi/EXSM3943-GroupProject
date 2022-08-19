@@ -43,7 +43,7 @@ namespace ClassroomStart.Models
         public string PhoneNumber { get; set; }
 
 
-        // set foreign keys here if and when needed.
+        
         [InverseProperty(nameof(Models.Product.Supplier))]
 
         public virtual ICollection<Product> Products { get; set; }
