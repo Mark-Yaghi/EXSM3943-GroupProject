@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Security.Principal;
 using ClassroomStart.Models;
@@ -28,11 +28,12 @@ do
     switch (userChoice)
     {
         case "1":
-
+            Console.WriteLine("\nWelcome!");
             Console.Write("Enter your First Name: ");
             userFirstName = Console.ReadLine().Trim();
             Console.Write("Enter your Last Name: ");
             userLastName = Console.ReadLine().Trim();
+            Console.WriteLine("");
             using (DatabaseContext context = new DatabaseContext())
             {
                 updateCustLocalListVar();
@@ -42,7 +43,7 @@ do
                     if (userFirstName != customerListFirstName && userLastName != customerListLastName)
                     {
                         Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName} in the database. Would you like to be added in database?");
-                        Console.Write("Select 'Y' for Yes / 'N' for No: ");
+                        Console.Write("To create New User Select 'Y' for Yes / 'N' for No: ");
                         userChoice = Console.ReadLine().ToUpper().Trim();
                         switch (userChoice)
                         {
@@ -54,7 +55,7 @@ do
                                     address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
                                     context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
                                     context.SaveChanges();
-                                    Console.WriteLine("Welcome, new user is created...");
+                                    Console.WriteLine($"\nWelcome, New user ({userFirstName} {userLastName}) is created...");
                                     updateCustLocalListVar();
                                     shoppingCart(customerListFirstName, customerListLastName);
                                 }
@@ -116,7 +117,7 @@ do
                     }
 
                 } while (userChoice != "Q");
-
+                Console.Clear();
             }
             break;
         case "0":
@@ -185,11 +186,11 @@ void getProductListFromDatabase()
 {
     using (DatabaseContext context = new DatabaseContext())
     {
-        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
+        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 15}\n", "ProductID", "Name", "Price", "Qty Avail.");
         foreach (Product product in context.Products.ToList().Where(x => !(x.Discontinued == true && x.QuantityInStock == 0)))
         {
             productIDList.Add(product.ProductID.ToString());
-            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 15}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
         }
 
     }
@@ -206,7 +207,7 @@ void shoppingCart(string custListFN, string custListLN)
             {
                 getProductListFromDatabase();
 
-                Console.Write("Select 'A' to add items to the cart. Select 'B' to Exit: ");
+                Console.Write("\nSelect 'A' to add items to the cart. Select 'B' to Exit: ");
                 userChoice = Console.ReadLine().ToUpper().Trim();
                 switch (userChoice)
                 {
@@ -231,6 +232,7 @@ void shoppingCart(string custListFN, string custListLN)
                                     context.SaveChanges();
                                     getProductListFromDatabase();
                                     cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
+                                    Console.WriteLine("");
                                     foreach (var prodList in cartList) Console.WriteLine(prodList);
                                 }
                                 else
@@ -275,6 +277,7 @@ void shoppingCart(string custListFN, string custListLN)
                         break;
                 }
             } while (!breakLoop);
+            //Console.Clear();
         }
     }
 }

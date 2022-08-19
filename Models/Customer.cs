@@ -11,7 +11,7 @@ namespace ClassroomStart.Models
 {
 
     [Table("Customer")]
-  
+
     public class Customer
 
     {
@@ -20,15 +20,15 @@ namespace ClassroomStart.Models
             FirstName = firstName;
             LastName = lastName;
             Address = address;
-           PhoneNumber = phoneNumber;
+            PhoneNumber = phoneNumber;
 
         }
 
-        
-        [Key] 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-        [Column("customerID", TypeName = "int(10)")] 
-     
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("customerID", TypeName = "int(10)")]
+
         public int CustomerID { get; set; }
 
         [Column("FirstName", TypeName = "varchar(50)")]
@@ -46,16 +46,16 @@ namespace ClassroomStart.Models
         [StringLength(50)]
         [Required]
         public string? Address { get; set; }
-        
-          [Column("PhoneNumber", TypeName = "varchar(10)")]
-          [Required]
-          public string PhoneNumber { get; set; }
-       
+
+        [Column("PhoneNumber", TypeName = "varchar(10)")]
+        [Required]
+        public string PhoneNumber { get; set; }
 
 
-   
+
+
         [InverseProperty(nameof(Models.Order.Customer))]
-   
+
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

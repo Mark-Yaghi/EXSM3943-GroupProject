@@ -18,9 +18,9 @@ namespace ClassroomStart.Models
         public Order(int customerID, DateTime date, decimal totalAmount)
         {
 
+            CustomerID = customerID;
             Date = date;
             TotalAmount = totalAmount;
-            CustomerID = customerID;
         }
 
         [Key]
