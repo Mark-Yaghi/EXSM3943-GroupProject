@@ -1,4 +1,4 @@
-EXSM 3943: C# II - Project thepeasants, https://ualberta-fullstack.slack.com/archives/C03TSQGTWTW https://meet.google.com/hrp-iorw-rxs
+## EXSM 3943: C# II - Project thepeasants, https://ualberta-fullstack.slack.com/archives/C03TSQGTWTW https://meet.google.com/hrp-iorw-rxs
 
 ******Passwrod to enter the admin section is : "password"*********************************
 
@@ -28,10 +28,14 @@ Add product: which allows a new product to be added. Add inventory: which allows
 
 Division of Labour:
 
-Mark Yaghi: Wrote DatabaseContext.cs; converted password input to asterisks, wrote the "Add Inventory" section in the Program.cs.
+### Mark Yaghi:
+* Wrote DatabaseContext.cs; converted password input to asterisks, wrote the "Add Inventory" section in the Program.cs.
 
-Arv Pandit: Created the entire skeleton of the program.cs including user-facing menus, shopping cart, receipt, adding the user in database if doesn't exisits.  
+### Arv Pandit:
+* Created the entire skeleton of the program.cs including user-facing menus, shopping cart, receipt, adding the user in database if doesn't exisits.  
 
-Nick Mbugua: I wrote the Models for, Customer, Order, Order Detail and Product. Wrote the add a new product and the discontinued a product in the program.cs
+### Nick Mbugua:
+* I wrote the Models for, Customer, Order, Order Detail and Product. Wrote the add a new product and the discontinued a product in the program.cs
 
-Kristian Denis: Wrote the model Supplier.cs, impimented and seeded this model in DatabaseContext.cs, and wrote README.md.
+### Kristian Denis:
+* Wrote the model Supplier.cs, impimented and seeded this model in DatabaseContext.cs, and wrote README.md.
