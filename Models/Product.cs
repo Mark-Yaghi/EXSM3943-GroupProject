@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -14,9 +15,10 @@ namespace ClassroomStart.Models
     public class Product
     {
 
-        public Product(string productName, string description, int quantityInStock, bool discontinued,  decimal salePrice)
+        public Product(int supplierID, string productName, string description, int quantityInStock, bool discontinued, decimal salePrice)
 
         {
+            SupplierID = supplierID;
             ProductName = productName;
             Description = description;
             QuantityInStock = quantityInStock;
@@ -29,6 +31,10 @@ namespace ClassroomStart.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ProductID", TypeName = "int(10)")]
         public int ProductID { get; set; }
+
+        [Column("SupplierID", TypeName = "int(10)")]
+        [Required]
+        public int SupplierID { get; set; }
 
 
         [Column("ProductName", TypeName = "varchar(50)")]
@@ -49,7 +55,7 @@ namespace ClassroomStart.Models
 
         [Column("Discontinued", TypeName = "tinyint(1)")]
         [Required]
-       public bool Discontinued { get; set; }
+        public bool Discontinued { get; set; }
 
 
         [Column("SalePrice", TypeName = "decimal(5,2)")]
@@ -57,14 +63,12 @@ namespace ClassroomStart.Models
         public decimal SalePrice { get; set; }
 
 
-
-
         public bool IsEmptyStock
         {
             get { return QuantityInStock == 0; }
         }
 
-        public int AddToStoke(int amount)
+        public int AddToStock(int amount)
         {
             QuantityInStock += amount;
 
@@ -73,15 +77,25 @@ namespace ClassroomStart.Models
 
         public int SellProduct(int amount)
         {
-
-            QuantityInStock -= amount;
+            try
+            {
+                if (amount <= QuantityInStock) QuantityInStock -= amount;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Insufficient Quantity in stock." + ex.Message);
+            }
             return QuantityInStock;
         }
 
+        [ForeignKey(nameof(SupplierID))]
 
+        [InverseProperty(nameof(Models.Supplier.Products))]
+        public virtual Supplier Supplier { get; set; }
 
         [InverseProperty(nameof(Models.OrderDetail.Product))]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
 
 
     }
