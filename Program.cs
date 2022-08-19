@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 
 
+
 string admin = "";
 //const string USER_DATA = "userData.txt";
 string userChoice = "";
@@ -191,26 +192,41 @@ do
                             Console.WriteLine("Description of Product: ");
 
                             description = (Console.ReadLine().Trim());
-                            // Console.WriteLine("Quantity: ");
+                      
                             quantity = InputNumberFn("Quantity: ");
 
-                            // String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
+                       
                             productPrice = DecimalInputNumberFn("Price of Product: ");
+
+                         
 
                             using (DatabaseContext context = new DatabaseContext())
                             {
+
                                 Console.WriteLine("\nSuppliers: ");
                                 foreach (Supplier supplier in context.Supplier.ToList())
                                 {
                                     Console.WriteLine(supplier.CompanyName + " " + supplier.SupplierID + " ID");
                                 }
-                                // Console.WriteLine("Select the supplier ID:");
-                                suppliersID = InputNumberFn("\nSelect the supplier ID: ");
+                                do
+                                {
+                                    suppliersID = InputNumberFn("\nSelect the supplier ID: ");
+                                    if (context.Supplier.Any(x => x.SupplierID == suppliersID))
+                                    {
+                                        validator = true;                              
+                                    }
+                                    else
+                                    {
+                                        validator = false;
+                                        Console.WriteLine("Product ID NOT FOUND!!");
+                                    }
 
-                                suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
+                                } while (!validator);
+                               
 
                                 try
                                 {
+                                    suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
                                     context.Products.Add(new Product(suppliersID, prodName, description, quantity, discontinued, productPrice)
                                     {
                                         SupplierID = suppliersID,
@@ -253,21 +269,19 @@ do
                                     }
 
                                 } while (!validator && addConfrimation != "No");
-                           
 
                             };
                             break;
 
                         case "B":
-                            
-
-                            break;
+          
+                                break;
                         case "C":
                             Console.WriteLine("Products to Discontinue.");
 
                             bool itemsToDiscontinue = true;
-                            int itemToSelect = 0;
-                            string confrim = "";
+                            int itemToSelect ;
+                            string confirm = "";
                              validator = false;
                             string enterInput = "";
                             using (DatabaseContext context = new DatabaseContext())
@@ -277,22 +291,32 @@ do
                                     Console.WriteLine("Product ID# "+product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
                                 }
 
+                                do
+                                {
+                                    
+                                    itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
+                                    var checkingID = (context.Products.Any(x => x.ProductID == itemToSelect));
+                                    if (checkingID) 
+                                    {
+                                       validator = true;
+                                   }
+                                   else
+                                   {
+                                        Console.WriteLine("Product ID NOT FOUND!!");
+                                   }
 
-                                itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
-
-
+                                } while (!validator);
                                 do
                                 {
                                     Console.WriteLine("Would you like to discontinue a product: Yes || No ");
-                                    confrim = Console.ReadLine().Trim();
-                                    switch (confrim)
+                                    confirm = Console.ReadLine().Trim();
+                                    switch (confirm)
                                     {
 
                                         case "Yes":
                                             validator = true;
                                             try
                                             {
-
                                                 context.Products.Where(x => x.ProductID == itemToSelect).Single().Discontinued = true;
 
                                             }
@@ -316,7 +340,7 @@ do
 
                                     }
 
-                                } while (!validator && confrim !="No");
+                                } while (!validator && confirm != "No");
 
 
                             }
