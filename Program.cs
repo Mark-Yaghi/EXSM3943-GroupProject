@@ -174,6 +174,7 @@ do
                     switch (userChoice)
                     {
                         case "A":
+                            bool validator = false;
                             string prodName, description;
                             int quantity;
                             decimal productPrice;
@@ -182,20 +183,20 @@ do
                             string suppliersName = "";
 
                             Console.WriteLine("Add Product: ");
-                           
+
                             Console.WriteLine("Product Name: ");
-                           
+
                             prodName = Console.ReadLine().Trim();
-                            
+
                             Console.WriteLine("Description of Product: ");
-                            
+
                             description = (Console.ReadLine().Trim());
                             // Console.WriteLine("Quantity: ");
                             quantity = InputNumberFn("Quantity: ");
 
                             // String prodPrice = getValidation("Price of Product: \n", @"^[1-9][\d]{0,4}\.?([\d]?){0,2}( )?$" );
                             productPrice = DecimalInputNumberFn("Price of Product: ");
-                     
+
                             using (DatabaseContext context = new DatabaseContext())
                             {
                                 Console.WriteLine("\nSuppliers: ");
@@ -204,8 +205,8 @@ do
                                     Console.WriteLine(supplier.CompanyName + " " + supplier.SupplierID + " ID");
                                 }
                                 // Console.WriteLine("Select the supplier ID:");
-                                suppliersID = InputNumberFn("Select the supplier ID: ");
-                               
+                                suppliersID = InputNumberFn("\nSelect the supplier ID: ");
+
                                 suppliersName = context.Supplier.Where(x => x.SupplierID == suppliersID).Select(x => x.CompanyName).FirstOrDefault();
 
                                 try
@@ -226,17 +227,19 @@ do
                                 {
                                     Console.WriteLine("ERROR: " + ex.Message);
                                 }
-                              
+
                                 string addConfrimation = "";
+                                Console.WriteLine("\n" + "Product: " + prodName + "\n" + "Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice + "\n" + "Supplier: " + suppliersName + "\n");
+                           
                                 do
                                 {
-
-                                    Console.WriteLine("\n" + "Product: " + prodName + "\n" + "Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice + "\n" + "Supplier: " + suppliersName + "\n");
+                                    validator = false;
                                     Console.WriteLine("Please confirm you would like add this Product: Yes || No  ");
                                     addConfrimation = Console.ReadLine().Trim();
                                     switch (addConfrimation)
                                     {
                                         case "Yes":
+                                            validator = true;
                                             context.SaveChanges();
                                             Console.WriteLine(prodName + "Has been added to the Inventory\n");
                                             break;
@@ -247,66 +250,16 @@ do
                                         default:
                                             Console.WriteLine("Invalid entry");
                                             break;
-                                                
                                     }
 
-                                } while (addConfrimation != "No");
+                                } while (!validator && addConfrimation != "No");
+                           
 
                             };
                             break;
-                       
+
                         case "B":
-                            Console.WriteLine("\nYou are in the Add Inventory Section.");
-
-                            using (DatabaseContext context = new DatabaseContext())
-                            {
-
-                                int updateQuantity = 0;
-                                int tempProductID = 0;
-                                int tempQuantityInStock = 0;
-                                string tempProductName = "";
-                                int updatedQuantityOnHand = 0;
-
-                                Console.WriteLine("The following is a list of products in stock.");
-
-                                foreach (Product product in context.Products.ToList())
-                                {
-                                    Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Quantity Currently in Stock: " + product.QuantityInStock);
-                                    // Console.WriteLine("\n{0, 3} {1, 30} {2, 60}", "Product ID: " +product.ProductID, "Product Name:" +product.ProductName, "Quantity Currently In /Stock: " + product.QuantityInStock);
-
-                                }
-
-                                Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
-
-                                try
-                                {
-
-                                    tempProductID = int.Parse(Console.ReadLine().Trim());
-                                    tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
-                                    tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
-
-                                    Console.WriteLine("You entered " + tempProductID);
-
-                                    Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
-
-                                    updateQuantity = int.Parse(Console.ReadLine());
-
-                                    updateQuantity += tempQuantityInStock;
-
-                                    context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
-                                    context.SaveChanges();
-
-                                    updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
-
-                                    Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
-                                }
-
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine("Sorry, an error occurred updating the database. " + ex.Message);
-                                }
-
-                            }
+                            
 
                             break;
                         case "C":
@@ -315,32 +268,31 @@ do
                             bool itemsToDiscontinue = true;
                             int itemToSelect = 0;
                             string confrim = "";
-                            bool validator = false;
+                             validator = false;
                             string enterInput = "";
                             using (DatabaseContext context = new DatabaseContext())
                             {
                                 foreach (Product product in context.Products.ToList().Where(x => x.Discontinued == false))
                                 {
-                                    Console.WriteLine(product.ProductID + "ID " + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
+                                    Console.WriteLine("Product ID# "+product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
                                 }
-                              
+
+
+                                itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
+
+
                                 do
                                 {
-
                                     Console.WriteLine("Would you like to discontinue a product: Yes || No ");
                                     confrim = Console.ReadLine().Trim();
-
                                     switch (confrim)
                                     {
+
                                         case "Yes":
+                                            validator = true;
                                             try
                                             {
-                                                foreach (Product product in context.Products.ToList().Where(x => x.Discontinued == false))
-                                                {
-                                                    Console.WriteLine("Product ID: " + product.ProductID  + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock + "   Discontinued? " + product.Discontinued);
-                                                }
 
-                                                itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
                                                 context.Products.Where(x => x.ProductID == itemToSelect).Single().Discontinued = true;
 
                                             }
@@ -349,7 +301,10 @@ do
                                                 Console.WriteLine("ERROR: " + ex.Message);
                                             }
 
+
                                             context.SaveChanges();
+                                            string itemsToDiscontinuedName = context.Products.Where(x => x.ProductID == itemToSelect).Select(x => x.ProductName).FirstOrDefault();
+                                            Console.WriteLine(itemsToDiscontinuedName + " has now been discontinued");
                                             break;
 
                                         case "No":
@@ -361,7 +316,9 @@ do
 
                                     }
 
-                                } while (confrim != "No");
+                                } while (!validator && confrim !="No");
+
+
                             }
 
                             break;
