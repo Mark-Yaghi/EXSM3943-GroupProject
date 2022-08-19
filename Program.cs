@@ -345,14 +345,136 @@ do
                             }
 
                             break;
+                        case "B":
+                            Console.WriteLine("\nYou are in the Add Inventory Section.");        // ------The code below deals with updating product inventory.
+
+                           using (DatabaseContext context = new DatabaseContext())
+                           {
+
+                                int updateQuantity = 0;
+                                int tempProductID = 0;
+                                int tempQuantityInStock = 0;
+                                string tempProductName = "";
+                                int updatedQuantityOnHand = 0;                               
+                               
+
+                                Console.WriteLine("The following is a list of products in stock.");
+
+
+                                foreach (Product product in context.Products.ToList())
+                                {
+
+                                    context.Entry(product).Reference(x => x.Supplier).Load();   
+                                
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    //Change the color of the product id and name to make them stand out.
+
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName); 
+
+                                    Console.ResetColor();                                       //Reset the color and print the rest of the info in standard font color.
+
+                                    Console.WriteLine("\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock + "\n\t Supplier ID Number & Name: " + product.Supplier.SupplierID + " / " + product.Supplier.CompanyName);
+
+
+                                }
+
+                                Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
+
+                                try
+                                {
+                                    tempProductID = int.Parse(Console.ReadLine().Trim());
+                                    tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+                                    tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
+
+                                    Console.WriteLine("You entered " + tempProductID);
+
+                                    Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
+
+                                    updateQuantity = InputNumberFn("\nPlease enter only numbers.");      //Ensure the user enters only numbers.
+
+                                    bool upDateBool = false;                                   
+                                    string verifyUpdate = "" ;
+
+                                    do
+                                    {
+                                        
+                                        if (updateQuantity < -50 || updateQuantity > 100)         // Ensure the user cannot delete more than 50 units or add more than 100 units.
+                                        {
+                                            Console.WriteLine("Please enter a number between -50 and + 100.");
+
+                                            updateQuantity = InputNumberFn("\nPlease enter only numbers.");
+                                        }
+
+                                        else
+                                        {
+                                           bool confirmUpdate ;
+                                            do
+                                            {
+
+                                                confirmUpdate = false;
+                                                Console.WriteLine("Please confirm you would like to update this product's inventory: Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+                                                        updateQuantity += tempQuantityInStock;
+
+                                                        context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
+                                                        context.SaveChanges();
+
+                                                        updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+
+                                                        Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
+                                                        upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate!= "NO");                                            
+                                        }
+
+                                    } while (!upDateBool);
+                                }
+
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
+                                {
+                                    if (ex.Message == "Sequence contains no elements")
+                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
+
+                                    else if (ex.Message == "Input string was not in a correct format.")
+                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
+                           }
+
+                            break;
+                        case "C":
+                            Console.WriteLine("Disc Prod.");
+
+
+
+
+                            break;
+                       
+                        
                         case "Q":
                             break;
+                       
+                        
                         default:
-                            Console.WriteLine("Invalid option. Please try again !!!");
+                            Console.WriteLine("Invalid option. Please try again.");
                             break;
                     }
 
-                } while (userChoice != "Q");
+                } while (userChoice.ToUpper() != "Q");
 
 
             }

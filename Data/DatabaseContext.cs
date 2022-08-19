@@ -14,13 +14,11 @@ namespace ClassroomStart.Models
 
 
         public DatabaseContext()
-
         {
 
         }
 
         public DatabaseContext(DbContextOptions<DbContext> options) : base(options)
-
         {
 
         }
@@ -59,6 +57,8 @@ namespace ClassroomStart.Models
                 entity.Property(e => e.Address)
                       .HasColumnType("varchar(50)")
                       .HasColumnName("Address")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
                       .HasMaxLength(50);
 
                 entity.Property(e => e.PhoneNumber)
@@ -116,7 +116,40 @@ namespace ClassroomStart.Models
             modelBuilder.Entity<Order>(entity =>
             {
 
+                entity.Property(e => e.CompanyName)
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("CompanyName")
+                      .HasMaxLength(50);
 
+                entity.Property(e => e.Address)
+                      .HasColumnType("varchar(50)")
+                      .HasColumnName("Address")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.PhoneNumber)
+                      .HasColumnType("varchar(10)")
+                      .HasColumnName("PhoneNumber")
+                      .HasCharSet("utf8mb4")
+                      .UseCollation("utf8mb4_general_ci")
+                      .HasMaxLength(10);
+
+                entity.HasData(
+                    new Supplier[]
+                    {             //company name,          address,                 phone number
+                      new Supplier("Gordon Food Services", "12345-Yellowhead Trail", "7804552213"){SupplierID=-1},
+                      new Supplier("Weston Bakeries", "12275-155 street","7804338877"){SupplierID=-2},
+                      new Supplier("Eberhardt Foods", "12355-154 street", "7804555230"){SupplierID=-3},
+
+                    });
+
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
                 entity.HasIndex(e => e.CustomerID)
                       .HasDatabaseName("FK_" + nameof(Order) + "_" + nameof(Customer));
 
@@ -126,6 +159,19 @@ namespace ClassroomStart.Models
                       .HasForeignKey(x => x.CustomerID)
                       .HasConstraintName("FK_" + nameof(Order) + "_" + nameof(Customer))
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(e => e.TotalAmount)
+                      .HasColumnType("decimal(10,2)")
+                      .HasColumnName("TotalAmount");
+
+                entity.Property(e => e.Date)
+                      .HasColumnType("DateTime")
+                      .HasColumnName("Date");
+
+                entity.Property(e => e.SalePrice)
+                      .HasColumnType("decimal(10,2)")
+                      .HasColumnName("SalePrice");
+
 
                 entity.HasData(
                     new Order[]
@@ -192,6 +238,12 @@ namespace ClassroomStart.Models
                      .HasConstraintName("FK_" + nameof(Product) + "_" + nameof(Supplier))
                      .OnDelete(DeleteBehavior.Restrict);
 
+                entity.HasOne(x => x.Supplier)
+                     .WithMany(y => y.Products)
+                     .HasForeignKey(x => x.SupplierID)
+                     .HasConstraintName("FK_" + nameof(Product) + "_" + nameof(Supplier))
+                     .OnDelete(DeleteBehavior.Restrict);
+
                 entity.Property(e => e.ProductName)
                       .HasCharSet("utf8mb4")
                       .UseCollation("utf8mb4_general_ci")
@@ -229,7 +281,6 @@ namespace ClassroomStart.Models
             modelBuilder.Entity<OrderDetail>(entity =>
             {
 
-
                 entity.HasIndex(e => e.OrderID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
 
@@ -239,8 +290,6 @@ namespace ClassroomStart.Models
                       .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Order))
                       .OnDelete(DeleteBehavior.Restrict);
 
-
-
                 entity.HasIndex(e => e.ProductID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Product));
 
@@ -249,6 +298,9 @@ namespace ClassroomStart.Models
                       .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Product))
                       .OnDelete(DeleteBehavior.Restrict);
 
+                entity.Property(e => e.QuantityOrdered)
+                      .HasColumnType("int(10)")
+                      .HasColumnName("QuantityOrdered");
 
 
                 entity.HasData(

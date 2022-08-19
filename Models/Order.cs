@@ -15,7 +15,7 @@ namespace ClassroomStart.Models
     public class Order
     {
 
-        public Order(int customerID, DateTime date, decimal totalAmount)
+        public Order(int customerID, decimal totalAmount, DateTime date, decimal salePrice)
         {
             CustomerID = customerID;
             Date = date;
@@ -25,11 +25,11 @@ namespace ClassroomStart.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("orderID", TypeName = "int(10)")]
+        [Column("OrderID", TypeName = "int(10)")]
         public int OrderID { get; set; }
 
 
-        [Column("customerID", TypeName = "int(10)")]
+        [Column("CustomerID", TypeName = "int(10)")]
         [Required]
         public int CustomerID { get; set; }
 
@@ -51,7 +51,10 @@ namespace ClassroomStart.Models
         [ForeignKey(nameof(CustomerID))]
 
         [InverseProperty(nameof(Models.Customer.Orders))]
+
+        //[InverseProperty(nameof(Models.OrderDetail.OrderDetailID))]
         public virtual Customer Customer { get; set; }
+
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

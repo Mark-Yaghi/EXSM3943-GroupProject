@@ -23,7 +23,7 @@ namespace ClassroomStart.Models
             Description = description;
             QuantityInStock = quantityInStock;
             Discontinued = discontinued;
-            SalePrice = salePrice;
+            SalePrice = salePrice;            
         }
 
 
