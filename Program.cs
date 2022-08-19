@@ -13,10 +13,6 @@ string userName = "";
 string phoneNumber;
 string address;
 
-
-
-
-
 using (DatabaseContext context = new DatabaseContext())
 {
 
@@ -95,7 +91,7 @@ using (DatabaseContext context = new DatabaseContext())
             var pass = string.Empty;
             ConsoleKey key;
 
-            do
+            do         // the code below deals with converting the user's input to a password format (asterisks instead of letters.)
             {
                 var keyInfo = Console.ReadKey(intercept: true);
                 key = keyInfo.Key; // Console.ReadKey(true);
@@ -135,7 +131,7 @@ using (DatabaseContext context = new DatabaseContext())
 
                             break;
                         case "B":
-                            Console.WriteLine("\nYou are in the Add Inventory Section.");
+                            Console.WriteLine("\nYou are in the Add Inventory Section.");        // ------The code below deals with updating product inventory.
 
                            using (DatabaseContext context = new DatabaseContext())
                            {
@@ -144,21 +140,25 @@ using (DatabaseContext context = new DatabaseContext())
                                 int tempProductID = 0;
                                 int tempQuantityInStock = 0;
                                 string tempProductName = "";
-                                int updatedQuantityOnHand = 0;
-                              //  int tempSupplierID = 0;
-                               // string tempSupplierName = "";
+                                int updatedQuantityOnHand = 0;                               
+                               
 
                                 Console.WriteLine("The following is a list of products in stock.");
-                                
-                                foreach(Product product in context.Products.ToList())
+
+
+                                foreach (Product product in context.Products.ToList())
                                 {
 
-                                    // tempSupplierID = context.Products.Where(x => x.ProductID == tempProductID).Single().SupplierID;
-                                    // tempSupplierName = context.Supplier.Where(x => x.SupplierID == tempSupplierID).Single().CompanyName;
-                                    // Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Description: " + product.Description +"\t Quantity Currently in Stock: "+ product.QuantityInStock);
-                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName + "\n\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock);// + "\n\t Supplier Name: " + tempSupplierName);
+                                    context.Entry(product).Reference(x => x.Supplier).Load();   
+                                
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    //Change the color of the product id and name to make them stand out.
 
-                                    // Console.WriteLine("\n{0, 3} {1, 30} {2, 60} {3, 30}", "Product ID: " +product.ProductID, "Product Name: " +product.ProductName, "Description: " + product.Description, "Quantity Currently In /Stock: " + product.QuantityInStock);
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName); 
+
+                                    Console.ResetColor();                                       //Reset the color and print the rest of the info in standard font color.
+
+                                    Console.WriteLine("\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock + "\n\t Supplier ID Number & Name: " + product.Supplier.SupplierID + " / " + product.Supplier.CompanyName);
+
 
                                 }
 
@@ -174,20 +174,62 @@ using (DatabaseContext context = new DatabaseContext())
 
                                     Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
 
-                                    updateQuantity = int.Parse(Console.ReadLine());
+                                    updateQuantity = InputNumberFn("\nPlease enter only numbers.");      //Ensure the user enters only numbers.
 
-                                    updateQuantity += tempQuantityInStock;
+                                    bool upDateBool = false;                                   
+                                    string verifyUpdate = "" ;
 
-                                    context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
-                                    context.SaveChanges();
+                                    do
+                                    {
+                                        
+                                        if (updateQuantity < -50 || updateQuantity > 100)         // Ensure the user cannot delete more than 50 units or add more than 100 units.
+                                        {
+                                            Console.WriteLine("Please enter a number between -50 and + 100.");
 
-                                    updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+                                            updateQuantity = InputNumberFn("\nPlease enter only numbers.");
+                                        }
 
-                                    Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
-                                    
+                                        else
+                                        {
+                                           bool confirmUpdate ;
+                                            do
+                                            {
+
+                                                confirmUpdate = false;
+                                                Console.WriteLine("Please confirm you would like to update this product's inventory: Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+                                                        updateQuantity += tempQuantityInStock;
+
+                                                        context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
+                                                        context.SaveChanges();
+
+                                                        updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+
+                                                        Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
+                                                        upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate!= "NO");                                            
+                                        }
+
+                                    } while (!upDateBool);
                                 }
 
-                                catch (Exception ex)
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
                                 {
                                     if (ex.Message == "Sequence contains no elements")
                                         Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
@@ -253,3 +295,22 @@ string getValidation(string prompt, string regEx)
 //    public string UserName { get; set; }
 //    public int PhoneNumber { get; set; }
 //}
+
+int InputNumberFn(string consoleMessage)
+{
+
+    bool validator = false;
+    int NumberOuput = 0;
+
+    do
+    {
+        Console.Write(consoleMessage);
+
+        if (int.TryParse(Console.ReadLine().Trim(), out NumberOuput)) validator = true;
+
+        else Console.WriteLine("Invalid entry!!");
+
+    } while (!validator);
+
+    return NumberOuput;
+}

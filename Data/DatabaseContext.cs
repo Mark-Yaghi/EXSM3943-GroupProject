@@ -208,7 +208,6 @@ namespace ClassroomStart.Models
             modelBuilder.Entity<OrderDetail>(entity =>
             {
 
-
                 entity.HasIndex(e => e.OrderID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Order));
 
@@ -217,8 +216,6 @@ namespace ClassroomStart.Models
                       .HasForeignKey(x => x.OrderID)
                       .HasConstraintName("FK_" + nameof(OrderDetail) + "_" + nameof(Order))
                       .OnDelete(DeleteBehavior.Restrict);
-
-
 
                 entity.HasIndex(e => e.ProductID)
                       .HasDatabaseName("FK_" + nameof(OrderDetail) + "_" + nameof(Product));
