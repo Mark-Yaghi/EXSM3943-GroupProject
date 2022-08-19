@@ -30,10 +30,7 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Address")
-                        .UseCollation("utf8mb4_general_ci");
-
-                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("Address"), "utf8mb4");
+                        .HasColumnName("Address");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -57,10 +54,7 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
-                        .HasColumnName("PhoneNumber")
-                        .UseCollation("utf8mb4_general_ci");
-
-                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("PhoneNumber"), "utf8mb4");
+                        .HasColumnName("PhoneNumber");
 
                     b.HasKey("CustomerID");
 
@@ -122,11 +116,11 @@ namespace ClassroomStart.Migrations
                     b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int(10)")
-                        .HasColumnName("OrderID");
+                        .HasColumnName("orderID");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int(10)")
-                        .HasColumnName("CustomerID");
+                        .HasColumnName("customerID");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("DateTime")
@@ -153,7 +147,7 @@ namespace ClassroomStart.Migrations
                             OrderID = -1,
                             CustomerID = -1,
                             Date = new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 14.99m,
+                            SalePrice = 0m,
                             TotalAmount = 75.42m
                         },
                         new
@@ -161,32 +155,32 @@ namespace ClassroomStart.Migrations
                             OrderID = -2,
                             CustomerID = -4,
                             Date = new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 27.99m,
-                            TotalAmount = 185.92m
+                            SalePrice = 0m,
+                            TotalAmount = 75.42m
                         },
                         new
                         {
                             OrderID = -3,
                             CustomerID = -1,
                             Date = new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 38.95m,
-                            TotalAmount = 275.82m
+                            SalePrice = 0m,
+                            TotalAmount = 75.42m
                         },
                         new
                         {
                             OrderID = -4,
                             CustomerID = -6,
                             Date = new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 44.75m,
-                            TotalAmount = 975.58m
+                            SalePrice = 0m,
+                            TotalAmount = 75.42m
                         },
                         new
                         {
                             OrderID = -5,
                             CustomerID = -2,
                             Date = new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 58.25m,
-                            TotalAmount = 14.39m
+                            SalePrice = 0m,
+                            TotalAmount = 75.42m
                         });
                 });
 
@@ -364,15 +358,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
                             SalePrice = 8.65m,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            SupplierID = -3
-=======
                             SupplierID = -2
->>>>>>> Nick
-=======
-                            SupplierID = -3
->>>>>>> Mark
                         },
                         new
                         {
@@ -382,15 +368,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
                             SalePrice = 6.50m,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            SupplierID = -3
-=======
                             SupplierID = -2
->>>>>>> Nick
-=======
-                            SupplierID = -3
->>>>>>> Mark
                         },
                         new
                         {
@@ -400,15 +378,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Carrots",
                             QuantityInStock = 15,
                             SalePrice = 3.65m,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            SupplierID = -3
-=======
                             SupplierID = -2
->>>>>>> Nick
-=======
-                            SupplierID = -3
->>>>>>> Mark
                         });
                 });
 
@@ -423,14 +393,7 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
-<<<<<<< HEAD
                         .HasColumnName("Address");
-=======
-                        .HasColumnName("Address")
-                        .UseCollation("utf8mb4_general_ci");
-
-                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("Address"), "utf8mb4");
->>>>>>> Mark
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -445,14 +408,7 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
-<<<<<<< HEAD
                         .HasColumnName("PhoneNumber");
-=======
-                        .HasColumnName("PhoneNumber")
-                        .UseCollation("utf8mb4_general_ci");
-
-                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("PhoneNumber"), "utf8mb4");
->>>>>>> Mark
 
                     b.HasKey("SupplierID");
 
@@ -462,9 +418,6 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -1,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
                             Address = "Athabascan Ave, Edmonton, AB T8N7T7",
                             CompanyName = "G&L Distributors",
                             PhoneNumber = "7804643186"
@@ -486,39 +439,16 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -4,
->>>>>>> Nick
-=======
->>>>>>> Mark
                             Address = "12345-Yellowhead Trail",
                             CompanyName = "Gordon Food Services",
                             PhoneNumber = "7804552213"
                         },
                         new
                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Mark
-                            SupplierID = -2,
-                            Address = "12275-155 street",
-                            CompanyName = "Weston Bakeries",
-                            PhoneNumber = "7804338877"
-                        },
-                        new
-                        {
-                            SupplierID = -3,
-                            Address = "12355-154 street",
-                            CompanyName = "Eberhardt Foods",
-                            PhoneNumber = "7804555230"
-<<<<<<< HEAD
-=======
                             SupplierID = -5,
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
                             PhoneNumber = "7804338877"
->>>>>>> Nick
-=======
->>>>>>> Mark
                         });
                 });
 

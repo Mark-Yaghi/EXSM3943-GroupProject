@@ -7,116 +7,48 @@ using System.Text.RegularExpressions;
 
 
 
-string admin = "";
-//const string USER_DATA = "userData.txt";
 string userChoice = "";
 string userFirstName = "";
 string userLastName = "";
 string phoneNumber;
 string address;
+var customerList = new List<string>();
 var productIDList = new List<string>();
 var cartList = new List<string>();
+string customerListFirstName = "";
+string customerListLastName = "";
+string customerListID = "";
 do
 {
     Console.WriteLine("1) Enter \"1\" to Make Purchase \n2) Enter \"2\" For Admin Login \n3) Enter \"0\" to Quit");
-    Console.Write("Please select option: ");
+    Console.Write("\nPlease select option: ");
+
     userChoice = Console.ReadLine().Trim();
+    Console.WriteLine("");
     switch (userChoice)
     {
         case "1":
+            Console.Clear();
+            Console.WriteLine("\nWelcome!");
             Console.Write("Enter your First Name: ");
             userFirstName = Console.ReadLine().Trim();
             Console.Write("Enter your Last Name: ");
             userLastName = Console.ReadLine().Trim();
+            Console.WriteLine("");
             using (DatabaseContext context = new DatabaseContext())
             {
-
+                updateCustLocalListVar();
                 try
                 {
-                    var userID = context.Customers.Where(x => x.FirstName == userFirstName && x.LastName == userLastName).SingleOrDefault().CustomerID;
-                    if (userID != null)
+                    shoppingCart(customerListFirstName, customerListLastName);
+                    if (userFirstName != customerListFirstName && userLastName != customerListLastName)
                     {
-                        bool breakLoop = false;
-                        do
-                        {
-                            getProductListFromDatabase();
-
-                            Console.Write("Select 'a' to add items to the cart. Select 'b' to Exit: ");
-                            userChoice = Console.ReadLine().ToUpper().Trim();
-                            switch (userChoice)
-                            {
-                                case "A":
-                                    Console.WriteLine("Shopping cart");
-                                    do
-                                    {
-                                        Console.Write("Add Item to Cart: ");
-                                        string addItem = Console.ReadLine().ToUpper().Trim();
-
-                                        if (productIDList.Contains(addItem))
-                                        {
-                                            string quantity = getValidation("Quantity (min 0 and max 99 per item) : ", @"^[\d]{0,2}$");
-                                            int itemIntValue = getIntValue(addItem);
-                                            int quantityIntValue = getIntValue(quantity);
-                                            var selectedProd = context.Products.Where(x => x.ProductID == itemIntValue).Single();
-                                            if (quantityIntValue <= selectedProd.QuantityInStock)
-                                            {
-                                                var itemName = selectedProd.ProductName;
-                                                var productPrice = selectedProd.SalePrice;
-                                                var newQIH = selectedProd.SellProduct(quantityIntValue);
-                                                context.SaveChanges();
-                                                getProductListFromDatabase();
-                                                cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
-                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("Sorry, insufficient Quantity.");
-                                            }
-
-
-                                            Console.WriteLine("Press 'Enter' to add another item or 'q' to Quit: ");
-                                            if (Console.ReadLine().ToUpper().Trim() != "Q")
-                                            {
-                                                breakLoop = false;
-                                            }
-                                            else
-                                            {
-                                                foreach (var prodList in cartList) Console.WriteLine(prodList);
-                                                Console.WriteLine("Thanks for shopping!!!");
-                                                cartList.Clear();
-                                                breakLoop = true;
-                                                userChoice = "0";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Item is not in the list.");
-                                        }
-                                    } while (!breakLoop);
-                                    break;
-                                case "B":
-                                    breakLoop = true;
-                                    break;
-                                default:
-                                    Console.WriteLine("Worng selection! Please choose 'a' for shopping cart, 'b' to exit.");
-                                    break;
-                            }
-                        } while (!breakLoop);
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName} in the database. Would you like to be added in database? {ex.Message}");
-
-                    do
-                    {
-                        //Console.WriteLine("1) Yes \n2) No");
-                        Console.Write("Select '1' for Yes / '2' for No: ");
-                        userChoice = Console.ReadLine().Trim();
+                        Console.WriteLine($"Sorry, couldn't find {userFirstName} {userLastName} in the database. Would you like to be added in database?");
+                        Console.Write("To create New User Select 'Y' for Yes / 'N' for No: ");
+                        userChoice = Console.ReadLine().ToUpper().Trim();
                         switch (userChoice)
                         {
-                            case "1":
+                            case "Y":
                                 bool something = true;
                                 if (something)
                                 {
@@ -124,14 +56,22 @@ do
                                     address = getValidation("Please enter your Address: ", @"^[A-Za-z\d#][\w\s.,-]{1,50}$");
                                     context.Customers.Add(new Customer(userFirstName, userLastName, address, phoneNumber) { });
                                     context.SaveChanges();
+                                    Console.WriteLine($"\nWelcome, New user ({userFirstName} {userLastName}) is created...");
+                                    updateCustLocalListVar();
+                                    shoppingCart(customerListFirstName, customerListLastName);
                                 }
+                                break;
+                            case "N":
                                 break;
                             default:
                                 Console.WriteLine("Invalid selection");
                                 break;
                         }
-                    } while (userChoice != "2");
-
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
 
@@ -165,16 +105,17 @@ do
             } while (key != ConsoleKey.Enter);
 
             if (pass == passCode)
-                //
+            //
 
             {
                 do
                 {
-                    Console.WriteLine("1) Add product \"A\" 2) Add Inventory\"B\" 3) Discontinue the Product \"C\" 4) Admin Logout\"Q\" ");
+                    Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory\"B\" \n 3) Discontinue the Product \"C\" \n 4) Admin Logout\"Q\" ");
                     userChoice = Console.ReadLine().Trim();
-                    switch (userChoice)
+                    switch (userChoice.ToUpper())
                     {
                         case "A":
+                            Console.Clear();
                             bool validator = false;
                             string prodName, description;
                             int quantity;
@@ -192,13 +133,13 @@ do
                             Console.WriteLine("Description of Product: ");
 
                             description = (Console.ReadLine().Trim());
-                      
+
                             quantity = InputNumberFn("Quantity: ");
 
-                       
+
                             productPrice = DecimalInputNumberFn("Price of Product: ");
 
-                         
+
 
                             using (DatabaseContext context = new DatabaseContext())
                             {
@@ -213,7 +154,7 @@ do
                                     suppliersID = InputNumberFn("\nSelect the supplier ID: ");
                                     if (context.Supplier.Any(x => x.SupplierID == suppliersID))
                                     {
-                                        validator = true;                              
+                                        validator = true;
                                     }
                                     else
                                     {
@@ -222,7 +163,7 @@ do
                                     }
 
                                 } while (!validator);
-                               
+
 
                                 try
                                 {
@@ -246,7 +187,7 @@ do
 
                                 string addConfrimation = "";
                                 Console.WriteLine("\n" + "Product: " + prodName + "\n" + "Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice + "\n" + "Supplier: " + suppliersName + "\n");
-                           
+
                                 do
                                 {
                                     validator = false;
@@ -267,43 +208,154 @@ do
                                             Console.WriteLine("Invalid entry");
                                             break;
                                     }
-                                    
+
                                 } while (!validator && addConfrimation != "NO");
-                                Console.Clear();
+                          
                             };
                             break;
 
                         case "B":
-          
-                                break;
+                            Console.Clear();
+                            Console.WriteLine("\nYou are in the Add Inventory Section.");        // ------The code below deals with updating product inventory.
+
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+
+                                int updateQuantity = 0;
+                                int tempProductID = 0;
+                                int tempQuantityInStock = 0;
+                                string tempProductName = "";
+                                int updatedQuantityOnHand = 0;
+
+
+                                Console.WriteLine("The following is a list of products in stock.");
+
+
+                                foreach (Product product in context.Products.ToList())
+                                {
+
+                                    context.Entry(product).Reference(x => x.Supplier).Load();
+
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    //Change the color of the product id and name to make them stand out.
+
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName);
+
+                                    Console.ResetColor();                                       //Reset the color and print the rest of the info in standard font color.
+
+                                    Console.WriteLine("\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock + "\n\t Supplier ID Number & Name: " + product.Supplier.SupplierID + " / " + product.Supplier.CompanyName);
+
+
+                                }
+
+                                Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
+
+                                try
+                                {
+                                    tempProductID = int.Parse(Console.ReadLine().Trim());
+                                    tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+                                    tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
+
+                                    Console.WriteLine("You entered " + tempProductID);
+
+                                    Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
+
+                                    updateQuantity = InputNumberFn("\nPlease enter only numbers.");      //Ensure the user enters only numbers.
+
+                                    bool upDateBool = false;
+                                    string verifyUpdate = "";
+
+                                    do
+                                    {
+
+                                        if (updateQuantity < -50 || updateQuantity > 100)         // Ensure the user cannot delete more than 50 units or add more than 100 units.
+                                        {
+                                            Console.WriteLine("Please enter a number between -50 and + 100.");
+
+                                            updateQuantity = InputNumberFn("\nPlease enter only numbers.");
+                                        }
+
+                                        else
+                                        {
+                                            bool confirmUpdate;
+                                            do
+                                            {
+
+                                                confirmUpdate = false;
+                                                Console.WriteLine("Please confirm you would like to update this product's inventory: Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+                                                        updateQuantity += tempQuantityInStock;
+
+                                                        context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
+                                                        context.SaveChanges();
+
+                                                        updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+
+                                                        Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
+                                                        upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate != "NO");
+                                        }
+
+                                    } while (!upDateBool);
+                                }
+
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
+                                {
+                                    if (ex.Message == "Sequence contains no elements")
+                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
+
+                                    else if (ex.Message == "Input string was not in a correct format.")
+                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
+                            }
+
+
+                            break;
                         case "C":
+                            Console.Clear();
                             Console.WriteLine("Products to Discontinue.");
 
                             bool itemsToDiscontinue = true;
-                            int itemToSelect ;
+                            int itemToSelect;
                             string confirm = "";
-                             validator = false;
+                            validator = false;
                             string enterInput = "";
                             using (DatabaseContext context = new DatabaseContext())
                             {
                                 foreach (Product product in context.Products.ToList().Where(x => x.Discontinued == false))
                                 {
-                                    Console.WriteLine("Product ID# "+product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
+                                    Console.WriteLine("Product ID# " + product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
                                 }
 
                                 do
                                 {
-                                    
+
                                     itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
                                     var checkingID = (context.Products.Any(x => x.ProductID == itemToSelect));
-                                    if (checkingID) 
+                                    if (checkingID)
                                     {
-                                       validator = true;
-                                   }
-                                   else
-                                   {
+                                        validator = true;
+                                    }
+                                    else
+                                    {
                                         Console.WriteLine("Product ID NOT FOUND!!");
-                                   }
+                                    }
 
                                 } while (!validator);
                                 do
@@ -338,137 +390,19 @@ do
                                             break;
 
                                     }
-                                    
+
                                 } while (!validator && confirm != "NO");
 
-                                Console.Clear();
                             }
 
                             break;
-                        case "B":
-                            Console.WriteLine("\nYou are in the Add Inventory Section.");        // ------The code below deals with updating product inventory.
-
-                           using (DatabaseContext context = new DatabaseContext())
-                           {
-
-                                int updateQuantity = 0;
-                                int tempProductID = 0;
-                                int tempQuantityInStock = 0;
-                                string tempProductName = "";
-                                int updatedQuantityOnHand = 0;                               
-                               
-
-                                Console.WriteLine("The following is a list of products in stock.");
-
-
-                                foreach (Product product in context.Products.ToList())
-                                {
-
-                                    context.Entry(product).Reference(x => x.Supplier).Load();   
-                                
-                                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    //Change the color of the product id and name to make them stand out.
-
-                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName); 
-
-                                    Console.ResetColor();                                       //Reset the color and print the rest of the info in standard font color.
-
-                                    Console.WriteLine("\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock + "\n\t Supplier ID Number & Name: " + product.Supplier.SupplierID + " / " + product.Supplier.CompanyName);
-
-
-                                }
-
-                                Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
-
-                                try
-                                {
-                                    tempProductID = int.Parse(Console.ReadLine().Trim());
-                                    tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
-                                    tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
-
-                                    Console.WriteLine("You entered " + tempProductID);
-
-                                    Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
-
-                                    updateQuantity = InputNumberFn("\nPlease enter only numbers.");      //Ensure the user enters only numbers.
-
-                                    bool upDateBool = false;                                   
-                                    string verifyUpdate = "" ;
-
-                                    do
-                                    {
-                                        
-                                        if (updateQuantity < -50 || updateQuantity > 100)         // Ensure the user cannot delete more than 50 units or add more than 100 units.
-                                        {
-                                            Console.WriteLine("Please enter a number between -50 and + 100.");
-
-                                            updateQuantity = InputNumberFn("\nPlease enter only numbers.");
-                                        }
-
-                                        else
-                                        {
-                                           bool confirmUpdate ;
-                                            do
-                                            {
-
-                                                confirmUpdate = false;
-                                                Console.WriteLine("Please confirm you would like to update this product's inventory: Yes || No ");
-                                                verifyUpdate = Console.ReadLine().Trim();
-                                                switch (verifyUpdate.ToUpper())
-                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
-
-                                                    case "YES":
-                                                        updateQuantity += tempQuantityInStock;
-
-                                                        context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
-                                                        context.SaveChanges();
-
-                                                        updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
-
-                                                        Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
-                                                        upDateBool = true;
-                                                        confirmUpdate = true;
-                                                        break;
-
-                                                    case "NO":
-                                                        //breakout of the switch/do while
-                                                        break;
-
-                                                    default:
-                                                        Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
-                                                        break;
-
-                                                }
-                                            } while (!confirmUpdate && verifyUpdate!= "NO");                                            
-                                        }
-
-                                    } while (!upDateBool);
-                                }
-
-                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
-                                {
-                                    if (ex.Message == "Sequence contains no elements")
-                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
-
-                                    else if (ex.Message == "Input string was not in a correct format.")
-                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
-                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
-                                }
-                           }
-
-                            break;
-                        case "C":
-                            Console.WriteLine("Disc Prod.");
 
 
 
-
-                            break;
-                       
-                        
                         case "Q":
                             break;
-                       
-                        
+
+
                         default:
                             Console.WriteLine("Invalid option. Please try again.");
                             break;
@@ -493,16 +427,6 @@ do
 } while (userChoice != "0");
 
 
-string getValidation(string prompt, string regEx)
-{
-    string output = "";
-    do
-    {
-        Console.Write(prompt);
-        output = Console.ReadLine().ToUpper().Trim();
-    } while (!new Regex(regEx).IsMatch(output));
-    return output;
-}
 
 /////
 int InputNumberFn(string consoleMessage)
@@ -545,6 +469,18 @@ decimal DecimalInputNumberFn(string consoleMessage)
 }
 
 //////
+///
+string getValidation(string prompt, string regEx)
+{
+    string output = "";
+    do
+    {
+        Console.Write(prompt);
+        output = Console.ReadLine().ToUpper().Trim();
+    } while (!new Regex(regEx).IsMatch(output));
+    return output;
+}
+
 
 int getIntValue(string inputValue)
 {
@@ -567,7 +503,6 @@ int getIntValue(string inputValue)
     return output;
 }
 
-
 decimal getDecimalValue(string inputValue)
 {
     bool isValid = false;
@@ -587,29 +522,120 @@ decimal getDecimalValue(string inputValue)
     } while (!isValid);
     return output;
 }
+
 void getProductListFromDatabase()
 {
     using (DatabaseContext context = new DatabaseContext())
     {
-        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}\n", "ProductID", "Name", "Price", "QIS");
-        foreach (Product product in context.Products.ToList())
+        Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 15}\n", "ProductID", "Name", "Price", "Qty Avail.");
+        foreach (Product product in context.Products.ToList().Where(x => !(x.Discontinued == true && x.QuantityInStock == 0)))
         {
             productIDList.Add(product.ProductID.ToString());
-            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 10}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
+            Console.WriteLine("{0, 10} {1, 30} {2, 10:C2} {3, 15}", product.ProductID, product.ProductName, product.SalePrice, product.QuantityInStock);
         }
 
     }
 }
 
-
-public class ItemCart
+void shoppingCart(string custListFN, string custListLN)
 {
-    public string ItemName { get; set; }
-    public int ItemNum { get; set; }
-
-    public ItemCart(string itemName, int itemNum)
+    using (DatabaseContext context = new DatabaseContext())
     {
-        ItemName = itemName;
-        ItemNum = itemNum;
+        if (userFirstName == custListFN && userLastName == custListLN)
+        {
+            bool breakLoop = false;
+            do
+            {
+                getProductListFromDatabase();
+
+                Console.Write("\nSelect 'A' to add items to the cart. Select 'B' to Exit: ");
+                userChoice = Console.ReadLine().ToUpper().Trim();
+                switch (userChoice)
+                {
+                    case "A":
+                        Console.WriteLine("Shopping cart");
+                        do
+                        {
+                            Console.Write("Please type productID to Add Item in Cart: ");
+                            string addItem = Console.ReadLine().ToUpper().Trim();
+
+                            if (productIDList.Contains(addItem))
+                            {
+                                string quantity = getValidation("Quantity (min 0 and max 99 per item) : ", @"^[\d]{0,2}$");
+                                int itemIntValue = getIntValue(addItem);
+                                int quantityIntValue = getIntValue(quantity);
+                                var selectedProd = context.Products.Where(x => x.ProductID == itemIntValue).Single();
+                                if (quantityIntValue <= selectedProd.QuantityInStock)
+                                {
+                                    var itemName = selectedProd.ProductName;
+                                    var productPrice = selectedProd.SalePrice;
+                                    var newQIH = selectedProd.SellProduct(quantityIntValue);
+                                    context.SaveChanges();
+                                    getProductListFromDatabase();
+                                    cartList.Add($"ItemName: {itemName} | Quantity: {quantity} | Price: {(productPrice * quantityIntValue).ToString()}");
+                                    Console.WriteLine("");
+                                    foreach (var prodList in cartList) Console.WriteLine(prodList);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Sorry, insufficient Quantity.");
+                                }
+
+
+                                Console.Write("Press 'Enter' to add another item or 'Q' to Quit: ");
+                                if (Console.ReadLine().ToUpper().Trim() != "Q")
+                                {
+                                    breakLoop = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("{0, 30} {1, 15} {2, 15:C2}\n", "Name", "Qty", "Price");
+                                    double sum = 0;
+                                    foreach (var prodList in cartList)
+                                    {
+                                        sum += Convert.ToDouble(prodList.Split("|")[2].Split(":")[1]);
+                                        Console.WriteLine("{0, 30} {1, 15} {2, 15:C2}", prodList.Split("|")[0].Split(":")[1], prodList.Split("|")[1].Split(":")[1], Convert.ToDouble(prodList.Split("|")[2].Split(":")[1]));
+                                    }
+                                    decimal total = (decimal)sum;
+                                    Console.WriteLine("{0, 30} {1, 15} {2, 15:C2}", "", "Total:", sum);
+                                    Console.WriteLine("\nThanks for shopping!!!");
+                                    cartList.Clear();
+                                    breakLoop = true;
+                                    //userChoice = "0";
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Item is not in the list.");
+                            }
+                        } while (!breakLoop);
+                        break;
+                    case "B":
+                        breakLoop = true;
+                        break;
+                    default:
+                        Console.WriteLine("Worng selection! Please choose 'A' for shopping cart, 'B' to exit.");
+                        break;
+                }
+            } while (!breakLoop);
+            //Console.Clear();
+        }
+    }
+}
+
+void updateCustLocalListVar()
+{
+    using (DatabaseContext context = new DatabaseContext())
+    {
+        foreach (Customer customer in context.Customers.ToList()) customerList.Add($"{customer.FirstName}|{customer.LastName}|{customer.CustomerID}");
+        foreach (var item in customerList)
+        {
+            if (item.Split("|")[0].Contains(userFirstName) && item.Split("|")[1].Contains(userLastName))
+            {
+                customerListFirstName = item.Split("|")[0];
+                customerListLastName = item.Split("|")[1];
+                customerListID = item.Split("|")[2];
+            }
+        }
     }
 }

@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClassroomStart.Migrations
 {
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.cs
-    public partial class intialMigrations : Migration
-========
-    public partial class seedData : Migration
->>>>>>>> Nick:Migrations/20220818164011_seedData.cs
+    public partial class SeedData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,17 +149,11 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "SupplierID", "Address", "FirstName", "PhoneNumber" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.cs
-                    { -3, "12355-154 street", "Eberhardt Foods", "7804555230" },
-                    { -2, "12275-155 street", "Weston Bakeries", "7804338877" },
-                    { -1, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" }
-========
                     { -5, "12275-155 street", "Weston Bakeries", "7804338877" },
                     { -4, "12345-Yellowhead Trail", "Gordon Food Services", "7804552213" },
                     { -3, "7331 104 Street Edmonton, AB T6E 4B9", "Sabroso Foods", "7804825026" },
                     { -2, "14225 130 Ave NW, Edmonton, AB T5L 4K8", "Wholesale food store", "7804241234" },
                     { -1, "Athabascan Ave, Edmonton, AB T8N7T7", "G&L Distributors", "7804643186" }
->>>>>>>> Nick:Migrations/20220818164011_seedData.cs
                 });
 
             migrationBuilder.InsertData(
@@ -183,15 +173,9 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.cs
-                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -3 },
-                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -3 },
-                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -3 },
-========
                     { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -2 },
                     { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -2 },
                     { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -2 },
->>>>>>>> Nick:Migrations/20220818164011_seedData.cs
                     { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m, -2 },
                     { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m, -2 },
                     { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m, -1 },

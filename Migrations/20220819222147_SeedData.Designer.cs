@@ -11,13 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassroomStart.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-    [Migration("20220817202747_intialMigrations")]
-    partial class intialMigrations
-========
-    [Migration("20220818164011_seedData")]
-    partial class seedData
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
+    [Migration("20220819222147_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -365,11 +360,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
                             SalePrice = 8.65m,
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-                            SupplierID = -3
-========
                             SupplierID = -2
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
                         },
                         new
                         {
@@ -379,11 +370,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
                             SalePrice = 6.50m,
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-                            SupplierID = -3
-========
                             SupplierID = -2
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
                         },
                         new
                         {
@@ -393,11 +380,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Carrots",
                             QuantityInStock = 15,
                             SalePrice = 3.65m,
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-                            SupplierID = -3
-========
                             SupplierID = -2
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
                         });
                 });
 
@@ -437,8 +420,6 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -1,
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-========
                             Address = "Athabascan Ave, Edmonton, AB T8N7T7",
                             CompanyName = "G&L Distributors",
                             PhoneNumber = "7804643186"
@@ -460,31 +441,16 @@ namespace ClassroomStart.Migrations
                         new
                         {
                             SupplierID = -4,
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
                             Address = "12345-Yellowhead Trail",
                             CompanyName = "Gordon Food Services",
                             PhoneNumber = "7804552213"
                         },
                         new
                         {
-<<<<<<<< HEAD:Migrations/20220817202747_intialMigrations.Designer.cs
-                            SupplierID = -2,
-                            Address = "12275-155 street",
-                            CompanyName = "Weston Bakeries",
-                            PhoneNumber = "7804338877"
-                        },
-                        new
-                        {
-                            SupplierID = -3,
-                            Address = "12355-154 street",
-                            CompanyName = "Eberhardt Foods",
-                            PhoneNumber = "7804555230"
-========
                             SupplierID = -5,
                             Address = "12275-155 street",
                             CompanyName = "Weston Bakeries",
                             PhoneNumber = "7804338877"
->>>>>>>> Nick:Migrations/20220818164011_seedData.Designer.cs
                         });
                 });
 
