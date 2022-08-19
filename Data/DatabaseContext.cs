@@ -90,7 +90,7 @@ namespace ClassroomStart.Models
                       .HasCharSet("utf8mb4")
                       .UseCollation("utf8mb4_general_ci")
                       .HasColumnType("varchar(50)")
-                      .HasColumnName("FirstName")
+                      .HasColumnName("CompanyName")
                       .HasMaxLength(50);
 
                 entity.Property(e => e.Address)

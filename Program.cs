@@ -2,6 +2,7 @@
 using ClassroomStart.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security;
+using Microsoft.Data.SqlClient.Server;
 
 
 const string passCode = "password";
@@ -144,46 +145,57 @@ using (DatabaseContext context = new DatabaseContext())
                                 int tempQuantityInStock = 0;
                                 string tempProductName = "";
                                 int updatedQuantityOnHand = 0;
+                              //  int tempSupplierID = 0;
+                               // string tempSupplierName = "";
 
                                 Console.WriteLine("The following is a list of products in stock.");
                                 
                                 foreach(Product product in context.Products.ToList())
                                 {
-                                   Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Quantity Currently in Stock: "+ product.QuantityInStock);
-                                // Console.WriteLine("\n{0, 3} {1, 30} {2, 60}", "Product ID: " +product.ProductID, "Product Name:" +product.ProductName, "Quantity Currently In /Stock: " + product.QuantityInStock);
+
+                                    // tempSupplierID = context.Products.Where(x => x.ProductID == tempProductID).Single().SupplierID;
+                                    // tempSupplierName = context.Supplier.Where(x => x.SupplierID == tempSupplierID).Single().CompanyName;
+                                    // Console.WriteLine("\t\n Product ID Number: " + product.ProductID + "\t Product Name: " + product.ProductName + "\t Description: " + product.Description +"\t Quantity Currently in Stock: "+ product.QuantityInStock);
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName + "\n\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock);// + "\n\t Supplier Name: " + tempSupplierName);
+
+                                    // Console.WriteLine("\n{0, 3} {1, 30} {2, 60} {3, 30}", "Product ID: " +product.ProductID, "Product Name: " +product.ProductName, "Description: " + product.Description, "Quantity Currently In /Stock: " + product.QuantityInStock);
 
                                 }
 
                                 Console.WriteLine("\n Please select a Product ID number from the list above to update: ");
 
-                                try 
-                                {          
-                                
+                                try
+                                {
                                     tempProductID = int.Parse(Console.ReadLine().Trim());
                                     tempQuantityInStock = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
                                     tempProductName = context.Products.Where(x => x.ProductID == tempProductID).Single().ProductName;
-                               
-                                    Console.WriteLine("You entered "+ tempProductID);
 
-                                    Console.WriteLine("How many units would you like to add to the " +tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
+                                    Console.WriteLine("You entered " + tempProductID);
+
+                                    Console.WriteLine("How many units would you like to add to the " + tempQuantityInStock + " units of " + tempProductName + " you currently have in stock?");
 
                                     updateQuantity = int.Parse(Console.ReadLine());
-                                    
+
                                     updateQuantity += tempQuantityInStock;
 
                                     context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
                                     context.SaveChanges();
 
-                                     updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
+                                    updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
 
                                     Console.WriteLine("The database has been successfully updated. There are now " + updatedQuantityOnHand + " " + tempProductName + " units in inventory.");
+                                    
                                 }
 
-                                catch( Exception ex)
+                                catch (Exception ex)
                                 {
-                                    Console.WriteLine("Sorry, an error occurred updating the database. " + ex.Message);
-                                }
+                                    if (ex.Message == "Sequence contains no elements")
+                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
 
+                                    else if (ex.Message == "Input string was not in a correct format.")
+                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
                            }
 
                             break;
@@ -241,21 +253,3 @@ string getValidation(string prompt, string regEx)
 //    public string UserName { get; set; }
 //    public int PhoneNumber { get; set; }
 //}
-
-
-
-   // static void Main(string[] args)
-    //{
-    //    SecureString pass = maskInputString();
-    //    string Password = new System.Net.NetworkCredential(string.Empty, pass).Password;
-    //    Console.WriteLine(Password);
-   // }
-
-
-    // static SecureString maskInputString()
-   // {
-    //Console.WriteLine("Please enter your password: ");
-    // SecureString pass = new SecureString();
-       
-     
-
