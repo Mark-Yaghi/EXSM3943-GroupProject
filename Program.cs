@@ -250,26 +250,26 @@ do
                                 do
                                 {
                                     validator = false;
-                                    Console.WriteLine("Please confirm you would like add this Product: Yes || No  ");
+                                    Console.WriteLine("Please confirm you would like add this Product: YES || NO  ");
                                     addConfrimation = Console.ReadLine().Trim();
-                                    switch (addConfrimation)
+                                    switch (addConfrimation.ToUpper())
                                     {
-                                        case "Yes":
+                                        case "YES":
                                             validator = true;
                                             context.SaveChanges();
                                             Console.WriteLine(prodName + "Has been added to the Inventory\n");
                                             break;
 
-                                        case "No":
+                                        case "NO":
                                             break;
 
                                         default:
                                             Console.WriteLine("Invalid entry");
                                             break;
                                     }
-
-                                } while (!validator && addConfrimation != "No");
-
+                                    
+                                } while (!validator && addConfrimation != "NO");
+                                Console.Clear();
                             };
                             break;
 
@@ -308,12 +308,12 @@ do
                                 } while (!validator);
                                 do
                                 {
-                                    Console.WriteLine("Would you like to discontinue a product: Yes || No ");
+                                    Console.WriteLine("Would you like to discontinue a product: YES || NO ");
                                     confirm = Console.ReadLine().Trim();
-                                    switch (confirm)
+                                    switch (confirm.ToUpper())
                                     {
 
-                                        case "Yes":
+                                        case "YES":
                                             validator = true;
                                             try
                                             {
@@ -325,13 +325,12 @@ do
                                                 Console.WriteLine("ERROR: " + ex.Message);
                                             }
 
-
                                             context.SaveChanges();
                                             string itemsToDiscontinuedName = context.Products.Where(x => x.ProductID == itemToSelect).Select(x => x.ProductName).FirstOrDefault();
                                             Console.WriteLine(itemsToDiscontinuedName + " has now been discontinued");
                                             break;
 
-                                        case "No":
+                                        case "NO":
 
                                             break;
                                         default:
@@ -339,10 +338,10 @@ do
                                             break;
 
                                     }
+                                    
+                                } while (!validator && confirm != "NO");
 
-                                } while (!validator && confirm != "No");
-
-
+                                Console.Clear();
                             }
 
                             break;
