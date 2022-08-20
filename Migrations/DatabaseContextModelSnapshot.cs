@@ -30,7 +30,10 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Address");
+                        .HasColumnName("Address")
+                        .UseCollation("utf8mb4_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("Address"), "utf8mb4");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -54,7 +57,10 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
-                        .HasColumnName("PhoneNumber");
+                        .HasColumnName("PhoneNumber")
+                        .UseCollation("utf8mb4_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("PhoneNumber"), "utf8mb4");
 
                     b.HasKey("CustomerID");
 
@@ -147,7 +153,7 @@ namespace ClassroomStart.Migrations
                             OrderID = -1,
                             CustomerID = -1,
                             Date = new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 0m,
+                            SalePrice = 14.99m,
                             TotalAmount = 75.42m
                         },
                         new
@@ -155,32 +161,32 @@ namespace ClassroomStart.Migrations
                             OrderID = -2,
                             CustomerID = -4,
                             Date = new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 0m,
-                            TotalAmount = 75.42m
+                            SalePrice = 27.99m,
+                            TotalAmount = 185.92m
                         },
                         new
                         {
                             OrderID = -3,
                             CustomerID = -1,
                             Date = new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 0m,
-                            TotalAmount = 75.42m
+                            SalePrice = 38.95m,
+                            TotalAmount = 275.82m
                         },
                         new
                         {
                             OrderID = -4,
                             CustomerID = -6,
                             Date = new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 0m,
-                            TotalAmount = 75.42m
+                            SalePrice = 44.75m,
+                            TotalAmount = 975.58m
                         },
                         new
                         {
                             OrderID = -5,
                             CustomerID = -2,
                             Date = new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SalePrice = 0m,
-                            TotalAmount = 75.42m
+                            SalePrice = 58.25m,
+                            TotalAmount = 14.39m
                         });
                 });
 
@@ -358,7 +364,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Mandarin Oranges 3 lb bag",
                             QuantityInStock = 30,
                             SalePrice = 8.65m,
-                            SupplierID = -2
+                            SupplierID = -3
                         },
                         new
                         {
@@ -368,7 +374,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Gala Apples",
                             QuantityInStock = 25,
                             SalePrice = 6.50m,
-                            SupplierID = -2
+                            SupplierID = -3
                         },
                         new
                         {
@@ -378,7 +384,7 @@ namespace ClassroomStart.Migrations
                             ProductName = "Carrots",
                             QuantityInStock = 15,
                             SalePrice = 3.65m,
-                            SupplierID = -2
+                            SupplierID = -3
                         });
                 });
 
@@ -393,13 +399,16 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("Address");
+                        .HasColumnName("Address")
+                        .UseCollation("utf8mb4_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("Address"), "utf8mb4");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("FirstName")
+                        .HasColumnName("CompanyName")
                         .UseCollation("utf8mb4_general_ci");
 
                     MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("CompanyName"), "utf8mb4");
@@ -408,7 +417,10 @@ namespace ClassroomStart.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
-                        .HasColumnName("PhoneNumber");
+                        .HasColumnName("PhoneNumber")
+                        .UseCollation("utf8mb4_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<string>("PhoneNumber"), "utf8mb4");
 
                     b.HasKey("SupplierID");
 

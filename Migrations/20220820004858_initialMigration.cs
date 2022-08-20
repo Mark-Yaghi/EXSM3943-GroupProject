@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClassroomStart.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,9 +23,9 @@ namespace ClassroomStart.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -40,11 +40,11 @@ namespace ClassroomStart.Migrations
                 {
                     SupplierID = table.Column<int>(type: "int(10)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                    CompanyName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Address = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -146,7 +146,7 @@ namespace ClassroomStart.Migrations
 
             migrationBuilder.InsertData(
                 table: "Supplier",
-                columns: new[] { "SupplierID", "Address", "FirstName", "PhoneNumber" },
+                columns: new[] { "SupplierID", "Address", "CompanyName", "PhoneNumber" },
                 values: new object[,]
                 {
                     { -5, "12275-155 street", "Weston Bakeries", "7804338877" },
@@ -161,11 +161,11 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "orderID", "customerID", "Date", "SalePrice", "TotalAmount" },
                 values: new object[,]
                 {
-                    { -5, -2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -4, -6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m },
-                    { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 75.42m }
+                    { -5, -2, new DateTime(2022, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 58.25m, 14.39m },
+                    { -4, -6, new DateTime(2022, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 44.75m, 975.58m },
+                    { -3, -1, new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 38.95m, 275.82m },
+                    { -2, -4, new DateTime(2022, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 27.99m, 185.92m },
+                    { -1, -1, new DateTime(2021, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 14.99m, 75.42m }
                 });
 
             migrationBuilder.InsertData(
@@ -173,9 +173,9 @@ namespace ClassroomStart.Migrations
                 columns: new[] { "ProductID", "Description", "Discontinued", "ProductName", "QuantityInStock", "SalePrice", "SupplierID" },
                 values: new object[,]
                 {
-                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -2 },
-                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -2 },
-                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -2 },
+                    { -8, "3 lb bag of carrots from Redcliff, AB", true, "Carrots", 15, 3.65m, -3 },
+                    { -7, "3lb bag of Gala Apples", true, "Gala Apples", 25, 6.50m, -3 },
+                    { -6, "3 lb bag of fresh Mandarin Oranges", false, "Mandarin Oranges 3 lb bag", 30, 8.65m, -3 },
                     { -5, "Loaf of whole wheat bread from Weston Bakeries", false, "Whole wheat bread", 75, 3.25m, -2 },
                     { -4, "Loaf of white bread from Weston Bakeries", false, "White Bread", 40, 2.85m, -2 },
                     { -3, "4 L jugs of Chocolate Milk from Beatrice", false, "milk, chocolate", 90, 4.70m, -1 },
