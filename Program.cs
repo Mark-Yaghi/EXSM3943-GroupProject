@@ -110,9 +110,32 @@ do
             {
                 do
                 {
-                    Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory \"B\" \n 3) Discontinue the Product \"C\" \n 4) Update Product Name \"D\" \n 5) Update Product Description \"E\" \n 6) Update Supplier Info \"F\"\n 7) Admin Logout \"Q\" ");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("\n\n\tPRODUCT MENU");
+                    Console.ResetColor();
+
+                    Console.WriteLine("\t 1) Add product \"A\" \n\t 2) Add Inventory \"B\" \n\t 3) Discontinue the Product \"C\" \n\t 4) Update Product Name \"D\" \n\t 5) Update Product Description \"E\"\n\t 6) Update Product Sale Price \"F\" \n\t 7) View Product List \"G\"");
+
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("\n\n\tSUPPLIER MENU");
+                    Console.ResetColor();
+
+                    Console.WriteLine("\t 8) Update Supplier Info \"H\"");
+
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("\n\n\tADMIN MENU");
+                    Console.ResetColor();
+
+                    Console.WriteLine("\t 9) Admin Logout \"Q\"");
+
+
+                   // Console.WriteLine("\n \n\tPRODUCT MENU  \n\t 1) Add product \"A\" \n\t 2) Add Inventory \"B\" \n\t 3) Discontinue the Product \"C\" \n\t 4) Update Product Name \"D\" \n\t 5) Update Product Description \"E\" \n\n\tSUPPLIER MENU \n\t 6) Update Supplier Info \"F\"\n\n\tADMIN MENU \n\t 7) Admin Logout \"Q\" ");
                     Console.WriteLine("\nPlease select the letter next to the menu item you want in the menu above.");
+                    
+
+
                     userChoice = Console.ReadLine().Trim();
+
                     switch (userChoice.ToUpper())
                     {
                         case "A":
@@ -419,7 +442,7 @@ do
                                 tempProdID = InputNumberFn("\nPlease select the ID number of the product whose name you wish to change from the list above (Please enter only numbers):");
                                 try
                                 {
-                                    bool upDateBool = false;
+                                   // bool upDateBool = false;
                                     bool tempIDInputExist = false;
                                     string verifyUpdate = "";
                                     int verifyInputID = context.Products.Where(x => x.ProductID == tempProdID).Select(x => x.ProductID).FirstOrDefault();
@@ -448,7 +471,7 @@ do
                                             bool confirmUpdate;
                                             do
                                             {
-                                                string updatedQuantityOnHand = "";
+                                                //string updatedQuantityOnHand = "";
                                                 confirmUpdate = false;
                                                 Console.WriteLine("Please confirm you would like to update this product's name to " + upDateProdName + ": Yes || No ");
                                                 verifyUpdate = Console.ReadLine().Trim();
@@ -463,7 +486,7 @@ do
                                                         //updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProdID).Single().QuantityInStock;
 
                                                         Console.WriteLine("The database has been successfully updated. The Product is now called: " + upDateProdName);
-                                                        upDateBool = true;
+                                                        //upDateBool = true;
                                                         confirmUpdate = true;
                                                         break;
 
@@ -490,24 +513,241 @@ do
                                 else if (ex.Message == "Input string was not in a correct format.")
                                     Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
                                 else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
-                                }
-                    
-
-                           
+                                }                           
                 }
                                 break;
 
 
                         case "E":
-                            Console.WriteLine("You are in the Update Product Description.");
-                            break;
+                            Console.WriteLine(" You are in the Update Product Description.");
+                           
+                            int tempDescProdID = 0;
 
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+                                Console.WriteLine(" Below is a list of all current products in inventory:");
+
+                                foreach (Product product in context.Products.ToList())
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID);
+                                    Console.ResetColor();
+
+                                    Console.WriteLine("\t Product Name: " + product.ProductName);
+
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\t Product Description: " + product.Description);
+                                    Console.ResetColor();
+                                }
+
+                                Console.WriteLine("");
+                                tempProdID = InputNumberFn("\n Please select the ID number of the product whose description you wish to change from the list above (Please enter only numbers):");
+                                try
+                                {
+                                    // bool upDateBool = false;
+                                    bool tempIDInputExist = false;
+                                    string verifyUpdate = "";
+                                    int verifyInputID = context.Products.Where(x => x.ProductID == tempDescProdID).Select(x => x.ProductID).FirstOrDefault();
+
+                                    do
+                                    {
+
+                                        verifyInputID = context.Products.Where(x => x.ProductID == tempDescProdID).Select(x => x.ProductID).FirstOrDefault();
+
+
+                                        if (tempDescProdID != verifyInputID)
+                                        {
+                                            Console.WriteLine(" Sorry, that number does not exist in the database");
+                                            tempIDInputExist = false;
+                                            Console.WriteLine("");
+                                            tempDescProdID = InputNumberFn("\n Please select the ID number of the product whose description you wish to change from the list above (Please enter only numbers):");
+
+                                        }
+                                        else
+                                        {
+
+                                            string upDateProdDesc = "";
+                                            Console.WriteLine(" Please enter the new description of the product: ");
+                                            upDateProdDesc = Console.ReadLine().Trim();
+
+                                            bool confirmUpdate;
+                                            do
+                                            {
+                                              
+                                                confirmUpdate = false;
+                                                Console.WriteLine(" Please confirm you would like to update this product's description to " + upDateProdDesc + ": Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+
+                                                        context.Products.Where(x => x.ProductID == tempProdID).Single().Description = upDateProdDesc;
+                                                        context.SaveChanges();
+                                                     
+
+                                                        Console.WriteLine(" The database has been successfully updated. The Product Description is now : " + upDateProdDesc);
+                                                        //upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine(" Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate != "NO");
+                                            tempIDInputExist = true;
+                                        }
+
+                                    } while (!tempIDInputExist);
+                                }
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
+                                {
+                                    if (ex.Message == "Sequence contains no elements")
+                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
+
+                                    else if (ex.Message == "Input string was not in a correct format.")
+                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
+                            }
+
+
+
+                            break;
 
                         case "F":
+                            Console.WriteLine("You are in the Update Product Price Section.");
+                            
+                            int tempPriceProdID = 0;
+
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+                                Console.WriteLine(" Below is a list of all current products in inventory:");
+
+                                foreach (Product product in context.Products.ToList())
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID);
+                                    Console.ResetColor();
+
+                                    Console.WriteLine("\t Product Name: " + product.ProductName);
+
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\t Product Sale Price: $" + product.SalePrice);
+                                    Console.ResetColor();
+                                }
+
+                                Console.WriteLine("");
+                                tempProdID = InputNumberFn("\n Please select the ID number of the product whose description you wish to change from the list above (Please enter only numbers):");
+                                try
+                                {
+                                    // bool upDateBool = false;
+                                    bool tempIDInputExist = false;
+                                    string verifyUpdate = "";
+                                    int verifyInputID = context.Products.Where(x => x.ProductID == tempPriceProdID).Select(x => x.ProductID).FirstOrDefault();
+
+                                    do
+                                    {
+
+                                        verifyInputID = context.Products.Where(x => x.ProductID == tempPriceProdID).Select(x => x.ProductID).FirstOrDefault();
+
+
+                                        if (tempPriceProdID != verifyInputID)
+                                        {
+                                            Console.WriteLine(" Sorry, that number does not exist in the database");
+                                            tempIDInputExist = false;
+                                            Console.WriteLine("");
+                                            tempDescProdID = InputNumberFn("\n Please select the ID number of the product whose sale price you wish to change from the list above (Please enter only numbers):");
+
+                                        }
+                                        else
+                                        {
+
+                                            decimal upDateProdPrice = 0;
+                                            Console.WriteLine(" Please enter the new sale price of the product: ");
+                                            upDateProdPrice = decimal.Parse (Console.ReadLine().Trim());
+
+                                            bool confirmUpdate;
+                                            do
+                                            {
+
+                                                confirmUpdate = false;
+                                                Console.WriteLine(" Please confirm you would like to update this product's sale price to " + upDateProdPrice + ": Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+
+                                                        context.Products.Where(x => x.ProductID == tempProdID).Single().SalePrice = upDateProdPrice;
+                                                        context.SaveChanges();
+
+
+                                                        Console.WriteLine(" The database has been successfully updated. The Product Sale Price is now : $" + upDateProdPrice);
+                                                        //upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine(" Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate != "NO");
+                                            tempIDInputExist = true;
+                                        }
+
+                                    } while (!tempIDInputExist);
+                                }
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
+                                {
+                                    if (ex.Message == "Sequence contains no elements")
+                                        Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
+
+                                    else if (ex.Message == "Input string was not in a correct format.")
+                                        Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                    else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
+                            }
+
                             break;
+
+                        case "G":
+                           Console.WriteLine("\tYou are in the View Product List Section.");
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+                                foreach (Product product in context.Products.ToList())
+                                {
+
+                                    context.Entry(product).Reference(x => x.Supplier).Load();
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\n\n\t Product ID Number: " + product.ProductID);
+                                    Console.ResetColor();
+                                    Console.WriteLine("\t Supplier ID Number: " + product.Supplier.SupplierID + "\n\t Supplier Name: " + product.Supplier.CompanyName + "\n\t Product Name: " + product.ProductName + "\n\t Description: "+ product.Description + "\n\t Quantity in Stock: " + product.QuantityInStock + "\n\t Discontinued: " + product.Discontinued + "\n\t Sale Price : $" + product.SalePrice);
+                                }
+                            }    
+
+                                break;
+
+
+                        case "H":
                             Console.WriteLine("You are in the Update Supplier Info Section.");
 
+                            break;
+
+
                         case "Q":
+                            //This switch option is used to exit the admin menu.
                             break;
 
 
