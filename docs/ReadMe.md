@@ -41,4 +41,4 @@ Division of Labour:
 * I wrote the Models for, Customer, Order, Order Detail and Product. Wrote the add a new product and the discontinued a product in the program.cs
 
 ### Kristian Denis:
-* Wrote the model Supplier.cs, impimented and seeded this model in DatabaseContext.cs, and wrote README.md.
+* Wrote the model Supplier.cs, and wrote README.md.

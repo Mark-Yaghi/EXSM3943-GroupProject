@@ -97,7 +97,7 @@ do
                 }
                 else if (!char.IsControl(keyInfo.KeyChar))
                 {
-                    //pass.RemoveAt(pass.Length - 1);
+                   // pass.Remove(pass.Length - 1);
                     Console.Write("*");
                     pass += keyInfo.KeyChar;
                 }
@@ -110,7 +110,8 @@ do
             {
                 do
                 {
-                    Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory\"B\" \n 3) Discontinue the Product \"C\" \n 4) Admin Logout\"Q\" ");
+                    Console.WriteLine("\n \n 1) Add product \"A\" \n 2) Add Inventory \"B\" \n 3) Discontinue the Product \"C\" \n 4) Update Product Name \"D\" \n 5) Update Product Description \"E\" \n 6) Update Supplier Info \"F\"\n 7) Admin Logout \"Q\" ");
+                    Console.WriteLine("\nPlease select the letter next to the menu item you want in the menu above.");
                     userChoice = Console.ReadLine().Trim();
                     switch (userChoice.ToUpper())
                     {
@@ -398,6 +399,113 @@ do
                             break;
 
 
+                        case "D":
+                            Console.WriteLine("You are in the Update Product Name section.");
+                            int tempProdID = 0;
+
+                            using (DatabaseContext context = new DatabaseContext())
+                            {
+                                Console.WriteLine("Below is a list of all current products in inventory:");
+
+                                foreach (Product product in context.Products.ToList())
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    Console.WriteLine("\n\t Product ID Number: " + product.ProductID + "\n\t Product Name: " + product.ProductName);
+                                    Console.ResetColor();
+                                    Console.WriteLine("\t Product Description: " + product.Description);
+                                }
+
+                                Console.WriteLine("");
+                                tempProdID = InputNumberFn("\nPlease select the ID number of the product whose name you wish to change from the list above (Please enter only numbers):");
+                                try
+                                {
+                                    bool upDateBool = false;
+                                    bool tempIDInputExist = false;
+                                    string verifyUpdate = "";
+                                    int verifyInputID = context.Products.Where(x => x.ProductID == tempProdID).Select(x => x.ProductID).FirstOrDefault();
+
+                                    do
+                                    {
+
+                                         verifyInputID = context.Products.Where(x => x.ProductID == tempProdID).Select(x => x.ProductID).FirstOrDefault();
+
+
+                                        if (tempProdID != verifyInputID)
+                                        {
+                                            Console.WriteLine("Sorry, that number does not exist in the database");
+                                            tempIDInputExist = false;
+                                            Console.WriteLine("");
+                                            tempProdID = InputNumberFn("\nPlease select the ID number of the product whose name you wish to change from the list above (Please enter only numbers):");
+
+                                        }
+                                        else
+                                        {
+
+                                            string upDateProdName = "";
+                                            Console.WriteLine("Please enter the new name of the product: ");
+                                            upDateProdName = Console.ReadLine().Trim();
+
+                                            bool confirmUpdate;
+                                            do
+                                            {
+                                                string updatedQuantityOnHand = "";
+                                                confirmUpdate = false;
+                                                Console.WriteLine("Please confirm you would like to update this product's name to " + upDateProdName + ": Yes || No ");
+                                                verifyUpdate = Console.ReadLine().Trim();
+                                                switch (verifyUpdate.ToUpper())
+                                                {                                                    //Verify the client wants to  update, and didn't get here by mistake.
+
+                                                    case "YES":
+
+                                                        context.Products.Where(x => x.ProductID == tempProdID).Single().ProductName = upDateProdName;
+                                                        context.SaveChanges();
+
+                                                        //updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProdID).Single().QuantityInStock;
+
+                                                        Console.WriteLine("The database has been successfully updated. The Product is now called: " + upDateProdName);
+                                                        upDateBool = true;
+                                                        confirmUpdate = true;
+                                                        break;
+
+                                                    case "NO":
+                                                        //breakout of the switch/do while
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
+                                                        break;
+
+                                                }
+                                            } while (!confirmUpdate && verifyUpdate != "NO");
+                                           tempIDInputExist = true;
+                                        }
+                                       
+                                    } while (!tempIDInputExist);
+                               }
+                                catch (Exception ex)                                            //Tailor the message to the user based on the specific error. 
+                                {
+                                if (ex.Message == "Sequence contains no elements")
+                                    Console.WriteLine("\nSorry, you entered a Product ID number doesn't exist in the database. Please try another number. " + ex.Message);
+
+                                else if (ex.Message == "Input string was not in a correct format.")
+                                    Console.WriteLine("\nSorry, you entered letters or other characters. Please try entering a Product ID number. " + ex.Message);
+                                else Console.WriteLine("\nSorry, an error occurred updating the database. " + ex.Message);
+                                }
+                    
+
+                           
+                }
+                                break;
+
+
+                        case "E":
+                            Console.WriteLine("You are in the Update Product Description.");
+                            break;
+
+
+                        case "F":
+                            break;
+                            Console.WriteLine("You are in the Update Supplier Info Section.");
 
                         case "Q":
                             break;
@@ -441,10 +549,10 @@ int InputNumberFn(string consoleMessage)
 
         if (int.TryParse(Console.ReadLine().Trim(), out NumberOuput)) validator = true;
 
-        else Console.WriteLine("Invalid entry!!");
+        else Console.WriteLine("Invalid entry.");
 
     } while (!validator);
-
+    
     return NumberOuput;
 }
 
@@ -614,7 +722,7 @@ void shoppingCart(string custListFN, string custListLN)
                         breakLoop = true;
                         break;
                     default:
-                        Console.WriteLine("Worng selection! Please choose 'A' for shopping cart, 'B' to exit.");
+                        Console.WriteLine("Wrong selection! Please choose 'A' for shopping cart, 'B' to exit.");
                         break;
                 }
             } while (!breakLoop);
