@@ -1,6 +1,8 @@
 # EXSM 3943: C# II - Project thepeasants
  https://ualberta-fullstack.slack.com/archives/C03TSQGTWTW https://meet.google.com/hrp-iorw-rxs
 
+ This copy of the project is on my own repo so I can continue to add to it and practice C#.
+
 ******Passwrod to enter the admin section is : "password"*********************************
 
 Introduction: This is a small group project to build a grocery story database using C# and Microsoft Entity Framework Core. Team members include: Mark Yaghi, Arv Pandit, Nick Mbugua, Kristian Denis.
