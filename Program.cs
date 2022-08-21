@@ -3,9 +3,7 @@ using System.Security.Principal;
 using ClassroomStart.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-
-
-
+using System.Linq;  
 
 string userChoice = "";
 string userFirstName = "";
@@ -130,7 +128,7 @@ do
 
 
                    // Console.WriteLine("\n \n\tPRODUCT MENU  \n\t 1) Add product \"A\" \n\t 2) Add Inventory \"B\" \n\t 3) Discontinue the Product \"C\" \n\t 4) Update Product Name \"D\" \n\t 5) Update Product Description \"E\" \n\n\tSUPPLIER MENU \n\t 6) Update Supplier Info \"F\"\n\n\tADMIN MENU \n\t 7) Admin Logout \"Q\" ");
-                    Console.WriteLine("\nPlease select the letter next to the menu item you want in the menu above.");
+                    Console.WriteLine("\n Please select the letter next to the menu item you want in the menu above.");
                     
 
 
@@ -138,7 +136,7 @@ do
 
                     switch (userChoice.ToUpper())
                     {
-                        case "A":
+                        case "A":                                           //Add Product Section -------------------------------------------------------
                             Console.Clear();
                             bool validator = false;
                             string prodName, description;
@@ -148,42 +146,38 @@ do
                             int suppliersID = 0;
                             string suppliersName = "";
 
-                            Console.WriteLine("Add Product: ");
+                            Console.WriteLine("\t\nYou are in the 'Add Product' section. ");
 
-                            Console.WriteLine("Product Name: ");
+                            Console.WriteLine(" Enter a Product Name: ");
 
                             prodName = Console.ReadLine().Trim();
 
-                            Console.WriteLine("Description of Product: ");
+                            Console.WriteLine(" Please enter a description of the product: ");
 
                             description = (Console.ReadLine().Trim());
 
-                            quantity = InputNumberFn("Quantity: ");
+                            quantity = InputNumberFn(" Please enter a desired quantity to enter into inventory: ");
 
-
-                            productPrice = DecimalInputNumberFn("Price of Product: ");
-
+                            productPrice = DecimalInputNumberFn(" Please enter the Sale Price of the product: ");
 
 
                             using (DatabaseContext context = new DatabaseContext())
                             {
 
-                                Console.WriteLine("\nSuppliers: ");
+                                Console.WriteLine("\n List of Current Suppliers: ");
                                 foreach (Supplier supplier in context.Supplier.ToList())
                                 {
-                                    Console.WriteLine(supplier.CompanyName + " " + supplier.SupplierID + " ID");
+                                    Console.WriteLine("\n Supplier ID Number: " + supplier.SupplierID + "\tSupplier Name: " + supplier.CompanyName);
                                 }
                                 do
                                 {
-                                    suppliersID = InputNumberFn("\nSelect the supplier ID: ");
-                                    if (context.Supplier.Any(x => x.SupplierID == suppliersID))
-                                    {
-                                        validator = true;
-                                    }
+                                    suppliersID = InputNumberFn("\n Please select the desired Supplier ID from the list above: ");
+                                    if (context.Supplier.Any(x => x.SupplierID == suppliersID)) validator = true;
+                                  
                                     else
                                     {
                                         validator = false;
-                                        Console.WriteLine("Product ID NOT FOUND!!");
+                                        Console.WriteLine(" Sorry, the Supplier ID you selected is not in the database. Please select a Supplier ID from the list above.");
                                     }
 
                                 } while (!validator);
@@ -200,7 +194,6 @@ do
                                         QuantityInStock = quantity,
                                         Discontinued = discontinued,
                                         SalePrice = productPrice,
-
                                     });
 
                                 }
@@ -209,31 +202,31 @@ do
                                     Console.WriteLine("ERROR: " + ex.Message);
                                 }
 
-                                string addConfrimation = "";
+                                string addConfirmation = "";
                                 Console.WriteLine("\n" + "Product: " + prodName + "\n" + "Description: " + description + "\n" + "Quantity: " + quantity + "\n" + "$" + productPrice + "\n" + "Supplier: " + suppliersName + "\n");
 
                                 do
                                 {
                                     validator = false;
                                     Console.WriteLine("Please confirm you would like add this Product: YES || NO  ");
-                                    addConfrimation = Console.ReadLine().Trim();
-                                    switch (addConfrimation.ToUpper())
+                                    addConfirmation = Console.ReadLine().Trim();
+                                    switch (addConfirmation.ToUpper())
                                     {
                                         case "YES":
                                             validator = true;
                                             context.SaveChanges();
-                                            Console.WriteLine(prodName + "Has been added to the Inventory\n");
+                                            Console.WriteLine("The item " + prodName + " Has been added to the Inventory\n");
                                             break;
 
                                         case "NO":
                                             break;
 
                                         default:
-                                            Console.WriteLine("Invalid entry");
+                                            Console.WriteLine(" Invalid entry. Please enter either a YES or a NO only.");
                                             break;
                                     }
 
-                                } while (!validator && addConfrimation != "NO");
+                                } while (!validator && addConfirmation != "NO");
                           
                             };
                             break;
@@ -252,7 +245,7 @@ do
                                 int updatedQuantityOnHand = 0;
 
 
-                                Console.WriteLine("The following is a list of products in stock.");
+                                Console.WriteLine(" The following is a list of products in stock.");
 
 
                                 foreach (Product product in context.Products.ToList())
@@ -267,7 +260,6 @@ do
                                     Console.ResetColor();                                       //Reset the color and print the rest of the info in standard font color.
 
                                     Console.WriteLine("\t Description: " + product.Description + "\n\t Sale Price, each: $" + product.SalePrice + "\n\t Quantity Currently in Stock: " + product.QuantityInStock + "\n\t Supplier ID Number & Name: " + product.Supplier.SupplierID + " / " + product.Supplier.CompanyName);
-
 
                                 }
 
@@ -312,8 +304,8 @@ do
 
                                                     case "YES":
                                                         updateQuantity += tempQuantityInStock;
-
                                                         context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock = updateQuantity;
+
                                                         context.SaveChanges();
 
                                                         updatedQuantityOnHand = context.Products.Where(x => x.ProductID == tempProductID).Single().QuantityInStock;
@@ -351,9 +343,9 @@ do
 
 
                             break;
-                        case "C":
+                        case "C":                               //-------------------- The code here deals with marking a product as "discontinued".
                             Console.Clear();
-                            Console.WriteLine("Products to Discontinue.");
+                            Console.WriteLine("\n You are in the 'Product to Discontinue' section.");
 
                             bool itemsToDiscontinue = true;
                             int itemToSelect;
@@ -364,13 +356,13 @@ do
                             {
                                 foreach (Product product in context.Products.ToList().Where(x => x.Discontinued == false))
                                 {
-                                    Console.WriteLine("Product ID# " + product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
+                                    Console.WriteLine(" Product ID# " + product.ProductID + " Product Name: " + product.ProductName + " Quantity In Stock: " + product.QuantityInStock);
                                 }
 
                                 do
                                 {
 
-                                    itemToSelect = InputNumberFn("\nPlease enter the Product you would like to discontinue by the ID #: \n");
+                                    itemToSelect = InputNumberFn("\n Please enter the Product you would like to discontinue by the ID #: \n");
                                     var checkingID = (context.Products.Any(x => x.ProductID == itemToSelect));
                                     if (checkingID)
                                     {
@@ -378,7 +370,7 @@ do
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Product ID NOT FOUND!!");
+                                        Console.WriteLine(" Sorry, that Product ID isn't in the database. Please select a Product ID from the list above.");
                                     }
 
                                 } while (!validator);
@@ -403,27 +395,25 @@ do
 
                                             context.SaveChanges();
                                             string itemsToDiscontinuedName = context.Products.Where(x => x.ProductID == itemToSelect).Select(x => x.ProductName).FirstOrDefault();
-                                            Console.WriteLine(itemsToDiscontinuedName + " has now been discontinued");
+                                            Console.WriteLine(itemsToDiscontinuedName + " has now been discontinued.");
                                             break;
 
                                         case "NO":
 
                                             break;
                                         default:
-                                            Console.WriteLine("Invalid entry");
+                                            Console.WriteLine("Please enter either a 'YES' or a 'NO' only.");
                                             break;
 
                                     }
 
                                 } while (!validator && confirm != "NO");
-
                             }
-
                             break;
 
 
                         case "D":
-                            Console.WriteLine("You are in the Update Product Name section.");
+                            Console.WriteLine("\n You are in the Update Product Name section.");
                             int tempProdID = 0;
 
                             using (DatabaseContext context = new DatabaseContext())
@@ -726,15 +716,27 @@ do
                            Console.WriteLine("\tYou are in the View Product List Section.");
                             using (DatabaseContext context = new DatabaseContext())
                             {
+                                int productCount = 0;
+                                int supplierCount = 0;
                                 foreach (Product product in context.Products.ToList())
                                 {
 
                                     context.Entry(product).Reference(x => x.Supplier).Load();
+
                                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                                     Console.WriteLine("\n\n\t Product ID Number: " + product.ProductID);
                                     Console.ResetColor();
+
                                     Console.WriteLine("\t Supplier ID Number: " + product.Supplier.SupplierID + "\n\t Supplier Name: " + product.Supplier.CompanyName + "\n\t Product Name: " + product.ProductName + "\n\t Description: "+ product.Description + "\n\t Quantity in Stock: " + product.QuantityInStock + "\n\t Discontinued: " + product.Discontinued + "\n\t Sale Price : $" + product.SalePrice);
+                                   
+                                    productCount += 1;
+
+                                    // supplierCount += 1;
+                                    //supplierCount = product.Supplier.SupplierID.Count().Distinct() ;
                                 }
+                                //context.Entry(Supplier).Reference(x => x.Supplier).Load();
+                                Console.WriteLine("\n\t Total number of unique products in inventory: " + productCount);
+                                //Console.WriteLine("\n\t Total number of suppliers currently used: " + supplierCount);
                             }    
 
                                 break;
